@@ -86,8 +86,13 @@ export interface BestBetsResponse {
   generatedAt: string;       // ISO timestamp
   picks: Pick[];
   parlays: Parlay[];
-  sportStatus: SportStatus[];
+  sportStatuses: SportStatus[];
   cached: boolean;
+  /**
+   * Non-fatal problems that degrade pick quality (e.g. team context could not
+   * be fetched). Present so the UI can avoid showing picks as authoritative.
+   */
+  warnings?: string[];
 }
 
 export interface SportStatus {

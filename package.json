@@ -6,13 +6,19 @@
     "packages/algorithm",
     "api"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=apps/web\"",
+    "prepare": "npm run build --workspace=packages/algorithm",
+    "dev": "npm run build --workspace=packages/algorithm && npm run dev --workspace=apps/web",
+    "dev:api": "npm run build --workspace=packages/algorithm && tsx watch scripts/dev-api.mts",
     "build": "npm run build --workspace=packages/algorithm && npm run build --workspace=apps/web",
+    "typecheck": "npm run build --workspace=packages/algorithm && tsc --noEmit",
     "lint": "npm run lint --workspace=apps/web"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.4.5"
   }
 }

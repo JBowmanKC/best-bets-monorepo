@@ -175,6 +175,17 @@ export default function App() {
         </div>
       )}
 
+      {/* ── Degraded-data warnings ── */}
+      {data?.warnings?.map((w, i) => (
+        <div key={i} style={{
+          background: "#1f1608", border: "1px solid #6b4a10",
+          borderRadius: 10, padding: 14, marginBottom: 20,
+          color: "#fbbf24", fontSize: "0.82rem", lineHeight: 1.6,
+        }}>
+          ⚠️ <strong>Degraded data.</strong> {w}
+        </div>
+      ))}
+
       {/* ── Sport Status ── */}
       {data?.sportStatuses && (
         <>

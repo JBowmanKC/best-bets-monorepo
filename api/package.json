@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.113.0",
     "@best-bets/algorithm": "*",
     "@vercel/node": "^3.0.0"
   },

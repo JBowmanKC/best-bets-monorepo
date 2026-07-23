@@ -25,10 +25,12 @@ best-bets-monorepo/
 **Data flow:**
 ```
 Browser → GET /api/best-bets?date=2026-07-19&sports=mlb,nfl,nhl
-              ↓ parallel
-    [Claude API]           [OddsAPI]
-    (games + standings     (live moneylines from
-     via SportRadar)        DraftKings/FanDuel/BetMGM)
+              ↓ 1. schedule + lines (source of truth)
+    [OddsAPI]  today's real matchups, start times, and averaged
+               moneylines from DraftKings/FanDuel/BetMGM
+              ↓ 2. enrichment (best-effort, ≤45s)
+    [Claude API + web_search]  per-team record, last-5 form,
+               current series standing, venue, situational notes
               ↓ merge
     Algorithm (scorer.ts)
     → WP (35%) + EV (35%) + MOM (20%) + CTX (10%)
@@ -37,6 +39,13 @@ Browser → GET /api/best-bets?date=2026-07-19&sports=mlb,nfl,nhl
     JSON → React renders dashboard
     (Vercel edge cache: 30 min TTL)
 ```
+
+**Why this split:** OddsAPI knows which games exist and what they're priced at, but
+not team records. Claude fills in the context — but it has a training cutoff, so it
+*must* search the web rather than answer from memory. If the enrichment call fails,
+the API still returns picks and sets a `warnings` array; the UI renders that as a
+"Degraded data" banner, because without real records the model treats every team as
+.500 and systematically overrates longshots.
 
 ---
 
@@ -69,12 +78,41 @@ ANTHROPIC_API_KEY=sk-ant-...
 ODDS_API_KEY=your-odds-api-key
 ```
 
-### 3. Run locally with Vercel CLI
+Both keys are required for full functionality. Without `ODDS_API_KEY` the API returns
+a 500 (there is no schedule to work from); without `ANTHROPIC_API_KEY` it still serves
+picks but flags them as degraded.
+
+### 3. Run locally
 ```bash
-npm install -g vercel
-vercel dev
+npm run dev
 ```
-This starts both the React app (port 3000) and the serverless function at `/api/best-bets`.
+That's it — one process, one port (5173 by default). The Vercel CLI is **not** required.
+
+The `api/*.ts` handlers are served directly by the Vite dev server via the `localApi`
+plugin in [`apps/web/vite.config.ts`](apps/web/vite.config.ts), which mounts the same
+handler source Vercel runs in production. Because there's no second port and no proxy:
+
+- nothing can collide with the API port, because there isn't one;
+- Vite picks the next free port for itself if 5173 is taken, so you can run this
+  alongside other projects without configuring anything;
+- edits to `api/*.ts` take effect on the next request — no restart.
+
+Handlers are loaded through Vite's `ssrLoadModule`. Note the `ssr.external` entry for
+`@best-bets/algorithm`: that package compiles to CommonJS, and without externalizing it
+Vite inlines it into the SSR graph and fails with `exports is not defined`.
+
+#### Running the API without the frontend
+
+For curl/Postman testing, or to point another client at the API:
+
+```bash
+npm run dev:api                # http://localhost:4176
+API_PORT=4000 npm run dev:api  # pin a specific port
+```
+
+If the default port is busy it falls back to any free port and prints the URL. If you
+pin `API_PORT` explicitly and *that* is busy, it fails loudly rather than moving
+somewhere you're not expecting.
 
 ---
 
@@ -95,14 +133,34 @@ This starts both the React app (port 3000) and the serverless function at `/api/
    - Import your GitHub repo
    - Framework preset: **Other** (not Vite — the vercel.json handles it)
    - Root directory: `/` (monorepo root)
+   - Node.js version: **20.x or later** (Project Settings → General)
+
+   > Do not add a `runtime` key under `functions` in `vercel.json`. It expects an npm
+   > package identifier with a version (e.g. `@vercel/node@3.0.0`), so a value like
+   > `nodejs20.x` fails the build with *"Function Runtimes must have a valid version"*.
+   > Omitting it uses the project's configured Node version, which is what you want.
 
 3. **Add environment variables** in Vercel dashboard → Settings → Environment Variables:
    ```
    ANTHROPIC_API_KEY   = sk-ant-...
    ODDS_API_KEY        = your-key-from-the-odds-api.com
    ```
+   Apply both to Production, Preview, and Development.
 
 4. **Deploy** — Vercel auto-deploys on every push to main.
+
+### Production gotchas
+
+- **`maxDuration` is 60s**, which is the Hobby-plan ceiling. The enrichment call is
+  capped at 45s (`ENRICHMENT_TIMEOUT_MS`) to stay inside it. Researching many games
+  can approach that limit — if enrichment starts timing out, lower
+  `MAX_ENRICHED_GAMES` or move to a plan that allows a longer `maxDuration`.
+- **The Anthropic account needs credit.** A zero balance returns
+  `400 invalid_request_error` and every response silently falls back to degraded
+  (odds-only) picks with a warning banner.
+- **OddsAPI free tier is 500 requests/month.** The handler makes one request *per
+  sport per uncached call*, so the default `mlb,nfl,nhl` costs 3. The 30-minute edge
+  cache is what keeps this affordable — don't remove the `Cache-Control` header.
 
 ### After deploy
 Your dashboard lives at: `https://your-project.vercel.app`

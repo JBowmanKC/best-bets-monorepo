@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "target":           "ES2020",
-    "module":           "ESNext",
-    "moduleResolution": "bundler",
-    "strict":           true,
-    "esModuleInterop":  true,
-    "skipLibCheck":     true,
-    "declaration":      true,
-    "outDir":           "dist",
-    "paths": {
-      "@best-bets/algorithm": ["./packages/algorithm/index.ts"]
-    }
+    "target":            "ES2022",
+    "lib":               ["ES2022"],
+    "module":            "ESNext",
+    "moduleResolution":  "bundler",
+    "strict":            true,
+    "esModuleInterop":   true,
+    "skipLibCheck":      true,
+    "resolveJsonModule": true,
+    "types":             ["node"],
+    "noEmit":            true
   },
-  "include": ["packages/**/*", "api/**/*", "apps/**/*"],
-  "exclude": ["node_modules", "**/dist"]
+  "include": ["api/**/*", "scripts/**/*"]
 }

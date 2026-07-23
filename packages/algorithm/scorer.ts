@@ -15,8 +15,12 @@ function recordGapToWinProb(
   dogRecord: { wins: number; losses: number },
   isFavHome: boolean
 ): number {
-  const favWinPct = favRecord.wins / (favRecord.wins + favRecord.losses);
-  const dogWinPct = dogRecord.wins / (dogRecord.wins + dogRecord.losses);
+  // Guard against 0-0 records (team context unavailable) → treat as .500
+  const pct = (r: { wins: number; losses: number }) =>
+    r.wins + r.losses > 0 ? r.wins / (r.wins + r.losses) : 0.5;
+
+  const favWinPct = pct(favRecord);
+  const dogWinPct = pct(dogRecord);
   const gap = favWinPct - dogWinPct;
 
   // Base probability from record differential (sigmoid-ish mapping)
