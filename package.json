@@ -1,0 +1,18 @@
+{
+  "name": "best-bets-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "packages/algorithm",
+    "api"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=apps/web\"",
+    "build": "npm run build --workspace=packages/algorithm && npm run build --workspace=apps/web",
+    "lint": "npm run lint --workspace=apps/web"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.4.5"
+  }
+}
