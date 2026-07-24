@@ -2,11 +2,7 @@
   "name": "@best-bets/api",
   "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.113.0",
-    "@best-bets/algorithm": "*",
-    "@vercel/node": "^3.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "^5.4.5",
     "@types/node": "^20.0.0"

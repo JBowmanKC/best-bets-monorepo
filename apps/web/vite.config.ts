@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import {
   REPO_ROOT, API_ROUTES, loadEnvFiles, missingEnv, invokeHandler,
   type VercelLikeHandler,
@@ -14,8 +15,13 @@ import {
  * silently point at someone else's server. Vite already picks the next free
  * port for itself, so several projects can run at once.
  *
- * Handlers are loaded through `ssrLoadModule`, so edits to api/*.ts take
- * effect on the next request without restarting the dev server.
+ * Handlers are CommonJS (`module.exports = ...`), matching what Vercel runs
+ * in production. Vite's `ssrLoadModule` only shims `module`/`exports` for
+ * dependencies it pre-bundles — a plain project file with no import/export
+ * syntax throws "module is not defined" there. Node's native loader (which
+ * has built-in TS support and real CJS/ESM interop) handles it correctly, so
+ * handlers are loaded with a cache-busting dynamic `import()` instead — edits
+ * to api/*.ts still take effect on the next request without a server restart.
  */
 function localApi(): Plugin {
   return {
@@ -38,7 +44,8 @@ function localApi(): Plugin {
         if (!modulePath) return next();
 
         try {
-          const mod = await server.ssrLoadModule(resolve(REPO_ROOT, modulePath));
+          const fileUrl = pathToFileURL(resolve(REPO_ROOT, modulePath)).href;
+          const mod = await import(/* @vite-ignore */ `${fileUrl}?t=${Date.now()}`);
           await invokeHandler(mod.default as VercelLikeHandler, req, res, url);
         } catch (err) {
           // Failed to even load the handler module (syntax/import error).
@@ -57,12 +64,6 @@ function localApi(): Plugin {
 
 export default defineConfig({
   plugins: [react(), localApi()],
-  ssr: {
-    // Vite inlines linked workspace deps into the SSR module graph by default,
-    // which fails here because @best-bets/algorithm builds to CommonJS. Marking
-    // it external hands it to Node, whose CJS/ESM interop loads it correctly.
-    external: ["@best-bets/algorithm"],
-  },
   server: {
     fs: {
       // api/ and packages/ live outside apps/web.

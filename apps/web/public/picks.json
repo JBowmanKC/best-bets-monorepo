@@ -1,0 +1,12 @@
+{
+  "date": "2026-07-24",
+  "generatedAt": "2026-07-24T12:00:00Z",
+  "picks": [],
+  "parlays": [],
+  "sportStatuses": [
+    { "sport": "mlb", "label": "⚾ MLB", "active": true, "note": "Picks generate at 8 AM EDT" },
+    { "sport": "nfl", "label": "🏈 NFL", "active": false, "note": "Off-season" },
+    { "sport": "nhl", "label": "🏒 NHL", "active": false, "note": "Off-season" }
+  ],
+  "cached": false
+}

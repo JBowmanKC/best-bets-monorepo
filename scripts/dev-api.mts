@@ -15,6 +15,7 @@ import {
   type VercelLikeHandler,
 } from "./api-shim.mjs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 // Deliberately not 3000/3001/8080 — those collide with almost everything.
 const DEFAULT_PORT = 4176;
@@ -25,7 +26,7 @@ loadEnvFiles();
 // Imported after loadEnvFiles() so module-scope process.env reads see the values.
 const handlers = new Map<string, VercelLikeHandler>();
 for (const [route, modulePath] of Object.entries(API_ROUTES)) {
-  const mod = await import(resolve(REPO_ROOT, modulePath));
+  const mod = await import(pathToFileURL(resolve(REPO_ROOT, modulePath)).href);
   handlers.set(route, mod.default as VercelLikeHandler);
 }
 

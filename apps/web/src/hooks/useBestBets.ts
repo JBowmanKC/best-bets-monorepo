@@ -14,7 +14,10 @@ interface UseBestBetsResult {
   lastFetch: Date | null;
 }
 
-export function useBestBets({ date, sports }: UseBestBetsOptions = {}): UseBestBetsResult {
+// `options` is accepted (but unused) for compatibility with existing callers —
+// picks.json is a static file that always holds today's picks, so there is no
+// date/sports selection to make at fetch time.
+export function useBestBets(_options: UseBestBetsOptions = {}): UseBestBetsResult {
   const [data,      setData]      = useState<BestBetsResponse | null>(null);
   const [loading,   setLoading]   = useState(true);
   const [error,     setError]     = useState<string | null>(null);
@@ -28,11 +31,7 @@ export function useBestBets({ date, sports }: UseBestBetsOptions = {}): UseBestB
     setLoading(true);
     setError(null);
 
-    const params = new URLSearchParams();
-    if (date)   params.set("date",   date);
-    if (sports) params.set("sports", sports.join(","));
-
-    fetch(`/api/best-bets?${params}`)
+    fetch(`/picks.json?t=${Date.now()}`)
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
@@ -51,7 +50,7 @@ export function useBestBets({ date, sports }: UseBestBetsOptions = {}): UseBestB
       });
 
     return () => { cancelled = true; };
-  }, [date, sports?.join(","), tick]);
+  }, [tick]);
 
   return { data, loading, error, refresh, lastFetch };
 }

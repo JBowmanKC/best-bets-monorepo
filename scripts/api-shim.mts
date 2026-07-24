@@ -18,7 +18,7 @@ export const API_ROUTES: Record<string, string> = {
   "/api/best-bets": "api/best-bets.ts",
 };
 
-export const REQUIRED_ENV = ["ODDS_API_KEY", "ANTHROPIC_API_KEY"] as const;
+export const REQUIRED_ENV = ["ODDS_API_KEY"] as const;
 
 export type VercelLikeHandler = (req: never, res: never) => unknown | Promise<unknown>;
 
