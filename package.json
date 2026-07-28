@@ -11,11 +11,14 @@
   },
   "scripts": {
     "prepare": "npm run build --workspace=packages/algorithm",
-    "dev": "npm run build --workspace=packages/algorithm && npm run dev --workspace=apps/web",
+    "dev": "npm run history:index && npm run build --workspace=packages/algorithm && npm run dev --workspace=apps/web",
     "dev:api": "npm run build --workspace=packages/algorithm && tsx watch scripts/dev-api.mts",
-    "build": "npm run build --workspace=packages/algorithm && npm run build --workspace=apps/web",
+    "build": "npm run history:index && npm run build --workspace=packages/algorithm && npm run build --workspace=apps/web",
     "typecheck": "npm run build --workspace=packages/algorithm && tsc --noEmit",
-    "lint": "npm run lint --workspace=apps/web"
+    "lint": "npm run lint --workspace=apps/web",
+    "test": "node --test \"scripts/**/*.test.mjs\"",
+    "history:index": "node scripts/build-history-index.mjs",
+    "grade": "node scripts/grade-picks.mjs"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

@@ -12,15 +12,25 @@ best-bets-monorepo/
 │   └── best-bets.ts          ← Vercel serverless function
 ├── apps/
 │   └── web/                  ← React + Vite frontend
+│       └── public/
+│           ├── picks.json     ─ latest run (the dashboard reads this)
+│           ├── picks/         ─ every archived run, picks-<stamp>.json
+│           └── results/       ─ graded outcomes, results-<stamp>.json
 ├── packages/
 │   └── algorithm/            ← Shared scoring logic (TypeScript)
 │       ├── types.ts           ─ Data types + constants
 │       ├── scorer.ts          ─ Four-factor model
 │       ├── parlays.ts         ─ Parlay builder
 │       └── index.ts
+├── scripts/
+│   ├── grade-picks.mjs        ─ scores archived picks against final results
+│   └── build-history-index.mjs─ manifest the history page reads
 ├── vercel.json
 └── tsconfig.json
 ```
+
+**Pages:** `/` is today's dashboard. `/pick-history` is the archive — every past
+run, what it picked, and whether those picks won.
 
 **Data flow:**
 ```
@@ -227,6 +237,67 @@ Response shape:
 
 ---
 
+## Pick History & Results
+
+The point of the archive is to answer one question: **are these picks any good?**
+
+### How a run gets recorded
+
+Each **Daily Picks** run writes two files: `public/picks.json` (overwritten —
+the dashboard's "today") and `public/picks/picks-<stamp>.json` (never
+overwritten — the archive). `<stamp>` is a compact UTC timestamp,
+`20260728T192019Z`, which sorts chronologically as plain text.
+
+### How a run gets graded
+
+The **Grade Results** workflow (`.github/workflows/grade-results.yml`) runs at
+13:00 and 01:00 UTC and calls `scripts/grade-picks.mjs`. For every archived run
+that isn't fully graded it looks up final scores and writes
+`public/results/results-<stamp>.json` — same stamp, so picks and results pair by
+filename.
+
+Grading needs no API key, because a pick's id is `<gameId>-home|away` and that
+game id is the one it was generated from:
+
+| Sport | Feed |
+|---|---|
+| MLB | `statsapi.mlb.com/api/v1/schedule` (by `gamePk`) |
+| NFL / NHL | `site.api.espn.com/.../scoreboard` (by ESPN event id) |
+
+Outcomes are `win`, `loss`, `push` (tie or postponement — stake returned),
+`pending` (game not final yet) or `unknown` (final, but no score could be
+matched). Pending picks are retried on every later run, so a slate graded at
+01:00 UTC gets completed at 13:00 rather than being frozen half-scored.
+
+**Every pick is graded at a flat 1 unit**, ignoring its recommended stake. That
+keeps tiers comparable — if Elite picks only look profitable because they're
+staked 6× heavier than Value picks, that's worth knowing.
+
+### Running it by hand
+
+```bash
+npm run grade                                   # grade whatever still needs it
+node scripts/grade-picks.mjs --all              # re-grade everything
+node scripts/grade-picks.mjs --stamp 20260728T192019Z
+node scripts/grade-picks.mjs --dry-run          # print, write nothing
+npm test                                        # grading logic tests
+```
+
+The workflow can also be triggered from the Actions tab, with a **Re-grade every
+archived run** checkbox.
+
+### The history index
+
+`public/history-index.json` is the manifest `/pick-history` fetches — static
+hosting can't list a directory, so this is how the browser discovers runs. It is
+**generated at build time** by `scripts/build-history-index.mjs` (wired into
+`npm run build` and `npm run dev`) and is gitignored: generating it beats
+committing it, because two workflows pushing the same file would collide.
+
+If the history page reports it can't load the index, run `npm run history:index`.
+
+---
+
 ## OddsAPI Setup
 
 1. Sign up at [the-odds-api.com](https://the-odds-api.com) (free tier: 500 req/month)
@@ -239,7 +310,9 @@ The function fetches odds from DraftKings, FanDuel, and BetMGM and **averages** 
 
 ## Extending
 
-- **Add more sports:** Add to `ODDS_API_SPORT_MAP` in `api/best-bets.ts` and the sports query
+- **Add more sports:** Add to `ODDS_API_SPORT_MAP` in `api/best-bets.ts` and the sports query.
+  A new sport also needs a score feed in `scripts/grade-picks.mjs`, or its picks
+  will grade as `unknown`
 - **Tune the algorithm:** Edit factor weights in `packages/algorithm/types.ts` (`FACTOR_WEIGHTS`)
 - **Custom rationale:** Extend `buildRationale()` in `scorer.ts`
 - **Add prop bets:** Extend `RawGame` type and add a `scoreProp()` function to the algorithm package
