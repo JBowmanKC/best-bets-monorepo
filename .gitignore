@@ -4,3 +4,8 @@ dist/
 .env
 .vercel/
 *.tsbuildinfo
+
+# Generated at build time from apps/web/public/{picks,results} by
+# scripts/build-history-index.mjs — committing it would make the two
+# GitHub Actions workflows race each other over the same file.
+apps/web/public/history-index.json

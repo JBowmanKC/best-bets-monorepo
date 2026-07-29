@@ -102,6 +102,99 @@ export interface SportStatus {
   note: string;
 }
 
+// ─── Pick history + results grading ─────────────────────────────────────────
+//
+// Every worker run archives its payload as `/picks/picks-<stamp>.json`, where
+// <stamp> is a compact UTC timestamp (`20260728T192019Z`). A later grading run
+// writes `/results/results-<stamp>.json` using the *same* stamp, so a pick file
+// and its graded outcome are paired by filename alone. `/history-index.json`
+// is generated at build time from whatever files are present — static hosting
+// can't list a directory, so the index is how the browser discovers runs.
+
+export type Outcome =
+  | "win"
+  | "loss"
+  | "push"      // tie — moneyline stake returned
+  | "pending"   // game hasn't finished yet
+  | "unknown";  // game finished but no score could be matched to the pick
+
+export interface FinalScore {
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number;
+  awayScore: number;
+}
+
+export interface PickResult {
+  pickId: string;
+  sport: Sport;
+  matchup: string;
+  pickLabel: string;
+  tier: Tier;
+  odds: number;
+  startTime: string;
+  outcome: Outcome;
+  /** Present once the game is final and matched. */
+  finalScore?: FinalScore;
+  /** Flat 1 unit per pick, so runs are comparable regardless of tier staking. */
+  unitsRisked: number;
+  /** Profit in units: +payout on a win, −1 on a loss, 0 on push/pending. */
+  unitsNet: number;
+  /** Why a pick is pending/unknown, when it is. */
+  note?: string;
+}
+
+export interface ResultsSummary {
+  total: number;
+  graded: number;   // win + loss + push
+  wins: number;
+  losses: number;
+  pushes: number;
+  pending: number;
+  unknown: number;
+  /** wins / (wins + losses) — null until at least one decided pick. */
+  winRate: number | null;
+  unitsRisked: number;
+  unitsNet: number;
+  /** unitsNet / unitsRisked — null until at least one decided pick. */
+  roi: number | null;
+}
+
+export interface ResultsFile {
+  /** Filename of the picks payload this graded, e.g. `picks-20260728T192019Z.json`. */
+  picksFile: string;
+  /** Slate date of those picks. */
+  date: string;
+  /** `generatedAt` copied from the picks payload. */
+  picksGeneratedAt: string;
+  gradedAt: string;
+  summary: ResultsSummary;
+  results: PickResult[];
+}
+
+/** Per-tier slice of the record, for spotting which tiers actually hit. */
+export type TierBreakdown = Record<Tier, ResultsSummary>;
+
+export interface HistoryRun {
+  /** Compact UTC stamp shared by the picks and results filenames. */
+  stamp: string;
+  date: string;
+  generatedAt: string;
+  picksPath: string;              // "/picks/picks-<stamp>.json"
+  resultsPath: string | null;     // "/results/results-<stamp>.json" once graded
+  pickCount: number;
+  tierCounts: Record<Tier, number>;
+  summary: ResultsSummary | null;
+}
+
+export interface HistoryIndex {
+  generatedAt: string;
+  /** Newest run first. */
+  runs: HistoryRun[];
+  totals: ResultsSummary;
+  byTier: TierBreakdown;
+}
+
 // ─── Algorithm config ───────────────────────────────────────────────────────
 
 export const FACTOR_WEIGHTS = {

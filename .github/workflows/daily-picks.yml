@@ -11,6 +11,12 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  # Both this and Grade Results push to the same branch — serialise them so a
+  # run can't be rejected for a stale ref.
+  group: picks-archive-push
+  cancel-in-progress: false
+
 jobs:
   fetch-picks:
     runs-on: ubuntu-latest
@@ -25,8 +31,10 @@ jobs:
 
           DATE=$(date -u +%F)
           TIME=$(date -u +%H:%M)
+          STAMP=$(date -u +%Y%m%dT%H%M%SZ)
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
           echo "time=$TIME" >> "$GITHUB_OUTPUT"
+          echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
 
           URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=mlb,nfl,nhl"
           echo "Fetching $URL"
@@ -42,22 +50,35 @@ jobs:
           PICK_COUNT=$(jq '.picks | length' response.json)
           echo "Generated $PICK_COUNT picks for $DATE"
 
-          mkdir -p apps/web/public
+          # picks.json is what the dashboard reads (always the latest run);
+          # picks/picks-<stamp>.json is the permanent archive the history page
+          # and the results grader work from.
+          mkdir -p apps/web/public/picks
+          cp response.json "apps/web/public/picks/picks-${STAMP}.json"
           mv response.json apps/web/public/picks.json
 
-      - name: Commit and push picks.json
+      - name: Commit and push picks
         run: |
           set -euo pipefail
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add apps/web/public/picks.json
+          git add apps/web/public/picks.json "apps/web/public/picks/picks-${{ steps.fetch.outputs.stamp }}.json"
 
           if git diff --cached --quiet; then
-            echo "No changes to picks.json — nothing to commit."
+            echo "No changes to commit."
             exit 0
           fi
 
           git commit -m "picks: ${{ steps.fetch.outputs.date }} ${{ steps.fetch.outputs.time }} UTC"
-          git push
+
+          for attempt in 1 2 3 4; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "Push attempt $attempt failed; retrying in $((2 ** attempt))s"
+            sleep $((2 ** attempt))
+          done
+
+          echo "::error::Could not push picks after 4 attempts"
+          exit 1
