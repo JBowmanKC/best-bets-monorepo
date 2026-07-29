@@ -2,19 +2,19 @@
   "picksFile": "picks-20260728T142722Z.json",
   "date": "2026-07-28",
   "picksGeneratedAt": "2026-07-28T14:27:22.568Z",
-  "gradedAt": "2026-07-29T01:18:47.965Z",
+  "gradedAt": "2026-07-29T15:06:58.419Z",
   "summary": {
     "total": 6,
-    "graded": 2,
-    "wins": 1,
-    "losses": 1,
+    "graded": 6,
+    "wins": 3,
+    "losses": 3,
     "pushes": 0,
-    "pending": 4,
+    "pending": 0,
     "unknown": 0,
     "winRate": 0.5,
-    "unitsRisked": 2,
-    "unitsNet": 0.35,
-    "roi": 0.175
+    "unitsRisked": 6,
+    "unitsNet": -0.08,
+    "roi": -0.0133
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "value",
       "odds": -109,
       "startTime": "2026-07-29T01:38:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Warmup."
+      "unitsRisked": 1,
+      "unitsNet": 0.9174,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Houston Astros",
+        "homeScore": 2,
+        "awayScore": 3
+      }
     },
     {
       "pickId": "823193-away",
@@ -38,10 +43,15 @@
       "tier": "value",
       "odds": -153,
       "startTime": "2026-07-29T01:45:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Pre-Game."
+      "unitsRisked": 1,
+      "unitsNet": 0.6536,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "San Francisco Giants",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 2,
+        "awayScore": 8
+      }
     },
     {
       "pickId": "824490-away",
@@ -69,10 +79,15 @@
       "tier": "value",
       "odds": 135,
       "startTime": "2026-07-28T23:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Cleveland Guardians",
+        "homeScore": 2,
+        "awayScore": 0
+      }
     },
     {
       "pickId": "824243-away",
@@ -100,10 +115,15 @@
       "tier": "value",
       "odds": -191,
       "startTime": "2026-07-29T02:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Pre-Game."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 6,
+        "awayScore": 7
+      }
     }
   ]
 }

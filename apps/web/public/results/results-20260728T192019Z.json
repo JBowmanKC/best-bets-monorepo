@@ -2,19 +2,19 @@
   "picksFile": "picks-20260728T192019Z.json",
   "date": "2026-07-28",
   "picksGeneratedAt": "2026-07-28T19:20:19.251Z",
-  "gradedAt": "2026-07-29T01:18:47.982Z",
+  "gradedAt": "2026-07-29T15:06:58.440Z",
   "summary": {
     "total": 4,
-    "graded": 1,
-    "wins": 0,
-    "losses": 1,
+    "graded": 4,
+    "wins": 2,
+    "losses": 2,
     "pushes": 0,
-    "pending": 3,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0,
-    "unitsRisked": 1,
-    "unitsNet": -1,
-    "roi": -1
+    "winRate": 0.5,
+    "unitsRisked": 4,
+    "unitsNet": -0.44,
+    "roi": -0.11
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "value",
       "odds": -153,
       "startTime": "2026-07-29T01:45:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Pre-Game."
+      "unitsRisked": 1,
+      "unitsNet": 0.6536,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "San Francisco Giants",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 2,
+        "awayScore": 8
+      }
     },
     {
       "pickId": "824003-away",
@@ -38,10 +43,15 @@
       "tier": "value",
       "odds": -110,
       "startTime": "2026-07-29T01:38:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Warmup."
+      "unitsRisked": 1,
+      "unitsNet": 0.9091,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Houston Astros",
+        "homeScore": 2,
+        "awayScore": 3
+      }
     },
     {
       "pickId": "824243-away",
@@ -69,10 +79,15 @@
       "tier": "value",
       "odds": -192,
       "startTime": "2026-07-29T02:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: Pre-Game."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 6,
+        "awayScore": 7
+      }
     }
   ]
 }
