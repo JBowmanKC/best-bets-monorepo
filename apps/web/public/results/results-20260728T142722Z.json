@@ -1,0 +1,109 @@
+{
+  "picksFile": "picks-20260728T142722Z.json",
+  "date": "2026-07-28",
+  "picksGeneratedAt": "2026-07-28T14:27:22.568Z",
+  "gradedAt": "2026-07-29T01:18:47.965Z",
+  "summary": {
+    "total": 6,
+    "graded": 2,
+    "wins": 1,
+    "losses": 1,
+    "pushes": 0,
+    "pending": 4,
+    "unknown": 0,
+    "winRate": 0.5,
+    "unitsRisked": 2,
+    "unitsNet": 0.35,
+    "roi": 0.175
+  },
+  "results": [
+    {
+      "pickId": "824003-away",
+      "sport": "mlb",
+      "matchup": "Houston Astros @ Los Angeles Angels",
+      "pickLabel": "Houston Astros ML",
+      "tier": "value",
+      "odds": -109,
+      "startTime": "2026-07-29T01:38:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: Warmup."
+    },
+    {
+      "pickId": "823193-away",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ San Francisco Giants",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -153,
+      "startTime": "2026-07-29T01:45:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: Pre-Game."
+    },
+    {
+      "pickId": "824490-away",
+      "sport": "mlb",
+      "matchup": "Cleveland Guardians @ Cincinnati Reds",
+      "pickLabel": "Cleveland Guardians ML",
+      "tier": "value",
+      "odds": 135,
+      "startTime": "2026-07-28T17:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.35,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Cleveland Guardians",
+        "homeScore": 5,
+        "awayScore": 6
+      }
+    },
+    {
+      "pickId": "824489-away",
+      "sport": "mlb",
+      "matchup": "Cleveland Guardians @ Cincinnati Reds",
+      "pickLabel": "Cleveland Guardians ML",
+      "tier": "value",
+      "odds": 135,
+      "startTime": "2026-07-28T23:10:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "824243-away",
+      "sport": "mlb",
+      "matchup": "Baltimore Orioles @ Detroit Tigers",
+      "pickLabel": "Baltimore Orioles ML",
+      "tier": "value",
+      "odds": 120,
+      "startTime": "2026-07-28T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Detroit Tigers",
+        "awayTeam": "Baltimore Orioles",
+        "homeScore": 14,
+        "awayScore": 0
+      }
+    },
+    {
+      "pickId": "823923-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "value",
+      "odds": -191,
+      "startTime": "2026-07-29T02:10:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: Pre-Game."
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "picksFile": "picks-20260724T192223Z.json",
+  "date": "2026-07-24",
+  "picksGeneratedAt": "2026-07-24T19:22:23.078Z",
+  "gradedAt": "2026-07-29T01:18:47.223Z",
+  "summary": {
+    "total": 5,
+    "graded": 5,
+    "wins": 2,
+    "losses": 3,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.4,
+    "unitsRisked": 5,
+    "unitsNet": -1.21,
+    "roi": -0.242
+  },
+  "results": [
+    {
+      "pickId": "823601-away",
+      "sport": "mlb",
+      "matchup": "Los Angeles Dodgers @ New York Mets",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "strong",
+      "odds": -137,
+      "startTime": "2026-07-24T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.7299,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Los Angeles Dodgers",
+        "homeScore": 2,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "824812-away",
+      "sport": "mlb",
+      "matchup": "Atlanta Braves @ Baltimore Orioles",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "value",
+      "odds": 106,
+      "startTime": "2026-07-24T23:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.06,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Baltimore Orioles",
+        "awayTeam": "Atlanta Braves",
+        "homeScore": 6,
+        "awayScore": 7
+      }
+    },
+    {
+      "pickId": "823680-home",
+      "sport": "mlb",
+      "matchup": "Athletics @ Minnesota Twins",
+      "pickLabel": "Minnesota Twins ML",
+      "tier": "value",
+      "odds": -146,
+      "startTime": "2026-07-25T00:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Minnesota Twins",
+        "awayTeam": "Athletics",
+        "homeScore": 0,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824248-away",
+      "sport": "mlb",
+      "matchup": "Kansas City Royals @ Detroit Tigers",
+      "pickLabel": "Kansas City Royals ML",
+      "tier": "value",
+      "odds": 218,
+      "startTime": "2026-07-24T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Detroit Tigers",
+        "awayTeam": "Kansas City Royals",
+        "homeScore": 2,
+        "awayScore": 1
+      }
+    },
+    {
+      "pickId": "824573-home",
+      "sport": "mlb",
+      "matchup": "Houston Astros @ Chicago White Sox",
+      "pickLabel": "Chicago White Sox ML",
+      "tier": "value",
+      "odds": -133,
+      "startTime": "2026-07-24T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Chicago White Sox",
+        "awayTeam": "Houston Astros",
+        "homeScore": 5,
+        "awayScore": 9
+      }
+    }
+  ]
+}

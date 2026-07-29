@@ -1,0 +1,201 @@
+{
+  "picksFile": "picks-20260727T145321Z.json",
+  "date": "2026-07-27",
+  "picksGeneratedAt": "2026-07-27T14:53:21.361Z",
+  "gradedAt": "2026-07-29T01:18:47.807Z",
+  "summary": {
+    "total": 10,
+    "graded": 10,
+    "wins": 4,
+    "losses": 6,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.4,
+    "unitsRisked": 10,
+    "unitsNet": 0.96,
+    "roi": 0.096
+  },
+  "results": [
+    {
+      "pickId": "823195-away",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ San Francisco Giants",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "strong",
+      "odds": -136,
+      "startTime": "2026-07-28T01:45:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "San Francisco Giants",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 3,
+        "awayScore": 0
+      }
+    },
+    {
+      "pickId": "823597-away",
+      "sport": "mlb",
+      "matchup": "Atlanta Braves @ New York Mets",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "value",
+      "odds": -118,
+      "startTime": "2026-07-27T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Atlanta Braves",
+        "homeScore": 14,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "824001-home",
+      "sport": "mlb",
+      "matchup": "Houston Astros @ Los Angeles Angels",
+      "pickLabel": "Los Angeles Angels ML",
+      "tier": "value",
+      "odds": -37,
+      "startTime": "2026-07-28T01:38:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Houston Astros",
+        "homeScore": 4,
+        "awayScore": 6
+      }
+    },
+    {
+      "pickId": "824245-away",
+      "sport": "mlb",
+      "matchup": "Baltimore Orioles @ Detroit Tigers",
+      "pickLabel": "Baltimore Orioles ML",
+      "tier": "value",
+      "odds": -34,
+      "startTime": "2026-07-27T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 2.9412,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Detroit Tigers",
+        "awayTeam": "Baltimore Orioles",
+        "homeScore": 5,
+        "awayScore": 8
+      }
+    },
+    {
+      "pickId": "823353-away",
+      "sport": "mlb",
+      "matchup": "Arizona Diamondbacks @ Pittsburgh Pirates",
+      "pickLabel": "Arizona Diamondbacks ML",
+      "tier": "value",
+      "odds": -36,
+      "startTime": "2026-07-27T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Pittsburgh Pirates",
+        "awayTeam": "Arizona Diamondbacks",
+        "homeScore": 3,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "822705-home",
+      "sport": "mlb",
+      "matchup": "Toronto Blue Jays @ Washington Nationals",
+      "pickLabel": "Washington Nationals ML",
+      "tier": "value",
+      "odds": -118,
+      "startTime": "2026-07-27T22:45:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Washington Nationals",
+        "awayTeam": "Toronto Blue Jays",
+        "homeScore": 2,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823839-home",
+      "sport": "mlb",
+      "matchup": "Philadelphia Phillies @ Miami Marlins",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": 153,
+      "startTime": "2026-07-27T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.53,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Miami Marlins",
+        "awayTeam": "Philadelphia Phillies",
+        "homeScore": 8,
+        "awayScore": 7
+      }
+    },
+    {
+      "pickId": "822868-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Texas Rangers",
+      "pickLabel": "Texas Rangers ML",
+      "tier": "value",
+      "odds": 112,
+      "startTime": "2026-07-27T18:35:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.12,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Texas Rangers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 7,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "824490-away",
+      "sport": "mlb",
+      "matchup": "Cleveland Guardians @ Cincinnati Reds",
+      "pickLabel": "Cleveland Guardians ML",
+      "tier": "value",
+      "odds": 137,
+      "startTime": "2026-07-27T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.37,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Cleveland Guardians",
+        "homeScore": 5,
+        "awayScore": 6
+      }
+    },
+    {
+      "pickId": "824570-home",
+      "sport": "mlb",
+      "matchup": "New York Yankees @ Chicago White Sox",
+      "pickLabel": "Chicago White Sox ML",
+      "tier": "value",
+      "odds": 124,
+      "startTime": "2026-07-27T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Chicago White Sox",
+        "awayTeam": "New York Yankees",
+        "homeScore": 5,
+        "awayScore": 9
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "picksFile": "picks-20260726T190744Z.json",
+  "date": "2026-07-26",
+  "picksGeneratedAt": "2026-07-26T19:07:44.340Z",
+  "gradedAt": "2026-07-29T01:18:47.618Z",
+  "summary": {
+    "total": 2,
+    "graded": 2,
+    "wins": 0,
+    "losses": 2,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0,
+    "unitsRisked": 2,
+    "unitsNet": -2,
+    "roi": -1
+  },
+  "results": [
+    {
+      "pickId": "823433-away",
+      "sport": "mlb",
+      "matchup": "New York Yankees @ Philadelphia Phillies",
+      "pickLabel": "New York Yankees ML",
+      "tier": "strong",
+      "odds": 161,
+      "startTime": "2026-07-26T23:20:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Philadelphia Phillies",
+        "awayTeam": "New York Yankees",
+        "homeScore": 11,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "823194-home",
+      "sport": "mlb",
+      "matchup": "Los Angeles Angels @ San Francisco Giants",
+      "pickLabel": "San Francisco Giants ML",
+      "tier": "value",
+      "odds": -102,
+      "startTime": "2026-07-26T20:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "San Francisco Giants",
+        "awayTeam": "Los Angeles Angels",
+        "homeScore": 3,
+        "awayScore": 4
+      }
+    }
+  ]
+}
