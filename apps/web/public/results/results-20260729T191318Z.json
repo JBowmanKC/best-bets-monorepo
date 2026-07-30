@@ -2,19 +2,19 @@
   "picksFile": "picks-20260729T191318Z.json",
   "date": "2026-07-29",
   "picksGeneratedAt": "2026-07-29T19:13:19.435Z",
-  "gradedAt": "2026-07-30T03:56:28.836Z",
+  "gradedAt": "2026-07-30T15:07:39.696Z",
   "summary": {
     "total": 6,
-    "graded": 4,
-    "wins": 1,
+    "graded": 6,
+    "wins": 3,
     "losses": 3,
     "pushes": 0,
-    "pending": 2,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.25,
-    "unitsRisked": 4,
-    "unitsNet": -2.41,
-    "roi": -0.6025
+    "winRate": 0.5,
+    "unitsRisked": 6,
+    "unitsNet": -1.05,
+    "roi": -0.175
   },
   "results": [
     {
@@ -79,10 +79,15 @@
       "tier": "value",
       "odds": -132,
       "startTime": "2026-07-30T01:38:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.7576,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Houston Astros",
+        "homeScore": 4,
+        "awayScore": 7
+      }
     },
     {
       "pickId": "823924-home",
@@ -92,10 +97,15 @@
       "tier": "value",
       "odds": -166,
       "startTime": "2026-07-30T02:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.6024,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 4,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "824487-home",
