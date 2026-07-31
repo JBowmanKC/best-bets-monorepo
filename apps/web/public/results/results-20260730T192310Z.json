@@ -1,0 +1,52 @@
+{
+  "picksFile": "picks-20260730T192310Z.json",
+  "date": "2026-07-30",
+  "picksGeneratedAt": "2026-07-30T19:23:11.734Z",
+  "gradedAt": "2026-07-31T04:21:16.053Z",
+  "summary": {
+    "total": 2,
+    "graded": 1,
+    "wins": 0,
+    "losses": 1,
+    "pushes": 0,
+    "pending": 1,
+    "unknown": 0,
+    "winRate": 0,
+    "unitsRisked": 1,
+    "unitsNet": -1,
+    "roi": -1
+  },
+  "results": [
+    {
+      "pickId": "823595-away",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ New York Mets",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": 110,
+      "startTime": "2026-07-30T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823921-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "value",
+      "odds": -159,
+      "startTime": "2026-07-31T02:10:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    }
+  ]
+}
