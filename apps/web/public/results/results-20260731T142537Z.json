@@ -2,19 +2,19 @@
   "picksFile": "picks-20260731T142537Z.json",
   "date": "2026-07-31",
   "picksGeneratedAt": "2026-07-31T14:25:38.654Z",
-  "gradedAt": "2026-08-01T04:20:30.674Z",
+  "gradedAt": "2026-08-01T14:24:27.499Z",
   "summary": {
     "total": 9,
-    "graded": 6,
-    "wins": 3,
-    "losses": 3,
+    "graded": 9,
+    "wins": 5,
+    "losses": 4,
     "pushes": 0,
-    "pending": 3,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.5,
-    "unitsRisked": 6,
-    "unitsNet": 0.16,
-    "roi": 0.0267
+    "winRate": 0.5556,
+    "unitsRisked": 9,
+    "unitsNet": 1.17,
+    "roi": 0.13
   },
   "results": [
     {
@@ -43,10 +43,15 @@
       "tier": "value",
       "odds": -125,
       "startTime": "2026-08-01T02:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Boston Red Sox",
+        "homeScore": 4,
+        "awayScore": 9
+      }
     },
     {
       "pickId": "824809-away",
@@ -92,10 +97,15 @@
       "tier": "value",
       "odds": -169,
       "startTime": "2026-08-01T01:38:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.5917,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 2,
+        "awayScore": 6
+      }
     },
     {
       "pickId": "823111-away",
@@ -105,10 +115,15 @@
       "tier": "value",
       "odds": 142,
       "startTime": "2026-08-01T02:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 1.42,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Minnesota Twins",
+        "homeScore": 3,
+        "awayScore": 5
+      }
     },
     {
       "pickId": "824407-away",
