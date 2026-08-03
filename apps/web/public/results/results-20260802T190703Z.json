@@ -1,0 +1,39 @@
+{
+  "picksFile": "picks-20260802T190703Z.json",
+  "date": "2026-08-02",
+  "picksGeneratedAt": "2026-08-02T19:07:04.924Z",
+  "gradedAt": "2026-08-03T04:29:38.889Z",
+  "summary": {
+    "total": 1,
+    "graded": 1,
+    "wins": 1,
+    "losses": 0,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 1,
+    "unitsRisked": 1,
+    "unitsNet": 0.79,
+    "roi": 0.79
+  },
+  "results": [
+    {
+      "pickId": "823270-home",
+      "sport": "mlb",
+      "matchup": "San Francisco Giants @ San Diego Padres",
+      "pickLabel": "San Diego Padres ML",
+      "tier": "value",
+      "odds": -126,
+      "startTime": "2026-08-02T20:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.7937,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "San Diego Padres",
+        "awayTeam": "San Francisco Giants",
+        "homeScore": 5,
+        "awayScore": 4
+      }
+    }
+  ]
+}
