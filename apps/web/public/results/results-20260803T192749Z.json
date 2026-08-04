@@ -1,0 +1,88 @@
+{
+  "picksFile": "picks-20260803T192749Z.json",
+  "date": "2026-08-03",
+  "picksGeneratedAt": "2026-08-03T19:27:50.331Z",
+  "gradedAt": "2026-08-04T04:13:36.990Z",
+  "summary": {
+    "total": 4,
+    "graded": 3,
+    "wins": 0,
+    "losses": 3,
+    "pushes": 0,
+    "pending": 1,
+    "unknown": 0,
+    "winRate": 0,
+    "unitsRisked": 3,
+    "unitsNet": -3,
+    "roi": -1
+  },
+  "results": [
+    {
+      "pickId": "825095-away",
+      "sport": "mlb",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "pickLabel": "San Diego Padres ML",
+      "tier": "strong",
+      "odds": -34,
+      "startTime": "2026-08-04T01:40:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "824160-home",
+      "sport": "mlb",
+      "matchup": "Toronto Blue Jays @ Houston Astros",
+      "pickLabel": "Houston Astros ML",
+      "tier": "value",
+      "odds": -132,
+      "startTime": "2026-08-04T00:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Houston Astros",
+        "awayTeam": "Toronto Blue Jays",
+        "homeScore": 1,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823757-home",
+      "sport": "mlb",
+      "matchup": "Pittsburgh Pirates @ Milwaukee Brewers",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -147,
+      "startTime": "2026-08-03T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Milwaukee Brewers",
+        "awayTeam": "Pittsburgh Pirates",
+        "homeScore": 3,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "822867-home",
+      "sport": "mlb",
+      "matchup": "San Francisco Giants @ Texas Rangers",
+      "pickLabel": "Texas Rangers ML",
+      "tier": "value",
+      "odds": -123,
+      "startTime": "2026-08-04T00:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Texas Rangers",
+        "awayTeam": "San Francisco Giants",
+        "homeScore": 1,
+        "awayScore": 5
+      }
+    }
+  ]
+}
