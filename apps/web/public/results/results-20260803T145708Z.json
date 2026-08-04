@@ -2,19 +2,19 @@
   "picksFile": "picks-20260803T145708Z.json",
   "date": "2026-08-03",
   "picksGeneratedAt": "2026-08-03T14:57:09.654Z",
-  "gradedAt": "2026-08-04T04:13:36.981Z",
+  "gradedAt": "2026-08-04T15:22:08.700Z",
   "summary": {
     "total": 5,
-    "graded": 4,
+    "graded": 5,
     "wins": 1,
-    "losses": 3,
+    "losses": 4,
     "pushes": 0,
-    "pending": 1,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.25,
-    "unitsRisked": 4,
-    "unitsNet": -2.4,
-    "roi": -0.6
+    "winRate": 0.2,
+    "unitsRisked": 5,
+    "unitsNet": -3.4,
+    "roi": -0.68
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "strong",
       "odds": -35,
       "startTime": "2026-08-04T01:40:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Arizona Diamondbacks",
+        "awayTeam": "San Diego Padres",
+        "homeScore": 5,
+        "awayScore": 1
+      }
     },
     {
       "pickId": "824160-home",
