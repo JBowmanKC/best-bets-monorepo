@@ -2,19 +2,19 @@
   "picksFile": "picks-20260804T143259Z.json",
   "date": "2026-08-04",
   "picksGeneratedAt": "2026-08-04T14:33:00.910Z",
-  "gradedAt": "2026-08-05T04:08:33.898Z",
+  "gradedAt": "2026-08-05T15:11:13.046Z",
   "summary": {
     "total": 8,
-    "graded": 7,
-    "wins": 4,
+    "graded": 8,
+    "wins": 5,
     "losses": 3,
     "pushes": 0,
-    "pending": 1,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.5714,
-    "unitsRisked": 7,
-    "unitsNet": 0.84,
-    "roi": 0.12
+    "winRate": 0.625,
+    "unitsRisked": 8,
+    "unitsNet": 1.98,
+    "roi": 0.2475
   },
   "results": [
     {
@@ -151,10 +151,15 @@
       "tier": "value",
       "odds": 114,
       "startTime": "2026-08-05T01:40:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 1.14,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Detroit Tigers",
+        "homeScore": 0,
+        "awayScore": 8
+      }
     }
   ]
 }
