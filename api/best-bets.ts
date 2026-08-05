@@ -552,6 +552,13 @@ interface OddsApiEntry {
   odds: GameOdds;
 }
 
+/**
+ * Averaging raw American odds prices is invalid whenever books disagree on
+ * who's favored — e.g. -150 and +130 straight-averaged is -10, which isn't a
+ * legal American odds value at all (real lines never fall between -99 and
+ * +99). Averaging implied probabilities instead, then converting back, always
+ * lands back in a valid American odds range no matter how the books split.
+ */
 function averageBookmakerOdds(game: any): GameOdds {
   const home: number[] = [];
   const away: number[] = [];
@@ -560,14 +567,16 @@ function averageBookmakerOdds(game: any): GameOdds {
     const h2h = (bm.markets ?? []).find((m: any) => m.key === "h2h");
     if (!h2h) continue;
     for (const outcome of h2h.outcomes ?? []) {
-      if (outcome.name === game.home_team) home.push(outcome.price);
-      else if (outcome.name === game.away_team) away.push(outcome.price);
+      if (outcome.name === game.home_team) home.push(oddsToImpliedProb(outcome.price));
+      else if (outcome.name === game.away_team) away.push(oddsToImpliedProb(outcome.price));
     }
   }
 
+  const avg = (probs: number[]) => probs.reduce((a, b) => a + b, 0) / probs.length;
+
   return {
-    homeMoneyline: home.length ? Math.round(home.reduce((a, b) => a + b, 0) / home.length) : null,
-    awayMoneyline: away.length ? Math.round(away.reduce((a, b) => a + b, 0) / away.length) : null,
+    homeMoneyline: home.length ? probToAmericanOdds(avg(home)) : null,
+    awayMoneyline: away.length ? probToAmericanOdds(avg(away)) : null,
   };
 }
 
