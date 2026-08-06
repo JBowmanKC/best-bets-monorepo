@@ -1,0 +1,142 @@
+{
+  "picksFile": "picks-20260805T192651Z.json",
+  "date": "2026-08-05",
+  "picksGeneratedAt": "2026-08-05T19:26:52.582Z",
+  "gradedAt": "2026-08-06T04:11:41.426Z",
+  "summary": {
+    "total": 7,
+    "graded": 6,
+    "wins": 3,
+    "losses": 3,
+    "pushes": 0,
+    "pending": 1,
+    "unknown": 0,
+    "winRate": 0.5,
+    "unitsRisked": 6,
+    "unitsNet": -0.59,
+    "roi": -0.0983
+  },
+  "results": [
+    {
+      "pickId": "824889-home",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ Atlanta Braves",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "strong",
+      "odds": -123,
+      "startTime": "2026-08-05T23:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.813,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Atlanta Braves",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 4,
+        "awayScore": 1
+      }
+    },
+    {
+      "pickId": "823753-home",
+      "sport": "mlb",
+      "matchup": "Pittsburgh Pirates @ Milwaukee Brewers",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -129,
+      "startTime": "2026-08-05T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.7752,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Milwaukee Brewers",
+        "awayTeam": "Pittsburgh Pirates",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824806-home",
+      "sport": "mlb",
+      "matchup": "Los Angeles Angels @ Baltimore Orioles",
+      "pickLabel": "Baltimore Orioles ML",
+      "tier": "value",
+      "odds": -121,
+      "startTime": "2026-08-05T22:35:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.8264,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Baltimore Orioles",
+        "awayTeam": "Los Angeles Angels",
+        "homeScore": 5,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823106-away",
+      "sport": "mlb",
+      "matchup": "Detroit Tigers @ Seattle Mariners",
+      "pickLabel": "Detroit Tigers ML",
+      "tier": "value",
+      "odds": 140,
+      "startTime": "2026-08-06T01:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Detroit Tigers",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824402-home",
+      "sport": "mlb",
+      "matchup": "New York Mets @ Cleveland Guardians",
+      "pickLabel": "Cleveland Guardians ML",
+      "tier": "value",
+      "odds": -109,
+      "startTime": "2026-08-05T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cleveland Guardians",
+        "awayTeam": "New York Mets",
+        "homeScore": 5,
+        "awayScore": 6
+      }
+    },
+    {
+      "pickId": "825052-home",
+      "sport": "mlb",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "pickLabel": "Arizona Diamondbacks ML",
+      "tier": "value",
+      "odds": 110,
+      "startTime": "2026-08-06T01:40:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "824082-away",
+      "sport": "mlb",
+      "matchup": "Minnesota Twins @ Kansas City Royals",
+      "pickLabel": "Minnesota Twins ML",
+      "tier": "value",
+      "odds": 104,
+      "startTime": "2026-08-05T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Kansas City Royals",
+        "awayTeam": "Minnesota Twins",
+        "homeScore": 2,
+        "awayScore": 1
+      }
+    }
+  ]
+}
