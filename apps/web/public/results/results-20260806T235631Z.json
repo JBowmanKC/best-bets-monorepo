@@ -1,0 +1,39 @@
+{
+  "picksFile": "picks-20260806T235631Z.json",
+  "date": "2026-08-06",
+  "picksGeneratedAt": "2026-08-06T23:56:32.537Z",
+  "gradedAt": "2026-08-07T14:09:55.950Z",
+  "summary": {
+    "total": 1,
+    "graded": 1,
+    "wins": 0,
+    "losses": 1,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0,
+    "unitsRisked": 1,
+    "unitsNet": -1,
+    "roi": -1
+  },
+  "results": [
+    {
+      "pickId": "825053-home",
+      "sport": "mlb",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "pickLabel": "Arizona Diamondbacks ML",
+      "tier": "value",
+      "odds": -106,
+      "startTime": "2026-08-07T01:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Arizona Diamondbacks",
+        "awayTeam": "San Diego Padres",
+        "homeScore": 1,
+        "awayScore": 5
+      }
+    }
+  ]
+}
