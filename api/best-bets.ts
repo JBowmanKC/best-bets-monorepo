@@ -86,7 +86,25 @@ interface BetPick {
   rationale: string;
   stake: string;
   isPositiveEV: boolean;
+  stakeAmount: number;
+  potentialPayout: number;
 }
+
+/** Shape read back from the bankroll ledger (see apps/web/public/bankroll.json). */
+interface CalibrationMultipliers {
+  wpScoreMultiplier: number;
+  evScoreMultiplier: number;
+}
+
+interface BankrollState {
+  currentBankroll: number;
+  calibration: CalibrationMultipliers;
+}
+
+const DEFAULT_BANKROLL_STATE: BankrollState = {
+  currentBankroll: 500,
+  calibration: { wpScoreMultiplier: 1, evScoreMultiplier: 1 },
+};
 
 interface ParlayLeg {
   pickId: string;
@@ -161,6 +179,22 @@ function probToAmericanOdds(prob: number): number {
   const p = Math.min(Math.max(prob, 0.01), 0.99);
   if (p >= 0.5) return Math.round((-100 * p) / (1 - p));
   return Math.round((100 * (1 - p)) / p);
+}
+
+/** Half Kelly stake sizing: min $2, max 15% of bankroll, rounded to the nearest $0.50. */
+function kellyStake(
+  bankroll: number,
+  estimatedWinPct: number,
+  odds: number,
+  kellyFraction: number = 0.5
+): number {
+  const b = odds > 0 ? odds / 100 : 100 / Math.abs(odds); // decimal profit per $1
+  const p = estimatedWinPct;
+  const q = 1 - p;
+  const kelly = (b * p - q) / b;
+  const fraction = Math.max(0, kelly) * kellyFraction;
+  const raw = bankroll * fraction;
+  return Math.round(Math.min(Math.max(raw, 2), bankroll * 0.15) * 2) / 2;
 }
 
 function recordGapToWinProb(
@@ -254,7 +288,7 @@ function buildRationale(game: RawGame, pickHome: boolean, winPct: number, evEdge
   ].join(" ");
 }
 
-function scoreGame(game: RawGame): BetPick[] {
+function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
   const picks: BetPick[] = [];
 
   for (const pickHome of [true, false]) {
@@ -262,11 +296,19 @@ function scoreGame(game: RawGame): BetPick[] {
     if (odds === null || odds === undefined) continue;
 
     const impliedWinPct = oddsToImpliedProb(odds);
-    const wpScore = scoreWinProbability(game, pickHome);
+    // Self-calibration: past results nudge these two factors before they feed
+    // into the estimated win probability and composite score (see calibration
+    // block in api/resolve-results.ts).
+    const wpScore = Math.min(
+      Math.max(Math.round(scoreWinProbability(game, pickHome) * bankrollState.calibration.wpScoreMultiplier), 0),
+      100
+    );
     const estimatedWinPct = 0.3 + (wpScore / 100) * 0.52;
 
-    const { score: evScore, evEdge } = scoreExpectedValue(estimatedWinPct, impliedWinPct);
+    const rawEv = scoreExpectedValue(estimatedWinPct, impliedWinPct);
+    const evEdge = rawEv.evEdge;
     if (evEdge <= 0) continue; // only positive EV picks survive
+    const evScore = Math.min(Math.max(Math.round(rawEv.score * bankrollState.calibration.evScoreMultiplier), 0), 100);
 
     const momScore = scoreMomentum(game, pickHome);
     const ctxScore = scoreContext(game, pickHome);
@@ -286,6 +328,11 @@ function scoreGame(game: RawGame): BetPick[] {
     const team = pickHome ? game.homeTeam : game.awayTeam;
     const direction = pickHome ? "Home Win" : "Away Win";
 
+    const stakeAmount = kellyStake(bankrollState.currentBankroll, estimatedWinPct, odds);
+    const potentialPayout = Math.round(
+      (odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100
+    ) / 100;
+
     picks.push({
       id: `${game.id}-${pickHome ? "home" : "away"}`,
       sport: game.sport,
@@ -302,6 +349,8 @@ function scoreGame(game: RawGame): BetPick[] {
       rationale: buildRationale(game, pickHome, estimatedWinPct, evEdge),
       stake: STAKE_BY_TIER[tier],
       isPositiveEV: true,
+      stakeAmount,
+      potentialPayout,
     });
   }
 
@@ -310,8 +359,8 @@ function scoreGame(game: RawGame): BetPick[] {
   return [picks[0]]; // best side per game only
 }
 
-function scoreAllGames(games: RawGame[]): BetPick[] {
-  const allPicks = games.flatMap(scoreGame);
+function scoreAllGames(games: RawGame[], bankrollState: BankrollState): BetPick[] {
+  const allPicks = games.flatMap(game => scoreGame(game, bankrollState));
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
   allPicks.sort((a, b) => {
     const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
@@ -399,6 +448,31 @@ async function fetchJson(url: string): Promise<any> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.json();
+}
+
+/**
+ * Reads the live bankroll ledger for stake sizing and calibration.
+ *
+ * Vercel functions have a read-only, ephemeral filesystem, so this can't just
+ * `fs.readFileSync` the repo copy — instead it fetches the same file the
+ * browser gets, from this deployment's own static output. Falls back to the
+ * $500 starting bankroll and neutral (1.0) multipliers whenever the file
+ * doesn't exist yet (first run) or the fetch fails for any reason.
+ */
+async function fetchBankrollState(): Promise<BankrollState> {
+  const host = process.env.VERCEL_URL;
+  if (!host) return DEFAULT_BANKROLL_STATE;
+
+  try {
+    const data = await fetchJson(`https://${host}/bankroll.json`);
+    const currentBankroll = typeof data?.currentBankroll === "number" ? data.currentBankroll : 500;
+    const wpScoreMultiplier = typeof data?.calibration?.wpScoreMultiplier === "number" ? data.calibration.wpScoreMultiplier : 1;
+    const evScoreMultiplier = typeof data?.calibration?.evScoreMultiplier === "number" ? data.calibration.evScoreMultiplier : 1;
+    return { currentBankroll, calibration: { wpScoreMultiplier, evScoreMultiplier } };
+  } catch (e) {
+    console.warn("bankroll.json fetch failed, using default $500 bankroll:", e);
+    return DEFAULT_BANKROLL_STATE;
+  }
 }
 
 function streakToForm(streakCode: string | undefined): ("W" | "L")[] {
@@ -663,8 +737,9 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     );
     const oddsBySport = Object.fromEntries(oddsEntries);
 
+    const bankrollState = await fetchBankrollState();
     const rawGames = attachOdds(games, oddsBySport);
-    const picks = scoreAllGames(rawGames);
+    const picks = scoreAllGames(rawGames, bankrollState);
     const parlays = buildParlays(picks);
 
     const response: BestBetsResponse = {

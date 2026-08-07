@@ -215,3 +215,70 @@ export const STAKE_BY_TIER: Record<Tier, string> = {
   strong: "1–2 units",
   value:  "0.5–1 unit",
 };
+
+// ─── Bankroll simulation (Kelly staking, P&L ledger) ────────────────────────
+//
+// apps/web/public/bankroll.json is a persistent $500 virtual bankroll: every
+// pick gets staked via Half Kelly (api/best-bets.ts), tracked here as a
+// pending bet, then settled against real scores each morning
+// (api/resolve-results.ts). See PickHistory.tsx for the ledger UI.
+
+export type BetResult = "pending" | "win" | "loss" | "push" | "void";
+
+export interface BankrollBet {
+  betId: string;
+  date: string;
+  sport: Sport;
+  matchup: string;
+  pickLabel: string;
+  odds: number;
+  stakeAmount: number;
+  potentialPayout: number;
+  estimatedWinPct: number;
+  impliedWinPct: number;
+  evEdge: number;
+  tier: Tier;
+  scores: { composite: number };
+  result: BetResult;
+  /** Present once the bet is decided (null while pending). */
+  profitLoss: number | null;
+  /** Running bankroll balance right after this bet settled (null while pending). */
+  bankrollAfter: number | null;
+  resolvedAt: string | null;
+}
+
+export interface BankrollCalibration {
+  /** Actual win rate per tier, from resolved bets. Null until calibration first runs. */
+  eliteWinRate: number | null;
+  strongWinRate: number | null;
+  valueWinRate: number | null;
+  /** Actual ROI per sport, from resolved bets. */
+  mlbRoi: number | null;
+  nflRoi: number | null;
+  nhlRoi: number | null;
+  /** Applied to the raw win-probability score before the composite is computed. */
+  wpScoreMultiplier: number;
+  /** Applied to the raw expected-value score before the composite is computed. */
+  evScoreMultiplier: number;
+  lastCalibrated: string | null;
+  /** Count of resolved (non-pending) bets. Calibration only adjusts multipliers at 20+. */
+  totalResultsTracked: number;
+}
+
+export interface BankrollFile {
+  initialBankroll: number;
+  currentBankroll: number;
+  totalBets: number;
+  wins: number;
+  losses: number;
+  pushes: number;
+  voids: number;
+  totalStaked: number;
+  totalProfit: number;
+  roi: number;
+  peakBankroll: number;
+  lowestBankroll: number;
+  calibration: BankrollCalibration;
+  /** Chronological, oldest first — the order picks were placed in. */
+  bets: BankrollBet[];
+}
