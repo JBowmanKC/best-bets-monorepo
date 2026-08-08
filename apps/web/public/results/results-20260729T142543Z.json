@@ -2,19 +2,19 @@
   "picksFile": "picks-20260729T142543Z.json",
   "date": "2026-07-29",
   "picksGeneratedAt": "2026-07-29T14:25:44.059Z",
-  "gradedAt": "2026-07-30T15:07:39.677Z",
+  "gradedAt": "2026-07-30T19:16:19.580Z",
   "summary": {
     "total": 11,
     "graded": 11,
     "wins": 6,
-    "losses": 5,
-    "pushes": 0,
+    "losses": 4,
+    "pushes": 1,
     "pending": 0,
     "unknown": 0,
-    "winRate": 0.5455,
-    "unitsRisked": 11,
-    "unitsNet": 0.76,
-    "roi": 0.0691
+    "winRate": 0.6,
+    "unitsRisked": 10,
+    "unitsNet": 1.76,
+    "roi": 0.176
   },
   "results": [
     {
@@ -25,15 +25,16 @@
       "tier": "strong",
       "odds": -35,
       "startTime": "2026-07-29T17:05:00Z",
-      "unitsRisked": 1,
-      "unitsNet": -1,
-      "outcome": "loss",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "push",
       "finalScore": {
         "homeTeam": "Washington Nationals",
         "awayTeam": "Toronto Blue Jays",
         "homeScore": 2,
         "awayScore": 5
-      }
+      },
+      "note": "Voided: recorded odds (-35) aren't a valid American odds value (must be ≤-100 or ≥+100). Caused by a bookmaker-averaging bug that's since been fixed; excluded from win/loss and units."
     },
     {
       "pickId": "823192-away",

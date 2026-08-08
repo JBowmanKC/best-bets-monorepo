@@ -16,6 +16,7 @@ export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 /** Request path → handler module, relative to the repo root. */
 export const API_ROUTES: Record<string, string> = {
   "/api/best-bets": "api/best-bets.ts",
+  "/api/resolve-results": "api/resolve-results.ts",
 };
 
 export const REQUIRED_ENV = ["ODDS_API_KEY"] as const;

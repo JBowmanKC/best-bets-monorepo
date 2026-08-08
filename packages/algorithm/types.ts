@@ -62,6 +62,68 @@ export interface Pick {
   isPositiveEV: boolean;
 }
 
+// ─── Prop bets (MLB only today — see api/best-bets.ts) ──────────────────────
+
+export type PropType =
+  | "pitcher_strikeouts"
+  | "pitcher_outs"
+  | "batter_hits"
+  | "batter_total_bases"
+  | "batter_home_runs"
+  | "player_pass_yards"
+  | "player_rush_yards"
+  | "player_receiving_yards"
+  | "player_shots_on_goal";
+
+export type PropSide = "over" | "under";
+export type VoidRisk = "low" | "medium" | "high";
+
+export interface PropFactorScores {
+  hitRate: number;
+  expectedValue: number;
+  matchupQuality: number;
+  context: number;
+  composite: number;
+}
+
+export interface PropPick {
+  id: string;
+  sport: Sport;
+  playerName: string;
+  team: string;
+  matchup: string;
+  gameId: string;
+  propType: PropType;
+  line: number;
+  recommendedSide: PropSide;
+  odds: number;
+  overOdds: number | null;
+  underOdds: number | null;
+  hitRateLast10: number;
+  hitRateLast20: number;
+  recentAverage: number;
+  estimatedHitPct: number;
+  impliedHitPct: number;
+  evEdge: number;
+  tier: Tier;
+  scores: PropFactorScores;
+  startTime: string;
+  rationale: string;
+  stakeAmount: number;
+  potentialPayout: number;
+  voidRisk: VoidRisk;
+  isPositiveEV: boolean;
+}
+
+// ─── Custom parlay builder (server + client share this options shape) ───────
+
+export interface ParlayOptions {
+  legs: number;
+  riskLevel: "safe" | "standard" | "risky" | "custom";
+  includeProps: boolean;
+  sports?: Sport[];
+}
+
 export interface ParlayLeg {
   pickId: string;
   matchup: string;
@@ -86,6 +148,7 @@ export interface BestBetsResponse {
   generatedAt: string;       // ISO timestamp
   picks: Pick[];
   parlays: Parlay[];
+  propPicks: PropPick[];
   sportStatuses: SportStatus[];
   cached: boolean;
   /**
@@ -215,3 +278,75 @@ export const STAKE_BY_TIER: Record<Tier, string> = {
   strong: "1–2 units",
   value:  "0.5–1 unit",
 };
+
+// ─── Bankroll simulation (Kelly staking, P&L ledger) ────────────────────────
+//
+// apps/web/public/bankroll.json is a persistent $500 virtual bankroll: every
+// pick gets staked via Half Kelly (api/best-bets.ts), tracked here as a
+// pending bet, then settled against real scores each morning
+// (api/resolve-results.ts). See PickHistory.tsx for the ledger UI.
+
+export type BetResult = "pending" | "win" | "loss" | "push" | "void";
+
+export interface BankrollBet {
+  betId: string;
+  date: string;
+  sport: Sport;
+  matchup: string;
+  pickLabel: string;
+  odds: number;
+  stakeAmount: number;
+  potentialPayout: number;
+  estimatedWinPct: number;
+  impliedWinPct: number;
+  evEdge: number;
+  tier: Tier;
+  scores: { composite: number };
+  result: BetResult;
+  /** Present once the bet is decided (null while pending). */
+  profitLoss: number | null;
+  /** Running bankroll balance right after this bet settled (null while pending). */
+  bankrollAfter: number | null;
+  resolvedAt: string | null;
+  /** Present only on prop bets (see api/resolve-results.ts for why line/recommendedSide had to be added too). */
+  propType?: PropType;
+  playerName?: string;
+  line?: number | null;
+  recommendedSide?: PropSide | null;
+}
+
+export interface BankrollCalibration {
+  /** Actual win rate per tier, from resolved bets. Null until calibration first runs. */
+  eliteWinRate: number | null;
+  strongWinRate: number | null;
+  valueWinRate: number | null;
+  /** Actual ROI per sport, from resolved bets. */
+  mlbRoi: number | null;
+  nflRoi: number | null;
+  nhlRoi: number | null;
+  /** Applied to the raw win-probability score before the composite is computed. */
+  wpScoreMultiplier: number;
+  /** Applied to the raw expected-value score before the composite is computed. */
+  evScoreMultiplier: number;
+  lastCalibrated: string | null;
+  /** Count of resolved (non-pending) bets. Calibration only adjusts multipliers at 20+. */
+  totalResultsTracked: number;
+}
+
+export interface BankrollFile {
+  initialBankroll: number;
+  currentBankroll: number;
+  totalBets: number;
+  wins: number;
+  losses: number;
+  pushes: number;
+  voids: number;
+  totalStaked: number;
+  totalProfit: number;
+  roi: number;
+  peakBankroll: number;
+  lowestBankroll: number;
+  calibration: BankrollCalibration;
+  /** Chronological, oldest first — the order picks were placed in. */
+  bets: BankrollBet[];
+}

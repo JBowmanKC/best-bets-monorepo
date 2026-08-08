@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
-import type { Tier } from "@best-bets/algorithm";
+import type { Pick, PropPick, ParlayOptions, Tier } from "@best-bets/algorithm";
 
-import { useBestBets }  from "../hooks/useBestBets";
+import { useBestBets }     from "../hooks/useBestBets";
+import { buildClientParlay } from "../utils/parlayBuilder";
 import { PickCard }     from "../components/PickCard";
+import { PropCard }     from "../components/PropCard";
 import { ParlayCard }   from "../components/ParlayCard";
 import { RankedTable }  from "../components/RankedTable";
 import { SectionTitle } from "../components/SectionTitle";
@@ -53,6 +55,134 @@ function Skeleton() {
           animation: "pulse 1.5s ease-in-out infinite",
         }} />
       ))}
+    </div>
+  );
+}
+
+// ─── Parlay Configurator ───────────────────────────────────────────────────
+const LEGS_OPTIONS = [2, 3, 4, 5, 6, 7, 8];
+const RISK_LEVELS: { key: ParlayOptions["riskLevel"]; label: string; tooltip: string }[] = [
+  { key: "safe",     label: "Safe",     tooltip: "Elite moneylines only" },
+  { key: "standard", label: "Standard", tooltip: "Elite + Strong, 1 prop allowed" },
+  { key: "risky",    label: "Risky",    tooltip: "All tiers, up to 2 props" },
+  { key: "custom",   label: "Custom",   tooltip: "Mix freely by leg count" },
+];
+
+const fmtParlayOdds = (o: number) => (o > 0 ? `+${o}` : String(o));
+
+function ParlayConfigurator({ picks, propPicks }: { picks: Pick[]; propPicks: PropPick[] }) {
+  const [legs, setLegs] = useState(3);
+  const [riskLevel, setRiskLevel] = useState<ParlayOptions["riskLevel"]>("standard");
+  const [includeProps, setIncludeProps] = useState(true);
+  const [mlbOnly, setMlbOnly] = useState(false);
+
+  const options: ParlayOptions = useMemo(() => ({
+    legs, riskLevel, includeProps,
+    sports: mlbOnly ? ["mlb"] : undefined,
+  }), [legs, riskLevel, includeProps, mlbOnly]);
+
+  const preview = useMemo(() => buildClientParlay(picks, propPicks, options), [picks, propPicks, options]);
+  const payoutLabel = preview.legs.length >= 2 ? fmtParlayOdds(preview.estimatedPayout) : "—";
+
+  return (
+    <div style={{ background: "#0f1623", border: "1px solid #1e2d45", borderRadius: 14, padding: 20 }}>
+      {/* Row 1 — legs */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#4a6080", marginBottom: 6 }}>
+          Legs
+        </div>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {LEGS_OPTIONS.map(n => (
+            <button
+              key={n}
+              onClick={() => setLegs(n)}
+              style={{
+                background: legs === n ? "#3d2e05" : "#080c14",
+                border: `1px solid ${legs === n ? "#f59e0b" : "#243450"}`,
+                color: legs === n ? "#f59e0b" : "#8098b8",
+                borderRadius: 8, width: 34, height: 34,
+                fontWeight: 800, fontSize: "0.8rem", cursor: "pointer",
+              }}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — risk level */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#4a6080", marginBottom: 6 }}>
+          Risk Level
+        </div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {RISK_LEVELS.map(r => (
+            <button
+              key={r.key}
+              onClick={() => setRiskLevel(r.key)}
+              title={r.tooltip}
+              style={{
+                background: riskLevel === r.key ? "#243450" : "#080c14",
+                border: `1px solid ${riskLevel === r.key ? "#4a6080" : "#243450"}`,
+                color: riskLevel === r.key ? "#e2e8f0" : "#8098b8",
+                borderRadius: 8, padding: "7px 14px",
+                fontSize: "0.78rem", fontWeight: 700, cursor: "pointer",
+              }}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 3 — options */}
+      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginBottom: 16 }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.78rem", color: "#8098b8", cursor: "pointer" }}>
+          <input type="checkbox" checked={includeProps} onChange={e => setIncludeProps(e.target.checked)} />
+          Include Props
+        </label>
+        <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.78rem", color: "#8098b8", cursor: "pointer" }}>
+          <input type="checkbox" checked={mlbOnly} onChange={e => setMlbOnly(e.target.checked)} />
+          MLB Only
+        </label>
+      </div>
+
+      {/* Row 4 — live preview */}
+      <div style={{ background: "#080c14", border: "1px solid #243450", borderRadius: 10, padding: 14 }}>
+        {preview.legs.length === 0 ? (
+          <div style={{ color: "#4a6080", fontSize: "0.78rem" }}>No qualifying legs for this configuration.</div>
+        ) : (
+          <>
+            {preview.legs.map(leg => (
+              <div key={leg.id} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "5px 0", borderBottom: "1px solid #1e2d45", fontSize: "0.8rem",
+              }}>
+                <span>
+                  {leg.isProp && (
+                    <span style={{ color: "#2dd4bf", fontWeight: 800, marginRight: 6, fontSize: "0.6rem" }}>PROP</span>
+                  )}
+                  {leg.label}
+                </span>
+                <span style={{ fontWeight: 800, color: leg.odds > 0 ? "#10b981" : "#f59e0b" }}>
+                  {fmtParlayOdds(leg.odds)}
+                </span>
+              </div>
+            ))}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: 12 }}>
+              <div>
+                <div style={{ fontSize: "0.6rem", color: "#4a6080", textTransform: "uppercase", letterSpacing: "1.5px" }}>
+                  Combined Payout
+                </div>
+                <div style={{ fontSize: "1.6rem", fontWeight: 900, color: "#10b981" }}>{payoutLabel}</div>
+              </div>
+              <div style={{ fontSize: "0.76rem", color: "#8098b8" }}>
+                {preview.legs.length >= 2 ? `~${Math.round(preview.combinedWinPct * 100)}% hit rate` : "Add more qualifying legs"}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -204,11 +334,35 @@ export function Dashboard() {
         </>
       )}
 
+      {/* ── Top Prop Bets ── */}
+      {data && data.propPicks && data.propPicks.length > 0 && (
+        <>
+          <SectionTitle>⚾ Top Prop Bets</SectionTitle>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 14 }}>
+            {[...data.propPicks]
+              .sort((a, b) => {
+                const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
+                const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
+                return tierDiff !== 0 ? tierDiff : b.scores.composite - a.scores.composite;
+              })
+              .map((prop, i) => <PropCard key={prop.id} prop={prop} rank={i + 1} />)}
+          </div>
+        </>
+      )}
+
       {/* ── Ranked Table ── */}
       {data && data.picks.length > 0 && (
         <>
           <SectionTitle>📊 Ranked Pick List</SectionTitle>
           <RankedTable picks={data.picks} />
+        </>
+      )}
+
+      {/* ── Parlay Configurator ── */}
+      {data && data.picks.length > 0 && (
+        <>
+          <SectionTitle>🎰 Build Custom Parlay</SectionTitle>
+          <ParlayConfigurator picks={data.picks} propPicks={data.propPicks ?? []} />
         </>
       )}
 

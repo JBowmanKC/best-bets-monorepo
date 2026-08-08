@@ -1,0 +1,27 @@
+{
+  "initialBankroll": 500,
+  "currentBankroll": 500,
+  "totalBets": 0,
+  "wins": 0,
+  "losses": 0,
+  "pushes": 0,
+  "voids": 0,
+  "totalStaked": 0,
+  "totalProfit": 0,
+  "roi": 0,
+  "peakBankroll": 500,
+  "lowestBankroll": 500,
+  "calibration": {
+    "eliteWinRate": null,
+    "strongWinRate": null,
+    "valueWinRate": null,
+    "mlbRoi": null,
+    "nflRoi": null,
+    "nhlRoi": null,
+    "wpScoreMultiplier": 1.0,
+    "evScoreMultiplier": 1.0,
+    "lastCalibrated": null,
+    "totalResultsTracked": 0
+  },
+  "bets": []
+}

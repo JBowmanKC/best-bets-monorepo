@@ -48,6 +48,9 @@ interface ScheduledGame {
   sport: Sport;
   homeTeam: string;
   awayTeam: string;
+  /** MLB team ids (0 for ESPN-sourced NFL/NHL games, which never need prop roster/stat lookups). */
+  homeTeamId: number;
+  awayTeamId: number;
   startTime: string;
   venue: string;
   homeRecord: TeamRecord;
@@ -86,7 +89,25 @@ interface BetPick {
   rationale: string;
   stake: string;
   isPositiveEV: boolean;
+  stakeAmount: number;
+  potentialPayout: number;
 }
+
+/** Shape read back from the bankroll ledger (see apps/web/public/bankroll.json). */
+interface CalibrationMultipliers {
+  wpScoreMultiplier: number;
+  evScoreMultiplier: number;
+}
+
+interface BankrollState {
+  currentBankroll: number;
+  calibration: CalibrationMultipliers;
+}
+
+const DEFAULT_BANKROLL_STATE: BankrollState = {
+  currentBankroll: 500,
+  calibration: { wpScoreMultiplier: 1, evScoreMultiplier: 1 },
+};
 
 interface ParlayLeg {
   pickId: string;
@@ -121,7 +142,76 @@ interface BestBetsResponse {
   sportStatuses: SportStatus[];
   picks: BetPick[];
   parlays: Parlay[];
+  propPicks: PropPick[];
 }
+
+// ─── Prop bets (MLB only — see fetchProbablePitchers/fetchPitcherGameLog/
+// fetchBatterGameLog/fetchMLBRosterBatters below; NFL/NHL prop types exist
+// in the union for future extension but have no fetcher/scorer yet) ────────
+type PropType =
+  | "pitcher_strikeouts"
+  | "pitcher_outs"
+  | "batter_hits"
+  | "batter_total_bases"
+  | "batter_home_runs"
+  | "player_pass_yards"
+  | "player_rush_yards"
+  | "player_receiving_yards"
+  | "player_shots_on_goal";
+
+type PropSide = "over" | "under";
+type VoidRisk = "low" | "medium" | "high";
+
+interface PropFactorScores {
+  hitRate: number;
+  expectedValue: number;
+  matchupQuality: number;
+  context: number;
+  composite: number;
+}
+
+interface PropPick {
+  id: string;
+  sport: Sport;
+  playerName: string;
+  team: string;
+  matchup: string;
+  gameId: string;
+  propType: PropType;
+  line: number;
+  recommendedSide: PropSide;
+  odds: number;
+  overOdds: number | null;
+  underOdds: number | null;
+  hitRateLast10: number;
+  hitRateLast20: number;
+  recentAverage: number;
+  estimatedHitPct: number;
+  impliedHitPct: number;
+  evEdge: number;
+  tier: Tier;
+  scores: PropFactorScores;
+  startTime: string;
+  rationale: string;
+  stakeAmount: number;
+  potentialPayout: number;
+  voidRisk: VoidRisk;
+  isPositiveEV: boolean;
+}
+
+const PROP_TYPE_LABELS: Record<PropType, string> = {
+  pitcher_strikeouts: "Strikeouts",
+  pitcher_outs: "Outs Recorded",
+  batter_hits: "Hits",
+  batter_total_bases: "Total Bases",
+  batter_home_runs: "Home Runs",
+  player_pass_yards: "Passing Yards",
+  player_rush_yards: "Rushing Yards",
+  player_receiving_yards: "Receiving Yards",
+  player_shots_on_goal: "Shots on Goal",
+};
+
+const TOP_GAMES_FOR_PROPS = 5;
 
 // ─── Algorithm config (weights/thresholds must not change) ─────────────────
 const FACTOR_WEIGHTS = {
@@ -161,6 +251,22 @@ function probToAmericanOdds(prob: number): number {
   const p = Math.min(Math.max(prob, 0.01), 0.99);
   if (p >= 0.5) return Math.round((-100 * p) / (1 - p));
   return Math.round((100 * (1 - p)) / p);
+}
+
+/** Half Kelly stake sizing: min $2, max 15% of bankroll, rounded to the nearest $0.50. */
+function kellyStake(
+  bankroll: number,
+  estimatedWinPct: number,
+  odds: number,
+  kellyFraction: number = 0.5
+): number {
+  const b = odds > 0 ? odds / 100 : 100 / Math.abs(odds); // decimal profit per $1
+  const p = estimatedWinPct;
+  const q = 1 - p;
+  const kelly = (b * p - q) / b;
+  const fraction = Math.max(0, kelly) * kellyFraction;
+  const raw = bankroll * fraction;
+  return Math.round(Math.min(Math.max(raw, 2), bankroll * 0.15) * 2) / 2;
 }
 
 function recordGapToWinProb(
@@ -254,7 +360,7 @@ function buildRationale(game: RawGame, pickHome: boolean, winPct: number, evEdge
   ].join(" ");
 }
 
-function scoreGame(game: RawGame): BetPick[] {
+function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
   const picks: BetPick[] = [];
 
   for (const pickHome of [true, false]) {
@@ -262,11 +368,19 @@ function scoreGame(game: RawGame): BetPick[] {
     if (odds === null || odds === undefined) continue;
 
     const impliedWinPct = oddsToImpliedProb(odds);
-    const wpScore = scoreWinProbability(game, pickHome);
+    // Self-calibration: past results nudge these two factors before they feed
+    // into the estimated win probability and composite score (see calibration
+    // block in api/resolve-results.ts).
+    const wpScore = Math.min(
+      Math.max(Math.round(scoreWinProbability(game, pickHome) * bankrollState.calibration.wpScoreMultiplier), 0),
+      100
+    );
     const estimatedWinPct = 0.3 + (wpScore / 100) * 0.52;
 
-    const { score: evScore, evEdge } = scoreExpectedValue(estimatedWinPct, impliedWinPct);
+    const rawEv = scoreExpectedValue(estimatedWinPct, impliedWinPct);
+    const evEdge = rawEv.evEdge;
     if (evEdge <= 0) continue; // only positive EV picks survive
+    const evScore = Math.min(Math.max(Math.round(rawEv.score * bankrollState.calibration.evScoreMultiplier), 0), 100);
 
     const momScore = scoreMomentum(game, pickHome);
     const ctxScore = scoreContext(game, pickHome);
@@ -286,6 +400,11 @@ function scoreGame(game: RawGame): BetPick[] {
     const team = pickHome ? game.homeTeam : game.awayTeam;
     const direction = pickHome ? "Home Win" : "Away Win";
 
+    const stakeAmount = kellyStake(bankrollState.currentBankroll, estimatedWinPct, odds);
+    const potentialPayout = Math.round(
+      (odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100
+    ) / 100;
+
     picks.push({
       id: `${game.id}-${pickHome ? "home" : "away"}`,
       sport: game.sport,
@@ -302,6 +421,8 @@ function scoreGame(game: RawGame): BetPick[] {
       rationale: buildRationale(game, pickHome, estimatedWinPct, evEdge),
       stake: STAKE_BY_TIER[tier],
       isPositiveEV: true,
+      stakeAmount,
+      potentialPayout,
     });
   }
 
@@ -310,8 +431,8 @@ function scoreGame(game: RawGame): BetPick[] {
   return [picks[0]]; // best side per game only
 }
 
-function scoreAllGames(games: RawGame[]): BetPick[] {
-  const allPicks = games.flatMap(scoreGame);
+function scoreAllGames(games: RawGame[], bankrollState: BankrollState): BetPick[] {
+  const allPicks = games.flatMap(game => scoreGame(game, bankrollState));
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
   allPicks.sort((a, b) => {
     const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
@@ -321,7 +442,6 @@ function scoreAllGames(games: RawGame[]): BetPick[] {
   return allPicks;
 }
 
-// ─── Parlay builder (ported unchanged) ──────────────────────────────────────
 function calcParlayPayout(odds: number[]): number {
   const decimalProduct = odds.reduce((acc, o) => {
     const decimal = o > 0 ? 1 + o / 100 : 1 + 100 / Math.abs(o);
@@ -330,64 +450,134 @@ function calcParlayPayout(odds: number[]): number {
   return Math.round((decimalProduct - 1) * 100);
 }
 
-function calcCombinedWinPct(picks: BetPick[]): number {
-  return picks.reduce((acc, p) => acc * p.estimatedWinPct, 1);
+// ─── Custom parlay builder (moneylines + props) ─────────────────────────────
+interface ParlayOptions {
+  legs: number;
+  riskLevel: "safe" | "standard" | "risky" | "custom";
+  includeProps: boolean;
+  sports?: Sport[];
 }
 
-function toLegs(picks: BetPick[]): ParlayLeg[] {
+const MAX_PROPS_PER_PARLAY = 2;
+
+interface ParlayCandidate {
+  isProp: boolean;
+  tier: Tier;
+  composite: number;
+  winPct: number;
+  odds: number;
+  sport: Sport;
+  voidRisk: VoidRisk | null;
+  leg: ParlayLeg;
+}
+
+function propLegLabel(p: PropPick): string {
+  const side = p.recommendedSide === "over" ? "Over" : "Under";
+  return `${p.playerName} ${side} ${p.line} ${PROP_TYPE_LABELS[p.propType]}`;
+}
+
+function pickCandidates(picks: BetPick[]): ParlayCandidate[] {
   return picks.map(p => ({
-    pickId: p.id,
-    matchup: p.matchup,
-    pickLabel: p.pickLabel,
-    sport: p.sport,
+    isProp: false,
+    tier: p.tier,
+    composite: p.scores.composite,
+    winPct: p.estimatedWinPct,
     odds: p.odds,
-    startTime: p.startTime,
+    sport: p.sport,
+    voidRisk: null,
+    leg: { pickId: p.id, matchup: p.matchup, pickLabel: p.pickLabel, sport: p.sport, odds: p.odds, startTime: p.startTime },
   }));
 }
 
-function buildParlays(picks: BetPick[]): Parlay[] {
-  const elite = picks.filter(p => p.tier === "elite");
-  const strong = picks.filter(p => p.tier === "strong");
-  const all = picks;
+function propCandidates(props: PropPick[]): ParlayCandidate[] {
+  return props.map(p => ({
+    isProp: true,
+    tier: p.tier,
+    composite: p.scores.composite,
+    winPct: p.estimatedHitPct,
+    odds: p.odds,
+    sport: p.sport,
+    voidRisk: p.voidRisk,
+    leg: { pickId: p.id, matchup: p.matchup, pickLabel: propLegLabel(p), sport: p.sport, odds: p.odds, startTime: p.startTime },
+  }));
+}
 
-  const safeLegs = [...elite, ...strong].slice(0, 3);
-  if (safeLegs.length < 2) return [];
+/**
+ * The reusable selection engine behind buildCustomParlay: filters candidates
+ * by risk level and sport, then greedily fills legs — highest-composite
+ * moneylines first, then highest-composite props up to the per-risk-level cap.
+ * A high-voidRisk prop is never eligible, at any risk level.
+ */
+function selectParlayLegs(picks: BetPick[], propPicks: PropPick[], options: ParlayOptions): ParlayCandidate[] {
+  let pickPool = picks;
+  let propPool = options.includeProps ? propPicks.filter(p => p.voidRisk !== "high") : [];
 
-  const safe: Parlay = {
-    id: "safe",
-    label: "Safety Parlay",
-    emoji: "💚",
-    legs: toLegs(safeLegs),
-    estimatedPayout: calcParlayPayout(safeLegs.map(p => p.odds)),
-    combinedWinPct: Math.round(calcCombinedWinPct(safeLegs) * 100) / 100,
-    recommendedStake: "1–2 units",
+  if (options.sports?.length) {
+    pickPool = pickPool.filter(p => options.sports!.includes(p.sport));
+    propPool = propPool.filter(p => options.sports!.includes(p.sport));
+  }
+
+  let maxProps = MAX_PROPS_PER_PARLAY;
+  if (options.riskLevel === "safe") {
+    pickPool = pickPool.filter(p => p.tier === "elite");
+    propPool = [];
+    maxProps = 0;
+  } else if (options.riskLevel === "standard") {
+    pickPool = pickPool.filter(p => p.tier === "elite" || p.tier === "strong");
+    propPool = propPool.filter(p => p.voidRisk === "low" && (p.tier === "elite" || p.tier === "strong"));
+    maxProps = Math.min(1, MAX_PROPS_PER_PARLAY);
+  } else if (options.riskLevel === "risky") {
+    propPool = propPool.filter(p => p.voidRisk === "low" || p.voidRisk === "medium");
+  }
+  // "custom": every tier, every void risk short of "high", up to the global prop cap.
+
+  const pickPoolSorted = pickCandidates(pickPool).sort((a, b) => b.composite - a.composite);
+  const propPoolSorted = propCandidates(propPool).sort((a, b) => b.composite - a.composite);
+
+  const legs: ParlayCandidate[] = [];
+  for (const c of pickPoolSorted) {
+    if (legs.length >= options.legs) break;
+    legs.push(c);
+  }
+
+  let propCount = 0;
+  for (const c of propPoolSorted) {
+    if (legs.length >= options.legs || propCount >= maxProps) break;
+    legs.push(c);
+    propCount += 1;
+  }
+
+  return legs.sort((a, b) => b.composite - a.composite);
+}
+
+function presentationFor(options: ParlayOptions): { id: Parlay["id"]; label: string; emoji: string; recommendedStake: string } {
+  if (options.riskLevel === "safe") return { id: "safe", label: "Safety Parlay", emoji: "💚", recommendedStake: "1–2 units" };
+  if (options.riskLevel === "risky") return { id: "shot", label: "Shot Parlay", emoji: "🚀", recommendedStake: "0.25 units" };
+  return { id: "value", label: "Value Parlay", emoji: "💎", recommendedStake: "0.5 units" };
+}
+
+function buildCustomParlay(picks: BetPick[], propPicks: PropPick[], options: ParlayOptions): Parlay | null {
+  const legs = selectParlayLegs(picks, propPicks, options);
+  if (legs.length < 2) return null;
+
+  const brand = presentationFor(options);
+  return {
+    id: brand.id,
+    label: brand.label,
+    emoji: brand.emoji,
+    legs: legs.map(l => l.leg),
+    estimatedPayout: calcParlayPayout(legs.map(l => l.odds)),
+    combinedWinPct: Math.round(legs.reduce((acc, l) => acc * l.winPct, 1) * 100) / 100,
+    recommendedStake: brand.recommendedStake,
   };
+}
 
-  const valueLegs = all.slice(0, 4);
-  const value: Parlay = {
-    id: "value",
-    label: "Value Parlay",
-    emoji: "💎",
-    legs: toLegs(valueLegs),
-    estimatedPayout: calcParlayPayout(valueLegs.map(p => p.odds)),
-    combinedWinPct: Math.round(calcCombinedWinPct(valueLegs) * 100) / 100,
-    recommendedStake: "0.5 units",
-  };
-
-  const shotLegs = all.slice(0, 5);
-  if (shotLegs.length < 5) return [safe, value];
-
-  const shot: Parlay = {
-    id: "shot",
-    label: "Shot Parlay",
-    emoji: "🚀",
-    legs: toLegs(shotLegs),
-    estimatedPayout: calcParlayPayout(shotLegs.map(p => p.odds)),
-    combinedWinPct: Math.round(calcCombinedWinPct(shotLegs) * 100) / 100,
-    recommendedStake: "0.25 units",
-  };
-
-  return [safe, value, shot];
+/** The three default parlays shown on the dashboard — safe/value/shot, now built through buildCustomParlay's risk-level rules. */
+function buildDefaultParlays(picks: BetPick[], propPicks: PropPick[]): Parlay[] {
+  const safe = buildCustomParlay(picks, propPicks, { legs: 3, riskLevel: "safe", includeProps: false });
+  const value = buildCustomParlay(picks, propPicks, { legs: 4, riskLevel: "standard", includeProps: true });
+  const shot = buildCustomParlay(picks, propPicks, { legs: 5, riskLevel: "risky", includeProps: true });
+  return [safe, value, shot].filter((p): p is Parlay => p !== null);
 }
 
 // ─── Data sources ────────────────────────────────────────────────────────────
@@ -399,6 +589,31 @@ async function fetchJson(url: string): Promise<any> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.json();
+}
+
+/**
+ * Reads the live bankroll ledger for stake sizing and calibration.
+ *
+ * Vercel functions have a read-only, ephemeral filesystem, so this can't just
+ * `fs.readFileSync` the repo copy — instead it fetches the same file the
+ * browser gets, from this deployment's own static output. Falls back to the
+ * $500 starting bankroll and neutral (1.0) multipliers whenever the file
+ * doesn't exist yet (first run) or the fetch fails for any reason.
+ */
+async function fetchBankrollState(): Promise<BankrollState> {
+  const host = process.env.VERCEL_URL;
+  if (!host) return DEFAULT_BANKROLL_STATE;
+
+  try {
+    const data = await fetchJson(`https://${host}/bankroll.json`);
+    const currentBankroll = typeof data?.currentBankroll === "number" ? data.currentBankroll : 500;
+    const wpScoreMultiplier = typeof data?.calibration?.wpScoreMultiplier === "number" ? data.calibration.wpScoreMultiplier : 1;
+    const evScoreMultiplier = typeof data?.calibration?.evScoreMultiplier === "number" ? data.calibration.evScoreMultiplier : 1;
+    return { currentBankroll, calibration: { wpScoreMultiplier, evScoreMultiplier } };
+  } catch (e) {
+    console.warn("bankroll.json fetch failed, using default $500 bankroll:", e);
+    return DEFAULT_BANKROLL_STATE;
+  }
 }
 
 function streakToForm(streakCode: string | undefined): ("W" | "L")[] {
@@ -457,6 +672,8 @@ async function fetchMlbGames(date: string): Promise<SportResult> {
         sport: "mlb",
         homeTeam: home?.team?.name ?? "Home",
         awayTeam: away?.team?.name ?? "Away",
+        homeTeamId: home?.team?.id ?? 0,
+        awayTeamId: away?.team?.id ?? 0,
         startTime: g.gameDate,
         venue: g.venue?.name ?? "",
         homeRecord: {
@@ -521,6 +738,8 @@ async function fetchEspnGames(sport: "nfl" | "nhl", date: string): Promise<Sport
         sport,
         homeTeam: home?.team?.displayName ?? "Home",
         awayTeam: away?.team?.displayName ?? "Away",
+        homeTeamId: 0,
+        awayTeamId: 0,
         startTime: e.date,
         venue: comp?.venue?.fullName ?? "",
         homeRecord: parseRecord(home),
@@ -546,7 +765,189 @@ async function fetchEspnGames(sport: "nfl" | "nhl", date: string): Promise<Sport
   }
 }
 
+// ─── MLB prop data (free MLB Stats API, no key required) ───────────────────
+interface ProbablePitcher {
+  id: number;
+  name: string;
+  teamId: number;
+}
+
+interface ProbablePitchersForGame {
+  homePitcher: ProbablePitcher | null;
+  awayPitcher: ProbablePitcher | null;
+}
+
+/**
+ * Confirmed probable starters for every MLB game on `date`. A null side means
+ * no starter has been announced yet — that side gets no pitcher props, since
+ * there's no player to fetch a game log for.
+ */
+async function fetchProbablePitchers(date: string): Promise<Map<string, ProbablePitchersForGame>> {
+  const map = new Map<string, ProbablePitchersForGame>();
+
+  try {
+    const data = await fetchJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${date}&hydrate=probablePitcher,team`);
+    const games: any[] = (data.dates ?? []).flatMap((d: any) => d.games ?? []);
+
+    for (const g of games) {
+      const homeProb = g.teams?.home?.probablePitcher;
+      const awayProb = g.teams?.away?.probablePitcher;
+
+      map.set(String(g.gamePk), {
+        homePitcher: homeProb?.id
+          ? { id: homeProb.id, name: homeProb.fullName ?? "Probable Pitcher", teamId: g.teams?.home?.team?.id }
+          : null,
+        awayPitcher: awayProb?.id
+          ? { id: awayProb.id, name: awayProb.fullName ?? "Probable Pitcher", teamId: g.teams?.away?.team?.id }
+          : null,
+      });
+    }
+  } catch (e) {
+    console.warn("fetchProbablePitchers failed:", e);
+  }
+
+  return map;
+}
+
+/** One game's worth of a stat category. Fields not relevant to the fetch (pitching vs hitting) are left undefined. */
+interface GameLogEntry {
+  date?: string; // YYYY-MM-DD, used for the fatigue signal in propContextScore
+  strikeouts?: number;
+  outs?: number;
+  hits?: number;
+  totalBases?: number;
+  homeRuns?: number;
+  atBats?: number;
+}
+
+/** True if 3+ of the player's last 5 days include a logged game (fatigue signal for propContextScore). */
+function isFatigued(entries: GameLogEntry[], asOf: string): boolean {
+  const asOfMs = Date.parse(asOf);
+  if (Number.isNaN(asOfMs)) return false;
+  const fiveDaysAgoMs = asOfMs - 5 * 24 * 60 * 60 * 1000;
+  const recentDates = new Set(
+    entries
+      .map(e => e.date)
+      .filter((d): d is string => !!d && Date.parse(d) >= fiveDaysAgoMs && Date.parse(d) < asOfMs)
+  );
+  return recentDates.size >= 3;
+}
+
+interface PitcherGameLogResult {
+  last10: GameLogEntry[];
+  last20: GameLogEntry[];
+  recentAvg: { strikeouts: number; outs: number };
+}
+
+async function fetchPitcherGameLog(playerId: number, season: string): Promise<PitcherGameLogResult> {
+  const empty: PitcherGameLogResult = { last10: [], last20: [], recentAvg: { strikeouts: 0, outs: 0 } };
+
+  try {
+    const data = await fetchJson(
+      `https://statsapi.mlb.com/api/v1/people/${playerId}/stats?stats=gameLog&group=pitching&season=${season}&gameType=R`
+    );
+    const splits: any[] = data.stats?.[0]?.splits ?? [];
+
+    // The API returns oldest-first; reverse so index 0 is the most recent start.
+    const starts: GameLogEntry[] = splits
+      .filter((s: any) => s.stat)
+      .map((s: any) => ({
+        date: s.date,
+        strikeouts: Number(s.stat.strikeOuts ?? 0),
+        outs: Number(s.stat.outs ?? (s.stat.inningsPitched ? Math.round(parseFloat(s.stat.inningsPitched) * 3) : 0)),
+      }))
+      .reverse();
+
+    const last20 = starts.slice(0, 20);
+    const last10 = starts.slice(0, 10);
+    if (last10.length === 0) return empty;
+
+    const avg = (entries: GameLogEntry[], key: "strikeouts" | "outs") =>
+      entries.reduce((a, b) => a + (b[key] ?? 0), 0) / entries.length;
+
+    return { last10, last20, recentAvg: { strikeouts: avg(last10, "strikeouts"), outs: avg(last10, "outs") } };
+  } catch (e) {
+    console.warn(`fetchPitcherGameLog(${playerId}) failed:`, e);
+    return empty;
+  }
+}
+
+interface BatterGameLogResult {
+  last10: GameLogEntry[];
+  last20: GameLogEntry[];
+  recentAvg: { hits: number; totalBases: number; homeRuns: number };
+}
+
+async function fetchBatterGameLog(playerId: number, season: string): Promise<BatterGameLogResult> {
+  const empty: BatterGameLogResult = { last10: [], last20: [], recentAvg: { hits: 0, totalBases: 0, homeRuns: 0 } };
+
+  try {
+    const data = await fetchJson(
+      `https://statsapi.mlb.com/api/v1/people/${playerId}/stats?stats=gameLog&group=hitting&season=${season}&gameType=R`
+    );
+    const splits: any[] = data.stats?.[0]?.splits ?? [];
+
+    const games: GameLogEntry[] = splits
+      .filter((s: any) => s.stat)
+      .map((s: any) => ({
+        date: s.date,
+        hits: Number(s.stat.hits ?? 0),
+        totalBases: Number(s.stat.totalBases ?? 0),
+        homeRuns: Number(s.stat.homeRuns ?? 0),
+        atBats: Number(s.stat.atBats ?? 0),
+      }))
+      .reverse();
+
+    const last20 = games.slice(0, 20);
+    const last10 = games.slice(0, 10);
+    if (last10.length === 0) return empty;
+
+    const avg = (entries: GameLogEntry[], key: "hits" | "totalBases" | "homeRuns") =>
+      entries.reduce((a, b) => a + (b[key] ?? 0), 0) / entries.length;
+
+    return {
+      last10, last20,
+      recentAvg: { hits: avg(last10, "hits"), totalBases: avg(last10, "totalBases"), homeRuns: avg(last10, "homeRuns") },
+    };
+  } catch (e) {
+    console.warn(`fetchBatterGameLog(${playerId}) failed:`, e);
+    return empty;
+  }
+}
+
+interface RosterBatter {
+  id: number;
+  fullName: string;
+  jerseyNumber: number;
+}
+
+/** Active-roster position players, top 9 by jersey number as a lineup-order proxy (no live lineup feed on the free tier). */
+async function fetchMLBRosterBatters(teamId: number, season: string): Promise<RosterBatter[]> {
+  try {
+    const data = await fetchJson(`https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=active&season=${season}`);
+    const roster: any[] = data.roster ?? [];
+
+    const batters: RosterBatter[] = roster
+      .filter((p: any) => {
+        const abbr = p.position?.abbreviation;
+        return p.position?.type === "Hitter" || (abbr && abbr !== "P" && abbr !== "TWP");
+      })
+      .map((p: any) => ({
+        id: p.person?.id,
+        fullName: p.person?.fullName ?? "Unknown",
+        jerseyNumber: parseInt(p.jerseyNumber, 10) || 99,
+      }))
+      .filter((p: RosterBatter) => Number.isFinite(p.id));
+
+    return batters.sort((a, b) => a.jerseyNumber - b.jerseyNumber).slice(0, 9);
+  } catch (e) {
+    console.warn(`fetchMLBRosterBatters(${teamId}) failed:`, e);
+    return [];
+  }
+}
+
 interface OddsApiEntry {
+  id: string; // OddsAPI's own event id — needed for the per-event prop odds endpoint
   homeTeam: string;
   awayTeam: string;
   odds: GameOdds;
@@ -593,6 +994,7 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
     }
     const raw = (await res.json()) as any[];
     return raw.map(g => ({
+      id: String(g.id),
       homeTeam: g.home_team,
       awayTeam: g.away_team,
       odds: averageBookmakerOdds(g),
@@ -601,6 +1003,85 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
     console.warn(`OddsAPI ${sport} fetch threw:`, e);
     return [];
   }
+}
+
+// ─── Prop odds (selective — top 5 games only, to stay within OddsAPI's free tier) ──
+interface PropOddsEntry {
+  line: number;
+  overOdds: number;
+  underOdds: number;
+}
+type PropOddsMap = Map<string, PropOddsEntry>; // key: "playerName-propType"
+
+const MLB_PROP_MARKETS = "pitcher_strikeouts,batter_hits,batter_home_runs,batter_total_bases";
+const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
+  pitcher_strikeouts: "pitcher_strikeouts",
+  batter_hits: "batter_hits",
+  batter_home_runs: "batter_home_runs",
+  batter_total_bases: "batter_total_bases",
+};
+
+async function fetchPropOddsForGame(eventId: string): Promise<PropOddsMap> {
+  const map: PropOddsMap = new Map();
+  if (!ODDS_API_KEY) return map;
+
+  try {
+    const url = `https://api.the-odds-api.com/v4/sports/baseball_mlb/events/${eventId}/odds`
+      + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${MLB_PROP_MARKETS}&oddsFormat=american&bookmakers=draftkings,fanduel`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.warn(`OddsAPI props ${eventId} failed: ${res.status}`);
+      return map;
+    }
+    const data: any = await res.json();
+
+    // Bucket every bookmaker's over/under quote by player+propType+line, then
+    // average implied probability per side the same way moneylines are averaged.
+    const buckets = new Map<string, { line: number; propType: PropType; player: string; overProbs: number[]; underProbs: number[] }>();
+
+    for (const bm of data.bookmakers ?? []) {
+      for (const market of bm.markets ?? []) {
+        const propType = ODDS_API_MARKET_TO_PROP[market.key as string];
+        if (!propType) continue;
+
+        for (const outcome of market.outcomes ?? []) {
+          const player = outcome.description ?? outcome.name;
+          const side = String(outcome.name ?? "").toLowerCase();
+          const line = Number(outcome.point);
+          if (!player || (side !== "over" && side !== "under") || Number.isNaN(line)) continue;
+
+          const key = `${player}-${propType}-${line}`;
+          if (!buckets.has(key)) buckets.set(key, { line, propType, player, overProbs: [], underProbs: [] });
+          const bucket = buckets.get(key)!;
+          const prob = oddsToImpliedProb(outcome.price);
+          if (side === "over") bucket.overProbs.push(prob);
+          else bucket.underProbs.push(prob);
+        }
+      }
+    }
+
+    const avg = (probs: number[]) => probs.reduce((a, b) => a + b, 0) / probs.length;
+    for (const bucket of buckets.values()) {
+      if (bucket.overProbs.length === 0 && bucket.underProbs.length === 0) continue;
+      const overOdds = bucket.overProbs.length ? probToAmericanOdds(avg(bucket.overProbs)) : -110;
+      const underOdds = bucket.underProbs.length ? probToAmericanOdds(avg(bucket.underProbs)) : -110;
+      map.set(`${bucket.player}-${bucket.propType}`, { line: bucket.line, overOdds, underOdds });
+    }
+  } catch (e) {
+    console.warn(`OddsAPI props fetch threw for ${eventId}:`, e);
+  }
+
+  return map;
+}
+
+/** Fetches prop markets for up to TOP_GAMES_FOR_PROPS OddsAPI event ids in parallel and merges the results. */
+async function fetchPropOdds(gameIds: string[], sport: Sport): Promise<PropOddsMap> {
+  const merged: PropOddsMap = new Map();
+  if (sport !== "mlb" || gameIds.length === 0) return merged;
+
+  const perGame = await Promise.all(gameIds.slice(0, TOP_GAMES_FOR_PROPS).map(fetchPropOddsForGame));
+  for (const m of perGame) for (const [k, v] of m) merged.set(k, v);
+  return merged;
 }
 
 /** Record-gap fallback used whenever OddsAPI has no line for a game. */
@@ -629,6 +1110,381 @@ function attachOdds(games: ScheduledGame[], oddsBySport: Record<string, OddsApiE
 
     return { ...g, odds };
   });
+}
+
+// ─── Prop scorer (four-factor: hit rate 35% / EV 35% / matchup 20% / context 10%) ──
+const PROP_FACTOR_WEIGHTS = { hitRate: 0.35, expectedValue: 0.35, matchupQuality: 0.20, context: 0.10 } as const;
+
+function statValueForPropType(entry: GameLogEntry, propType: PropType): number {
+  switch (propType) {
+    case "pitcher_strikeouts": return entry.strikeouts ?? 0;
+    case "pitcher_outs": return entry.outs ?? 0;
+    case "batter_hits": return entry.hits ?? 0;
+    case "batter_total_bases": return entry.totalBases ?? 0;
+    case "batter_home_runs": return entry.homeRuns ?? 0;
+    default: return 0; // NFL/NHL prop types have no game-log fetcher yet
+  }
+}
+
+/** Fraction of games where the stat cleared (over) or stayed under the line. Exactly-on-the-line games count toward neither. */
+function hitRateFor(entries: GameLogEntry[], propType: PropType, line: number, side: PropSide): number {
+  if (entries.length === 0) return 0;
+  const hits = entries.filter(e => {
+    const v = statValueForPropType(e, propType);
+    return side === "over" ? v > line : v < line;
+  }).length;
+  return hits / entries.length;
+}
+
+function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number }, propType: PropType): number {
+  switch (propType) {
+    case "pitcher_strikeouts": return recentAvg.strikeouts ?? 0;
+    case "pitcher_outs": return recentAvg.outs ?? 0;
+    case "batter_hits": return recentAvg.hits ?? 0;
+    case "batter_total_bases": return recentAvg.totalBases ?? 0;
+    case "batter_home_runs": return recentAvg.homeRuns ?? 0;
+    default: return 0;
+  }
+}
+
+/** League-average MLB strikeout rate (K/PA), used as the matchup-quality midpoint for pitcher strikeout props. */
+const LEAGUE_AVG_K_RATE = 0.225;
+
+async function fetchTeamKRate(teamId: number, season: string): Promise<number | null> {
+  try {
+    const data = await fetchJson(`https://statsapi.mlb.com/api/v1/teams/${teamId}/stats?stats=season&group=hitting&season=${season}`);
+    const stat = data.stats?.[0]?.splits?.[0]?.stat;
+    const so = Number(stat?.strikeOuts ?? NaN);
+    const pa = Number(stat?.plateAppearances ?? NaN);
+    return Number.isFinite(so) && Number.isFinite(pa) && pa > 0 ? so / pa : null;
+  } catch (e) {
+    console.warn(`fetchTeamKRate(${teamId}) failed:`, e);
+    return null;
+  }
+}
+
+async function fetchPitcherWhip(playerId: number, season: string): Promise<number | null> {
+  try {
+    const data = await fetchJson(`https://statsapi.mlb.com/api/v1/people/${playerId}/stats?stats=season&group=pitching&season=${season}`);
+    const stat = data.stats?.[0]?.splits?.[0]?.stat;
+    const whip = Number(stat?.whip ?? NaN);
+    return Number.isFinite(whip) ? whip : null;
+  } catch (e) {
+    console.warn(`fetchPitcherWhip(${playerId}) failed:`, e);
+    return null;
+  }
+}
+
+function matchupScoreForPitcherStrikeouts(oppKRate: number | null): number {
+  if (oppKRate === null) return 50;
+  if (oppKRate > 0.250) return Math.min(90, 75 + (oppKRate - 0.250) * 300);
+  if (oppKRate >= 0.200) return 50 + ((oppKRate - 0.200) / 0.050) * 24;
+  return Math.max(20, 49 - (0.200 - oppKRate) * 300);
+}
+
+function matchupScoreForBatterProps(oppWhip: number | null): number {
+  if (oppWhip === null) return 50;
+  if (oppWhip < 1.10) return Math.max(20, 40 - (1.10 - oppWhip) * 100);
+  if (oppWhip <= 1.30) return 50 + ((oppWhip - 1.10) / 0.20) * 15;
+  return Math.min(90, 70 + (oppWhip - 1.30) * 100);
+}
+
+/** Context score: home-batter/away-pitcher bumps, fatigue penalty, neutral base 50. */
+function propContextScore(opts: { isHome: boolean; isPitcher: boolean; fatigued: boolean }): number {
+  let score = 50;
+  if (!opts.isPitcher && opts.isHome) score += 10;
+  if (opts.isPitcher && !opts.isHome) score += 5;
+  if (opts.fatigued) score -= 10;
+  return Math.min(Math.max(score, 0), 100);
+}
+
+function buildPropRationale(
+  playerName: string, propType: PropType, line: number, side: PropSide,
+  hitRateLast10: number, recentAverage: number, opponent: string, matchupScore: number,
+  estimatedHitPct: number, impliedHitPct: number, evEdge: number
+): string {
+  const label = PROP_TYPE_LABELS[propType];
+  const matchupContext = matchupScore >= 65 ? "favorable" : matchupScore <= 35 ? "tough" : "neutral";
+
+  return [
+    `${playerName} has cleared ${line} ${label.toLowerCase()} in ${Math.round(hitRateLast10 * 10)} of their last 10 games (avg: ${recentAverage.toFixed(1)}).`,
+    `Matchup vs ${opponent}: ${matchupContext}.`,
+    `Estimated ${side} probability ${Math.round(estimatedHitPct * 100)}% vs implied ${Math.round(impliedHitPct * 100)}% — +${Math.round(evEdge * 100)}% EV edge.`,
+  ].join(" ");
+}
+
+interface PropCandidateInput {
+  playerId: number;
+  playerName: string;
+  team: string;
+  opponent: string;
+  isHome: boolean;
+  isPitcher: boolean;
+  propType: PropType;
+  fatigued: boolean;
+}
+
+interface PropGameContext {
+  gameId: string;
+  sport: Sport;
+  matchup: string;
+  startTime: string;
+}
+
+function scoreProp(
+  candidate: PropCandidateInput,
+  log: { last10: GameLogEntry[]; last20: GameLogEntry[]; recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number } },
+  oddsEntry: PropOddsEntry,
+  matchupScore: number,
+  game: PropGameContext,
+  bankrollState: BankrollState
+): PropPick | null {
+  const { propType, line } = { propType: candidate.propType, line: oddsEntry.line };
+  if (log.last10.length === 0) return null; // no game-log history to score from
+
+  const hitRateOver10 = hitRateFor(log.last10, propType, line, "over");
+  const hitRateOver20 = hitRateFor(log.last20, propType, line, "over");
+  const weightedOverRate = hitRateOver10 * 0.6 + hitRateOver20 * 0.4;
+
+  const estimatedOverPct = Math.min(Math.max(weightedOverRate, 0.01), 0.99);
+  const estimatedUnderPct = 1 - estimatedOverPct;
+  const impliedOverPct = oddsToImpliedProb(oddsEntry.overOdds);
+  const impliedUnderPct = oddsToImpliedProb(oddsEntry.underOdds);
+
+  const evEdgeOver = estimatedOverPct - impliedOverPct;
+  const evEdgeUnder = estimatedUnderPct - impliedUnderPct;
+
+  const side: PropSide = evEdgeOver >= evEdgeUnder ? "over" : "under";
+  const evEdge = side === "over" ? evEdgeOver : evEdgeUnder;
+  if (evEdge <= 0) return null; // only positive EV props survive
+
+  const estimatedHitPct = side === "over" ? estimatedOverPct : estimatedUnderPct;
+  const impliedHitPct = side === "over" ? impliedOverPct : impliedUnderPct;
+  const odds = side === "over" ? oddsEntry.overOdds : oddsEntry.underOdds;
+
+  const hitRateScoreBasis = side === "over" ? weightedOverRate : 1 - weightedOverRate;
+  const hitRateScore = Math.min(Math.max(((hitRateScoreBasis - 0.30) / 0.50) * 100, 0), 100);
+  const { score: evScore } = scoreExpectedValue(estimatedHitPct, impliedHitPct);
+
+  const factorScores: PropFactorScores = {
+    hitRate: Math.round(hitRateScore),
+    expectedValue: evScore,
+    matchupQuality: Math.round(matchupScore),
+    context: propContextScore({ isHome: candidate.isHome, isPitcher: candidate.isPitcher, fatigued: candidate.fatigued }),
+    composite: 0,
+  };
+  factorScores.composite = Math.round(
+    factorScores.hitRate * PROP_FACTOR_WEIGHTS.hitRate +
+    factorScores.expectedValue * PROP_FACTOR_WEIGHTS.expectedValue +
+    factorScores.matchupQuality * PROP_FACTOR_WEIGHTS.matchupQuality +
+    factorScores.context * PROP_FACTOR_WEIGHTS.context
+  );
+
+  const tier = getTier(factorScores.composite);
+  if (!tier) return null;
+
+  // Void risk: pitcher props only reach here once a confirmed probable starter
+  // exists, so they're "low"; batter lineups aren't official this far ahead of
+  // game time, so batter props default to "medium". "high" is reserved for a
+  // future signal (injury-report/lineup-confirmation feed) not available on
+  // the free tier today — no prop currently resolves to it.
+  const voidRisk: VoidRisk = candidate.isPitcher ? "low" : "medium";
+
+  let stakeAmount = kellyStake(bankrollState.currentBankroll, estimatedHitPct, odds);
+  if (voidRisk === "medium") stakeAmount = Math.round(stakeAmount * 0.6 * 2) / 2;
+  // voidRisk is never "high" by construction above — the check is defensive,
+  // matching the constraint that a high-void-risk prop is skipped entirely.
+  if ((voidRisk as VoidRisk) === "high" || stakeAmount <= 0) return null;
+
+  const potentialPayout = Math.round(
+    (odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100
+  ) / 100;
+
+  const recentAverage = recentAverageForPropType(log.recentAvg, propType);
+
+  return {
+    id: `${game.gameId}-prop-${normalizeTeamName(candidate.playerName)}-${propType}`,
+    sport: game.sport,
+    playerName: candidate.playerName,
+    team: candidate.team,
+    matchup: game.matchup,
+    gameId: game.gameId,
+    propType,
+    line,
+    recommendedSide: side,
+    odds,
+    overOdds: oddsEntry.overOdds,
+    underOdds: oddsEntry.underOdds,
+    hitRateLast10: Math.round(hitRateOver10 * 100) / 100,
+    hitRateLast20: Math.round(hitRateOver20 * 100) / 100,
+    recentAverage: Math.round(recentAverage * 100) / 100,
+    estimatedHitPct: Math.round(estimatedHitPct * 1000) / 1000,
+    impliedHitPct: Math.round(impliedHitPct * 1000) / 1000,
+    evEdge: Math.round(evEdge * 1000) / 1000,
+    tier,
+    scores: factorScores,
+    startTime: game.startTime,
+    rationale: buildPropRationale(
+      candidate.playerName, propType, line, side,
+      hitRateOver10, recentAverage, candidate.opponent, matchupScore,
+      estimatedHitPct, impliedHitPct, evEdge
+    ),
+    stakeAmount,
+    potentialPayout,
+    voidRisk,
+    isPositiveEV: true,
+  };
+}
+
+// ─── Prop orchestration (top TOP_GAMES_FOR_PROPS MLB games only) ───────────
+/** Real OddsAPI line/odds if available, else the recent-average estimate described in Step 3. */
+function resolvePropOdds(
+  map: PropOddsMap, playerName: string, propType: PropType,
+  recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number },
+  statKey: "strikeouts" | "outs" | "hits" | "totalBases" | "homeRuns"
+): PropOddsEntry {
+  const real = map.get(`${playerName}-${propType}`);
+  if (real) return real;
+
+  const avg = recentAvg[statKey] ?? 0;
+  if (propType === "pitcher_strikeouts") {
+    return { line: Math.round(avg * 10) / 10 - 0.5, overOdds: -115, underOdds: -105 };
+  }
+  if (propType === "batter_hits") {
+    return { line: avg >= 1.2 ? 1.5 : 0.5, overOdds: -115, underOdds: -105 };
+  }
+  // No explicit fallback formula given for total_bases/home_runs/outs — extrapolate
+  // the same "recent average rounded to the nearest half, minus half" convention.
+  return { line: Math.max(0.5, Math.round(avg * 2) / 2 - 0.5), overOdds: -115, underOdds: -105 };
+}
+
+async function buildPropsForGame(
+  game: RawGame,
+  probable: ProbablePitchersForGame | undefined,
+  propOddsMap: PropOddsMap,
+  bankrollState: BankrollState,
+  season: string
+): Promise<PropPick[]> {
+  const props: PropPick[] = [];
+  const gameCtx: PropGameContext = {
+    gameId: game.id, sport: game.sport,
+    matchup: `${game.awayTeam} @ ${game.homeTeam}`, startTime: game.startTime,
+  };
+
+  // ── Pitcher props: strikeouts + outs, confirmed probable starters only ──
+  const pitcherJobs: { pitcher: ProbablePitcher; isHome: boolean }[] = [];
+  if (probable?.homePitcher) pitcherJobs.push({ pitcher: probable.homePitcher, isHome: true });
+  if (probable?.awayPitcher) pitcherJobs.push({ pitcher: probable.awayPitcher, isHome: false });
+
+  await Promise.all(pitcherJobs.map(async ({ pitcher, isHome }) => {
+    const [log, oppKRate] = await Promise.all([
+      fetchPitcherGameLog(pitcher.id, season),
+      fetchTeamKRate(isHome ? game.awayTeamId : game.homeTeamId, season), // opponent's hitting K rate
+    ]);
+    if (log.last10.length === 0) return;
+
+    const matchupScore = matchupScoreForPitcherStrikeouts(oppKRate);
+    const fatigued = isFatigued(log.last10, game.startTime);
+    const team = isHome ? game.homeTeam : game.awayTeam;
+    const opponent = isHome ? game.awayTeam : game.homeTeam;
+
+    for (const propType of ["pitcher_strikeouts", "pitcher_outs"] as const) {
+      const statKey = propType === "pitcher_strikeouts" ? "strikeouts" : "outs";
+      const oddsEntry = resolvePropOdds(propOddsMap, pitcher.name, propType, log.recentAvg, statKey);
+      const pick = scoreProp(
+        { playerId: pitcher.id, playerName: pitcher.name, team, opponent, isHome, isPitcher: true, propType, fatigued },
+        log, oddsEntry, matchupScore, gameCtx, bankrollState
+      );
+      if (pick) props.push(pick);
+    }
+  }));
+
+  // ── Batter props: hits, total bases, home runs — top 9 by jersey number per team ──
+  const [homeBatters, awayBatters] = await Promise.all([
+    fetchMLBRosterBatters(game.homeTeamId, season),
+    fetchMLBRosterBatters(game.awayTeamId, season),
+  ]);
+  const [homeOppWhip, awayOppWhip] = await Promise.all([
+    probable?.awayPitcher ? fetchPitcherWhip(probable.awayPitcher.id, season) : Promise.resolve(null), // home batters face the away pitcher
+    probable?.homePitcher ? fetchPitcherWhip(probable.homePitcher.id, season) : Promise.resolve(null),
+  ]);
+
+  const batterJobs = [
+    ...homeBatters.map(b => ({ batter: b, isHome: true, oppWhip: homeOppWhip })),
+    ...awayBatters.map(b => ({ batter: b, isHome: false, oppWhip: awayOppWhip })),
+  ];
+
+  await Promise.all(batterJobs.map(async ({ batter, isHome, oppWhip }) => {
+    const log = await fetchBatterGameLog(batter.id, season);
+    if (log.last10.length === 0) return;
+
+    const matchupScore = matchupScoreForBatterProps(oppWhip);
+    const fatigued = isFatigued(log.last10, game.startTime);
+    const team = isHome ? game.homeTeam : game.awayTeam;
+    const opponent = isHome ? game.awayTeam : game.homeTeam;
+
+    for (const propType of ["batter_hits", "batter_total_bases", "batter_home_runs"] as const) {
+      const statKey = propType === "batter_hits" ? "hits" : propType === "batter_total_bases" ? "totalBases" : "homeRuns";
+      const oddsEntry = resolvePropOdds(propOddsMap, batter.fullName, propType, log.recentAvg, statKey);
+      const pick = scoreProp(
+        { playerId: batter.id, playerName: batter.fullName, team, opponent, isHome, isPitcher: false, propType, fatigued },
+        log, oddsEntry, matchupScore, gameCtx, bankrollState
+      );
+      if (pick) props.push(pick);
+    }
+  }));
+
+  return props;
+}
+
+/**
+ * Scores props for the top TOP_GAMES_FOR_PROPS MLB games by moneyline
+ * composite score. Every prop-fetch failure is caught per-game so a bad
+ * player/team lookup never takes down the moneyline picks (or the rest of
+ * the prop slate) — see the try/catch in the main handler for the same
+ * guarantee at the top level.
+ */
+async function buildPropPicks(
+  moneylinePicks: BetPick[],
+  rawGames: RawGame[],
+  mlbOddsEntries: OddsApiEntry[],
+  bankrollState: BankrollState,
+  date: string
+): Promise<PropPick[]> {
+  const topGameIds = moneylinePicks
+    .filter(p => p.sport === "mlb")
+    .slice()
+    .sort((a, b) => b.scores.composite - a.scores.composite)
+    .slice(0, TOP_GAMES_FOR_PROPS)
+    .map(p => p.id.replace(/-(home|away)$/, ""));
+
+  const topGames = rawGames.filter(g => g.sport === "mlb" && topGameIds.includes(g.id));
+  if (topGames.length === 0) return [];
+
+  const probablePitchers = await fetchProbablePitchers(date);
+
+  const eventIdByGameId = new Map<string, string>();
+  for (const game of topGames) {
+    const match = mlbOddsEntries.find(
+      o => normalizeTeamName(o.homeTeam) === normalizeTeamName(game.homeTeam) &&
+           normalizeTeamName(o.awayTeam) === normalizeTeamName(game.awayTeam)
+    );
+    if (match) eventIdByGameId.set(game.id, match.id);
+  }
+
+  const propOddsMap = await fetchPropOdds([...eventIdByGameId.values()], "mlb");
+  const season = date.slice(0, 4);
+
+  const perGame = await Promise.all(topGames.map(async game => {
+    try {
+      return await buildPropsForGame(game, probablePitchers.get(game.id), propOddsMap, bankrollState, season);
+    } catch (e) {
+      console.warn(`Prop scoring failed for game ${game.id}:`, e);
+      return [];
+    }
+  }));
+
+  return perGame.flat().sort((a, b) => b.scores.composite - a.scores.composite);
 }
 
 // ─── Main handler ────────────────────────────────────────────────────────────
@@ -663,9 +1519,20 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     );
     const oddsBySport = Object.fromEntries(oddsEntries);
 
+    const bankrollState = await fetchBankrollState();
     const rawGames = attachOdds(games, oddsBySport);
-    const picks = scoreAllGames(rawGames);
-    const parlays = buildParlays(picks);
+    const picks = scoreAllGames(rawGames, bankrollState);
+
+    // Prop bets are best-effort: any failure here must never take down the
+    // moneyline picks that already succeeded above.
+    let propPicks: PropPick[] = [];
+    try {
+      propPicks = await buildPropPicks(picks, rawGames, oddsBySport.mlb ?? [], bankrollState, date);
+    } catch (e) {
+      console.warn("Prop pipeline failed entirely, continuing with moneyline picks only:", e);
+    }
+
+    const parlays = buildDefaultParlays(picks, propPicks);
 
     const response: BestBetsResponse = {
       date,
@@ -674,6 +1541,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       sportStatuses,
       picks,
       parlays,
+      propPicks,
     };
 
     res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate=3600");
