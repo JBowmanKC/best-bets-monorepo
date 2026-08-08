@@ -1,0 +1,165 @@
+{
+  "picksFile": "picks-20260804T192927Z.json",
+  "date": "2026-08-04",
+  "picksGeneratedAt": "2026-08-04T19:29:28.108Z",
+  "gradedAt": "2026-08-05T04:08:33.917Z",
+  "summary": {
+    "total": 8,
+    "graded": 8,
+    "wins": 5,
+    "losses": 3,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.625,
+    "unitsRisked": 8,
+    "unitsNet": 1.44,
+    "roi": 0.18
+  },
+  "results": [
+    {
+      "pickId": "824645-home",
+      "sport": "mlb",
+      "matchup": "Los Angeles Dodgers @ Chicago Cubs",
+      "pickLabel": "Chicago Cubs ML",
+      "tier": "value",
+      "odds": 172,
+      "startTime": "2026-08-05T00:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.72,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Chicago Cubs",
+        "awayTeam": "Los Angeles Dodgers",
+        "homeScore": 5,
+        "awayScore": 1
+      }
+    },
+    {
+      "pickId": "824888-home",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ Atlanta Braves",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "value",
+      "odds": -144,
+      "startTime": "2026-08-04T23:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6944,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Atlanta Braves",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823432-away",
+      "sport": "mlb",
+      "matchup": "Washington Nationals @ Philadelphia Phillies",
+      "pickLabel": "Washington Nationals ML",
+      "tier": "value",
+      "odds": 251,
+      "startTime": "2026-08-04T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Philadelphia Phillies",
+        "awayTeam": "Washington Nationals",
+        "homeScore": 5,
+        "awayScore": 0
+      }
+    },
+    {
+      "pickId": "824321-away",
+      "sport": "mlb",
+      "matchup": "Tampa Bay Rays @ Colorado Rockies",
+      "pickLabel": "Tampa Bay Rays ML",
+      "tier": "value",
+      "odds": -168,
+      "startTime": "2026-08-05T00:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.5952,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Colorado Rockies",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 7,
+        "awayScore": 9
+      }
+    },
+    {
+      "pickId": "824403-home",
+      "sport": "mlb",
+      "matchup": "New York Mets @ Cleveland Guardians",
+      "pickLabel": "Cleveland Guardians ML",
+      "tier": "value",
+      "odds": -143,
+      "startTime": "2026-08-04T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cleveland Guardians",
+        "awayTeam": "New York Mets",
+        "homeScore": 2,
+        "awayScore": 6
+      }
+    },
+    {
+      "pickId": "824484-home",
+      "sport": "mlb",
+      "matchup": "Athletics @ Cincinnati Reds",
+      "pickLabel": "Cincinnati Reds ML",
+      "tier": "value",
+      "odds": -135,
+      "startTime": "2026-08-04T22:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.7407,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Athletics",
+        "homeScore": 5,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "823756-home",
+      "sport": "mlb",
+      "matchup": "Pittsburgh Pirates @ Milwaukee Brewers",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -144,
+      "startTime": "2026-08-04T23:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6944,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Milwaukee Brewers",
+        "awayTeam": "Pittsburgh Pirates",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823517-away",
+      "sport": "mlb",
+      "matchup": "St. Louis Cardinals @ New York Yankees",
+      "pickLabel": "St. Louis Cardinals ML",
+      "tier": "value",
+      "odds": 174,
+      "startTime": "2026-08-04T23:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Yankees",
+        "awayTeam": "St. Louis Cardinals",
+        "homeScore": 2,
+        "awayScore": 0
+      }
+    }
+  ]
+}

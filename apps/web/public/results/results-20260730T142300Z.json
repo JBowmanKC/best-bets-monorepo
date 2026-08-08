@@ -1,0 +1,93 @@
+{
+  "picksFile": "picks-20260730T142300Z.json",
+  "date": "2026-07-30",
+  "picksGeneratedAt": "2026-07-30T14:23:01.200Z",
+  "gradedAt": "2026-07-31T15:16:11.045Z",
+  "summary": {
+    "total": 4,
+    "graded": 4,
+    "wins": 2,
+    "losses": 2,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.5,
+    "unitsRisked": 4,
+    "unitsNet": 1.43,
+    "roi": 0.3575
+  },
+  "results": [
+    {
+      "pickId": "823595-away",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ New York Mets",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": 110,
+      "startTime": "2026-07-30T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823023-away",
+      "sport": "mlb",
+      "matchup": "Chicago Cubs @ St. Louis Cardinals",
+      "pickLabel": "Chicago Cubs ML",
+      "tier": "value",
+      "odds": -36,
+      "startTime": "2026-07-30T18:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 2.7778,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "St. Louis Cardinals",
+        "awayTeam": "Chicago Cubs",
+        "homeScore": 2,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "823921-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "value",
+      "odds": -153,
+      "startTime": "2026-07-31T02:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6536,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 6,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823271-home",
+      "sport": "mlb",
+      "matchup": "San Francisco Giants @ San Diego Padres",
+      "pickLabel": "San Diego Padres ML",
+      "tier": "value",
+      "odds": -150,
+      "startTime": "2026-07-31T01:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "San Diego Padres",
+        "awayTeam": "San Francisco Giants",
+        "homeScore": 1,
+        "awayScore": 4
+      }
+    }
+  ]
+}

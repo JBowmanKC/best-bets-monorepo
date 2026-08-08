@@ -1,0 +1,165 @@
+{
+  "picksFile": "picks-20260802T134405Z.json",
+  "date": "2026-08-02",
+  "picksGeneratedAt": "2026-08-02T13:44:06.843Z",
+  "gradedAt": "2026-08-03T04:29:38.877Z",
+  "summary": {
+    "total": 8,
+    "graded": 8,
+    "wins": 3,
+    "losses": 5,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.375,
+    "unitsRisked": 8,
+    "unitsNet": -2.67,
+    "roi": -0.3337
+  },
+  "results": [
+    {
+      "pickId": "824891-home",
+      "sport": "mlb",
+      "matchup": "Washington Nationals @ Atlanta Braves",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "strong",
+      "odds": -119,
+      "startTime": "2026-08-02T17:35:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.8403,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Atlanta Braves",
+        "awayTeam": "Washington Nationals",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824404-away",
+      "sport": "mlb",
+      "matchup": "Arizona Diamondbacks @ Cleveland Guardians",
+      "pickLabel": "Arizona Diamondbacks ML",
+      "tier": "strong",
+      "odds": 148,
+      "startTime": "2026-08-02T17:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cleveland Guardians",
+        "awayTeam": "Arizona Diamondbacks",
+        "homeScore": 5,
+        "awayScore": 0
+      }
+    },
+    {
+      "pickId": "823996-away",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ Los Angeles Angels",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -224,
+      "startTime": "2026-08-02T19:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 3,
+        "awayScore": 0
+      }
+    },
+    {
+      "pickId": "824971-home",
+      "sport": "mlb",
+      "matchup": "Detroit Tigers @ Athletics",
+      "pickLabel": "Athletics ML",
+      "tier": "value",
+      "odds": -36,
+      "startTime": "2026-08-02T20:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Athletics",
+        "awayTeam": "Detroit Tigers",
+        "homeScore": 0,
+        "awayScore": 11
+      }
+    },
+    {
+      "pickId": "824483-away",
+      "sport": "mlb",
+      "matchup": "Pittsburgh Pirates @ Cincinnati Reds",
+      "pickLabel": "Pittsburgh Pirates ML",
+      "tier": "value",
+      "odds": 130,
+      "startTime": "2026-08-02T17:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Pittsburgh Pirates",
+        "homeScore": 10,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824648-home",
+      "sport": "mlb",
+      "matchup": "New York Yankees @ Chicago Cubs",
+      "pickLabel": "Chicago Cubs ML",
+      "tier": "value",
+      "odds": 107,
+      "startTime": "2026-08-02T18:20:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Chicago Cubs",
+        "awayTeam": "New York Yankees",
+        "homeScore": 1,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823270-home",
+      "sport": "mlb",
+      "matchup": "San Francisco Giants @ San Diego Padres",
+      "pickLabel": "San Diego Padres ML",
+      "tier": "value",
+      "odds": -151,
+      "startTime": "2026-08-02T20:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6623,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "San Diego Padres",
+        "awayTeam": "San Francisco Giants",
+        "homeScore": 5,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "823592-away",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ New York Mets",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": -121,
+      "startTime": "2026-08-02T17:40:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.8264,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 0,
+        "awayScore": 2
+      }
+    }
+  ]
+}

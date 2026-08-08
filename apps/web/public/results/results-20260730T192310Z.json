@@ -1,0 +1,57 @@
+{
+  "picksFile": "picks-20260730T192310Z.json",
+  "date": "2026-07-30",
+  "picksGeneratedAt": "2026-07-30T19:23:11.734Z",
+  "gradedAt": "2026-07-31T15:16:11.061Z",
+  "summary": {
+    "total": 2,
+    "graded": 2,
+    "wins": 1,
+    "losses": 1,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.5,
+    "unitsRisked": 2,
+    "unitsNet": -0.37,
+    "roi": -0.185
+  },
+  "results": [
+    {
+      "pickId": "823595-away",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ New York Mets",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": 110,
+      "startTime": "2026-07-30T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Mets",
+        "awayTeam": "Miami Marlins",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "823921-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "value",
+      "odds": -159,
+      "startTime": "2026-07-31T02:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6289,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 6,
+        "awayScore": 2
+      }
+    }
+  ]
+}

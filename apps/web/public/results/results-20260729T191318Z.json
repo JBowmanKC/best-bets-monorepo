@@ -1,0 +1,129 @@
+{
+  "picksFile": "picks-20260729T191318Z.json",
+  "date": "2026-07-29",
+  "picksGeneratedAt": "2026-07-29T19:13:19.435Z",
+  "gradedAt": "2026-07-30T15:07:39.696Z",
+  "summary": {
+    "total": 6,
+    "graded": 6,
+    "wins": 3,
+    "losses": 3,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 0.5,
+    "unitsRisked": 6,
+    "unitsNet": -1.05,
+    "roi": -0.175
+  },
+  "results": [
+    {
+      "pickId": "823192-away",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ San Francisco Giants",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "strong",
+      "odds": -107,
+      "startTime": "2026-07-29T19:45:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "San Francisco Giants",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 16,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823273-home",
+      "sport": "mlb",
+      "matchup": "Colorado Rockies @ San Diego Padres",
+      "pickLabel": "San Diego Padres ML",
+      "tier": "value",
+      "odds": -170,
+      "startTime": "2026-07-29T20:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.5882,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "San Diego Padres",
+        "awayTeam": "Colorado Rockies",
+        "homeScore": 3,
+        "awayScore": 1
+      }
+    },
+    {
+      "pickId": "823022-away",
+      "sport": "mlb",
+      "matchup": "Chicago Cubs @ St. Louis Cardinals",
+      "pickLabel": "Chicago Cubs ML",
+      "tier": "value",
+      "odds": -108,
+      "startTime": "2026-07-29T23:45:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "St. Louis Cardinals",
+        "awayTeam": "Chicago Cubs",
+        "homeScore": 3,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824002-away",
+      "sport": "mlb",
+      "matchup": "Houston Astros @ Los Angeles Angels",
+      "pickLabel": "Houston Astros ML",
+      "tier": "value",
+      "odds": -132,
+      "startTime": "2026-07-30T01:38:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.7576,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Houston Astros",
+        "homeScore": 4,
+        "awayScore": 7
+      }
+    },
+    {
+      "pickId": "823924-home",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "pickLabel": "Los Angeles Dodgers ML",
+      "tier": "value",
+      "odds": -166,
+      "startTime": "2026-07-30T02:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6024,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Seattle Mariners",
+        "homeScore": 4,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824487-home",
+      "sport": "mlb",
+      "matchup": "Cleveland Guardians @ Cincinnati Reds",
+      "pickLabel": "Cincinnati Reds ML",
+      "tier": "value",
+      "odds": 116,
+      "startTime": "2026-07-29T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Cincinnati Reds",
+        "awayTeam": "Cleveland Guardians",
+        "homeScore": 1,
+        "awayScore": 6
+      }
+    }
+  ]
+}
