@@ -2,19 +2,19 @@
   "picksFile": "picks-20260807T185319Z.json",
   "date": "2026-08-07",
   "picksGeneratedAt": "2026-08-07T18:53:20.974Z",
-  "gradedAt": "2026-08-08T02:54:11.332Z",
+  "gradedAt": "2026-08-08T13:41:41.299Z",
   "summary": {
     "total": 8,
-    "graded": 5,
-    "wins": 1,
-    "losses": 4,
+    "graded": 8,
+    "wins": 3,
+    "losses": 5,
     "pushes": 0,
-    "pending": 3,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.2,
-    "unitsRisked": 5,
-    "unitsNet": -3.4,
-    "roi": -0.68
+    "winRate": 0.375,
+    "unitsRisked": 8,
+    "unitsNet": -1.86,
+    "roi": -0.2325
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "strong",
       "odds": 101,
       "startTime": "2026-08-08T01:45:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 1.01,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 1,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "823515-away",
@@ -38,10 +43,15 @@
       "tier": "value",
       "odds": 123,
       "startTime": "2026-08-07T23:05:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Yankees",
+        "awayTeam": "Atlanta Braves",
+        "homeScore": 3,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "823750-home",
@@ -141,10 +151,15 @@
       "tier": "value",
       "odds": 153,
       "startTime": "2026-08-08T01:40:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 1.53,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Arizona Diamondbacks",
+        "awayTeam": "Los Angeles Dodgers",
+        "homeScore": 4,
+        "awayScore": 3
+      }
     }
   ]
 }

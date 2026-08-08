@@ -2,19 +2,19 @@
   "picksFile": "picks-20260807T131933Z.json",
   "date": "2026-08-07",
   "picksGeneratedAt": "2026-08-07T13:19:34.801Z",
-  "gradedAt": "2026-08-08T02:54:11.318Z",
+  "gradedAt": "2026-08-08T13:41:41.286Z",
   "summary": {
     "total": 5,
-    "graded": 3,
-    "wins": 1,
-    "losses": 2,
+    "graded": 5,
+    "wins": 2,
+    "losses": 3,
     "pushes": 0,
-    "pending": 2,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.3333,
-    "unitsRisked": 3,
-    "unitsNet": -1.4,
-    "roi": -0.4667
+    "winRate": 0.4,
+    "unitsRisked": 5,
+    "unitsNet": -1.41,
+    "roi": -0.282
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "strong",
       "odds": 133,
       "startTime": "2026-08-07T23:05:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "New York Yankees",
+        "awayTeam": "Atlanta Braves",
+        "homeScore": 3,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "823103-away",
@@ -38,10 +43,15 @@
       "tier": "value",
       "odds": -101,
       "startTime": "2026-08-08T01:45:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.9901,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 1,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "824566-home",
