@@ -18,8 +18,8 @@
     "mlbRoi": null,
     "nflRoi": null,
     "nhlRoi": null,
-    "wpScoreMultiplier": 1.0,
-    "evScoreMultiplier": 1.0,
+    "wpScoreMultiplier": 1,
+    "evScoreMultiplier": 1,
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
