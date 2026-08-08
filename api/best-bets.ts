@@ -360,6 +360,103 @@ function buildRationale(game: RawGame, pickHome: boolean, winPct: number, evEdge
   ].join(" ");
 }
 
+// ─── Narrative explanations (Claude Haiku, best-effort) ─────────────────────
+//
+// Replaces the template rationale with a short, model-written explanation.
+// ANTHROPIC_API_KEY is optional: every call site below falls back to the
+// existing template string (buildRationale's output, already attached to
+// the pick) whenever the key is unset, the request fails, or the response
+// is empty — a Haiku outage never blocks or degrades pick generation.
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+
+async function callHaikuExplanation(prompt: string, fallback: string): Promise<string> {
+  if (!ANTHROPIC_API_KEY) return fallback;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5",
+        max_tokens: 180,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+
+    if (!res.ok) return fallback;
+    const data: any = await res.json();
+    const text = (data.content ?? [])
+      .filter((b: { type: string }) => b.type === "text")
+      .map((b: { text: string }) => b.text)
+      .join("");
+    return text.trim() || fallback;
+  } catch {
+    return fallback; // always fall back gracefully
+  }
+}
+
+function buildExplanationPrompt(pick: BetPick, game: RawGame): string {
+  const pickHome = pick.betType.includes("Home");
+  const ourRec = pickHome ? game.homeRecord : game.awayRecord;
+  const oppRec = pickHome ? game.awayRecord : game.homeRecord;
+  const ourForm = pickHome ? game.homeRecentForm : game.awayRecentForm;
+  const oppForm = pickHome ? game.awayRecentForm : game.homeRecentForm;
+  const winsL5 = ourForm.filter(r => r === "W").length;
+  const oppWinsL5 = oppForm.filter(r => r === "W").length;
+  const seriesW = pickHome ? game.homeSeriesWins : game.awaySeriesWins;
+  const oppSeriesW = pickHome ? game.awaySeriesWins : game.homeSeriesWins;
+  const isPlus = pick.odds > 0;
+
+  return `Write a 3-4 sentence sports betting explanation for this pick.
+Be specific, analytical, and confident. Explain WHY this bet has edge.
+No bullet points, no headers, plain paragraph text only.
+
+Pick: ${pick.pickLabel} (${isPlus ? "+" : ""}${pick.odds})
+Sport: ${pick.sport.toUpperCase()}
+Our team record: ${ourRec.wins}-${ourRec.losses}
+Opponent record: ${oppRec.wins}-${oppRec.losses}
+Record gap: ${Math.abs((ourRec.wins - ourRec.losses) - (oppRec.wins - oppRec.losses))} games ${ourRec.winPct > oppRec.winPct ? "in our favour" : "against us — value play"}
+Our recent form: ${winsL5} wins in last 5 games
+Opponent recent form: ${oppWinsL5} wins in last 5 games
+Series record: ${seriesW}-${oppSeriesW} in current series
+Algorithm score: ${pick.scores.composite}/100 (${pick.tier.toUpperCase()} tier)
+Win probability: ${Math.round(pick.estimatedWinPct * 100)}% vs implied ${Math.round(pick.impliedWinPct * 100)}%
+EV edge: +${Math.round(pick.evEdge * 100)}%
+Kelly stake: $${pick.stakeAmount} recommended
+${isPlus ? "Note: Getting PLUS money on the better team — significant value." : ""}
+${seriesW > oppSeriesW ? "Note: Carry series momentum." : ""}
+Venue: ${game.venue}`;
+}
+
+async function generateExplanation(pick: BetPick, game: RawGame): Promise<string> {
+  return callHaikuExplanation(buildExplanationPrompt(pick, game), pick.rationale);
+}
+
+function buildPropExplanationPrompt(prop: PropPick): string {
+  const sideLabel = prop.recommendedSide === "over" ? "Over" : "Under";
+  return `Write a 3-4 sentence explanation for this player prop bet.
+Explain the hit rate trend, matchup angle, and EV edge.
+Plain paragraph text only, no bullets.
+
+Player: ${prop.playerName} (${prop.team})
+Prop: ${sideLabel} ${prop.line} ${PROP_TYPE_LABELS[prop.propType]}
+Odds: ${prop.odds > 0 ? "+" : ""}${prop.odds}
+Hit rate last 10 games: ${Math.round(prop.hitRateLast10 * 10)}/10
+Hit rate last 20 games: ${Math.round(prop.hitRateLast20 * 20)}/20
+Recent average: ${prop.recentAverage}
+Matchup context: ${prop.rationale}
+EV edge: +${Math.round(prop.evEdge * 100)}%
+Void risk: ${prop.voidRisk}`;
+}
+
+async function generatePropExplanation(prop: PropPick): Promise<string> {
+  return callHaikuExplanation(buildPropExplanationPrompt(prop), prop.rationale);
+}
+
 function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
   const picks: BetPick[] = [];
 
@@ -1532,16 +1629,34 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       console.warn("Prop pipeline failed entirely, continuing with moneyline picks only:", e);
     }
 
-    const parlays = buildDefaultParlays(picks, propPicks);
+    // Narrative explanations are best-effort too: generateExplanation/
+    // generatePropExplanation always resolve (never throw) and fall back to
+    // the template rationale already on the pick, so a Haiku outage can only
+    // ever degrade prose quality, never drop a pick.
+    const picksWithExplanations = await Promise.all(
+      picks.map(async (pick) => {
+        const gameId = pick.id.replace(/-(home|away)$/, "");
+        const game = rawGames.find(g => g.id === gameId);
+        if (!game) return pick;
+        const rationale = await generateExplanation(pick, game);
+        return { ...pick, rationale };
+      })
+    );
+
+    const propPicksWithExplanations = await Promise.all(
+      propPicks.map(async (prop) => ({ ...prop, rationale: await generatePropExplanation(prop) }))
+    );
+
+    const parlays = buildDefaultParlays(picksWithExplanations, propPicksWithExplanations);
 
     const response: BestBetsResponse = {
       date,
       generatedAt: new Date().toISOString(),
       cached: false,
       sportStatuses,
-      picks,
+      picks: picksWithExplanations,
       parlays,
-      propPicks,
+      propPicks: propPicksWithExplanations,
     };
 
     res.setHeader("Cache-Control", "s-maxage=1800, stale-while-revalidate=3600");
