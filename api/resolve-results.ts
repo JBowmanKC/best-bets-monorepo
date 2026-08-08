@@ -61,6 +61,15 @@ interface BankrollBet {
   profitLoss: number | null;
   bankrollAfter: number | null;
   resolvedAt: string | null;
+  // Prop bets only (absent/undefined on moneyline bets). `line` and
+  // `recommendedSide` aren't in the original bankroll.json spec, which only
+  // called for propType/playerName — but a prop can't be graded without
+  // knowing what line it was placed against and which side was bet, so both
+  // are added here too. See the resolve-results.ts file header for why.
+  propType?: string;
+  playerName?: string;
+  line?: number | null;
+  recommendedSide?: "over" | "under" | null;
 }
 
 interface Calibration {
@@ -99,6 +108,8 @@ interface FinalGame {
   homeScore: number | null;
   awayScore: number | null;
   state: "scheduled" | "final" | "no-action";
+  /** MLB gamePk — set only by fetchMlbFinals, needed to fetch the boxscore for prop resolution. */
+  gamePk?: string;
 }
 
 const CALIBRATION_THRESHOLD = 20;
@@ -179,7 +190,10 @@ async function fetchMlbFinals(date: string): Promise<FinalGame[]> {
     const awayScore = typeof away?.score === "number" ? away.score
       : typeof g.linescore?.teams?.away?.runs === "number" ? g.linescore.teams.away.runs : null;
 
-    return { homeTeam: home?.team?.name ?? "", awayTeam: away?.team?.name ?? "", homeScore, awayScore, state };
+    return {
+      homeTeam: home?.team?.name ?? "", awayTeam: away?.team?.name ?? "",
+      homeScore, awayScore, state, gamePk: String(g.gamePk),
+    };
   });
 }
 
@@ -226,14 +240,81 @@ interface Outcome {
   profitLoss: number;
 }
 
+/** MLB boxscore for prop grading — pitchers/batters stat lines per team. */
+async function fetchMlbBoxscore(gamePk: string): Promise<any | null> {
+  try {
+    return await rrFetchJson(`https://statsapi.mlb.com/api/v1/game/${gamePk}/boxscore`);
+  } catch (e) {
+    console.warn(`fetchMlbBoxscore(${gamePk}) failed:`, e);
+    return null;
+  }
+}
+
+/** Finds `playerName` in either team's boxscore and reads the stat `propType` bets against. Null = not found (scratched/DNP) or stat missing. */
+function findBoxscoreStatValue(boxscore: any, playerName: string, propType: string): number | null {
+  const isPitcherProp = propType === "pitcher_strikeouts" || propType === "pitcher_outs";
+  const sides = [boxscore?.teams?.home, boxscore?.teams?.away];
+
+  for (const side of sides) {
+    const players = side?.players ?? {};
+    for (const key of Object.keys(players)) {
+      const p = players[key];
+      if (rrNormalizeTeamName(p?.person?.fullName ?? "") !== rrNormalizeTeamName(playerName)) continue;
+
+      const stat = isPitcherProp ? p?.stats?.pitching : p?.stats?.batting;
+      if (!stat) return null;
+
+      const num = (v: any) => (v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v));
+
+      switch (propType) {
+        case "pitcher_strikeouts": return num(stat.strikeOuts);
+        case "pitcher_outs": {
+          const outs = num(stat.outs);
+          if (outs !== null) return outs;
+          const ip = parseFloat(stat.inningsPitched ?? "");
+          return Number.isNaN(ip) ? null : Math.round(ip * 3);
+        }
+        case "batter_hits": return num(stat.hits);
+        case "batter_total_bases": return num(stat.totalBases);
+        case "batter_home_runs": return num(stat.homeRuns);
+        default: return null;
+      }
+    }
+  }
+
+  return null;
+}
+
+/** Returns null when the bet should stay pending (game not final / boxscore not posted / player not found). */
+async function resolvePropBet(bet: BankrollBet, game: FinalGame): Promise<Outcome | null> {
+  if (game.state === "no-action") return { result: "void", profitLoss: 0 };
+  if (game.state !== "final" || !game.gamePk) return null;
+  if (bet.line === undefined || bet.line === null || !bet.recommendedSide || !bet.propType) return null;
+
+  const boxscore = await fetchMlbBoxscore(game.gamePk);
+  if (!boxscore) return null; // couldn't fetch — stays pending, retried next run
+
+  const statValue = findBoxscoreStatValue(boxscore, bet.playerName ?? "", bet.propType);
+  if (statValue === null) return null; // player scratched or stat not posted yet — stays pending
+
+  if (statValue === bet.line) return { result: "push", profitLoss: 0 };
+
+  const won = bet.recommendedSide === "over" ? statValue > bet.line : statValue < bet.line;
+  return won
+    ? { result: "win", profitLoss: Math.round((bet.potentialPayout - bet.stakeAmount) * 100) / 100 }
+    : { result: "loss", profitLoss: -bet.stakeAmount };
+}
+
 /** Returns null when the bet should stay pending (game not final / not found / side unclear). */
-function resolveBet(bet: BankrollBet, finals: FinalGame[]): Outcome | null {
+async function resolveBet(bet: BankrollBet, finals: FinalGame[]): Promise<Outcome | null> {
   const parts = bet.matchup.split(" @ ");
   if (parts.length !== 2) return null;
   const [awayTeam, homeTeam] = parts;
 
   const game = findGame(finals, awayTeam, homeTeam);
   if (!game) return null;
+
+  if (bet.propType) return resolvePropBet(bet, game);
 
   if (game.state === "no-action") return { result: "void", profitLoss: 0 };
   if (game.state !== "final" || game.homeScore === null || game.awayScore === null) return null;
@@ -376,7 +457,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     let resolvedCount = 0;
     for (const bet of pendingBets) {
       const finals = await getFinals(bet.sport, bet.date);
-      const outcome = resolveBet(bet, finals);
+      const outcome = await resolveBet(bet, finals);
       if (!outcome) continue;
 
       bet.result = outcome.result;

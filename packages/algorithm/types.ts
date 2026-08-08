@@ -62,6 +62,68 @@ export interface Pick {
   isPositiveEV: boolean;
 }
 
+// ─── Prop bets (MLB only today — see api/best-bets.ts) ──────────────────────
+
+export type PropType =
+  | "pitcher_strikeouts"
+  | "pitcher_outs"
+  | "batter_hits"
+  | "batter_total_bases"
+  | "batter_home_runs"
+  | "player_pass_yards"
+  | "player_rush_yards"
+  | "player_receiving_yards"
+  | "player_shots_on_goal";
+
+export type PropSide = "over" | "under";
+export type VoidRisk = "low" | "medium" | "high";
+
+export interface PropFactorScores {
+  hitRate: number;
+  expectedValue: number;
+  matchupQuality: number;
+  context: number;
+  composite: number;
+}
+
+export interface PropPick {
+  id: string;
+  sport: Sport;
+  playerName: string;
+  team: string;
+  matchup: string;
+  gameId: string;
+  propType: PropType;
+  line: number;
+  recommendedSide: PropSide;
+  odds: number;
+  overOdds: number | null;
+  underOdds: number | null;
+  hitRateLast10: number;
+  hitRateLast20: number;
+  recentAverage: number;
+  estimatedHitPct: number;
+  impliedHitPct: number;
+  evEdge: number;
+  tier: Tier;
+  scores: PropFactorScores;
+  startTime: string;
+  rationale: string;
+  stakeAmount: number;
+  potentialPayout: number;
+  voidRisk: VoidRisk;
+  isPositiveEV: boolean;
+}
+
+// ─── Custom parlay builder (server + client share this options shape) ───────
+
+export interface ParlayOptions {
+  legs: number;
+  riskLevel: "safe" | "standard" | "risky" | "custom";
+  includeProps: boolean;
+  sports?: Sport[];
+}
+
 export interface ParlayLeg {
   pickId: string;
   matchup: string;
@@ -86,6 +148,7 @@ export interface BestBetsResponse {
   generatedAt: string;       // ISO timestamp
   picks: Pick[];
   parlays: Parlay[];
+  propPicks: PropPick[];
   sportStatuses: SportStatus[];
   cached: boolean;
   /**
@@ -245,6 +308,11 @@ export interface BankrollBet {
   /** Running bankroll balance right after this bet settled (null while pending). */
   bankrollAfter: number | null;
   resolvedAt: string | null;
+  /** Present only on prop bets (see api/resolve-results.ts for why line/recommendedSide had to be added too). */
+  propType?: PropType;
+  playerName?: string;
+  line?: number | null;
+  recommendedSide?: PropSide | null;
 }
 
 export interface BankrollCalibration {
