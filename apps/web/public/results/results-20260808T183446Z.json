@@ -2,19 +2,19 @@
   "picksFile": "picks-20260808T183446Z.json",
   "date": "2026-08-08",
   "picksGeneratedAt": "2026-08-08T18:34:48.509Z",
-  "gradedAt": "2026-08-09T03:01:11.293Z",
+  "gradedAt": "2026-08-09T13:45:22.649Z",
   "summary": {
     "total": 9,
-    "graded": 7,
-    "wins": 5,
-    "losses": 2,
+    "graded": 9,
+    "wins": 6,
+    "losses": 3,
     "pushes": 0,
-    "pending": 2,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0.7143,
-    "unitsRisked": 7,
-    "unitsNet": 3.15,
-    "roi": 0.45
+    "winRate": 0.6667,
+    "unitsRisked": 9,
+    "unitsNet": 3.18,
+    "roi": 0.3533
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "strong",
       "odds": 103,
       "startTime": "2026-08-09T01:50:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 1.03,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 2,
+        "awayScore": 3
+      }
     },
     {
       "pickId": "824079-away",
@@ -92,10 +97,15 @@
       "tier": "value",
       "odds": 171,
       "startTime": "2026-08-09T00:10:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Arizona Diamondbacks",
+        "awayTeam": "Los Angeles Dodgers",
+        "homeScore": 1,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "824565-home",
