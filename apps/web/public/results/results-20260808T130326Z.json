@@ -1,0 +1,173 @@
+{
+  "picksFile": "picks-20260808T130326Z.json",
+  "date": "2026-08-08",
+  "picksGeneratedAt": "2026-08-08T13:03:27.073Z",
+  "gradedAt": "2026-08-09T03:01:11.278Z",
+  "summary": {
+    "total": 9,
+    "graded": 7,
+    "wins": 5,
+    "losses": 2,
+    "pushes": 0,
+    "pending": 2,
+    "unknown": 0,
+    "winRate": 0.7143,
+    "unitsRisked": 7,
+    "unitsNet": 2.98,
+    "roi": 0.4257
+  },
+  "results": [
+    {
+      "pickId": "823102-away",
+      "sport": "mlb",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "pickLabel": "Tampa Bay Rays ML",
+      "tier": "strong",
+      "odds": 101,
+      "startTime": "2026-08-09T01:50:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "822701-home",
+      "sport": "mlb",
+      "matchup": "Cincinnati Reds @ Washington Nationals",
+      "pickLabel": "Washington Nationals ML",
+      "tier": "value",
+      "odds": 129,
+      "startTime": "2026-08-08T22:45:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.29,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Washington Nationals",
+        "awayTeam": "Cincinnati Reds",
+        "homeScore": 8,
+        "awayScore": 2
+      }
+    },
+    {
+      "pickId": "824079-away",
+      "sport": "mlb",
+      "matchup": "Chicago Cubs @ Kansas City Royals",
+      "pickLabel": "Chicago Cubs ML",
+      "tier": "value",
+      "odds": -165,
+      "startTime": "2026-08-08T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Kansas City Royals",
+        "awayTeam": "Chicago Cubs",
+        "homeScore": 6,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823021-home",
+      "sport": "mlb",
+      "matchup": "Colorado Rockies @ St. Louis Cardinals",
+      "pickLabel": "St. Louis Cardinals ML",
+      "tier": "value",
+      "odds": -156,
+      "startTime": "2026-08-08T23:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "St. Louis Cardinals",
+        "awayTeam": "Colorado Rockies",
+        "homeScore": 6,
+        "awayScore": 8
+      }
+    },
+    {
+      "pickId": "825049-home",
+      "sport": "mlb",
+      "matchup": "Los Angeles Dodgers @ Arizona Diamondbacks",
+      "pickLabel": "Arizona Diamondbacks ML",
+      "tier": "value",
+      "odds": 156,
+      "startTime": "2026-08-09T00:10:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "824565-home",
+      "sport": "mlb",
+      "matchup": "Cleveland Guardians @ Chicago White Sox",
+      "pickLabel": "Chicago White Sox ML",
+      "tier": "value",
+      "odds": 114,
+      "startTime": "2026-08-08T23:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.14,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Chicago White Sox",
+        "awayTeam": "Cleveland Guardians",
+        "homeScore": 6,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823752-home",
+      "sport": "mlb",
+      "matchup": "Minnesota Twins @ Milwaukee Brewers",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -150,
+      "startTime": "2026-08-08T23:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6667,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Milwaukee Brewers",
+        "awayTeam": "Minnesota Twins",
+        "homeScore": 4,
+        "awayScore": 3
+      }
+    },
+    {
+      "pickId": "823514-home",
+      "sport": "mlb",
+      "matchup": "Atlanta Braves @ New York Yankees",
+      "pickLabel": "New York Yankees ML",
+      "tier": "value",
+      "odds": 125,
+      "startTime": "2026-08-08T19:05:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 1.25,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "New York Yankees",
+        "awayTeam": "Atlanta Braves",
+        "homeScore": 5,
+        "awayScore": 4
+      }
+    },
+    {
+      "pickId": "823834-home",
+      "sport": "mlb",
+      "matchup": "Los Angeles Angels @ Miami Marlins",
+      "pickLabel": "Miami Marlins ML",
+      "tier": "value",
+      "odds": -157,
+      "startTime": "2026-08-08T20:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.6369,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Miami Marlins",
+        "awayTeam": "Los Angeles Angels",
+        "homeScore": 7,
+        "awayScore": 0
+      }
+    }
+  ]
+}
