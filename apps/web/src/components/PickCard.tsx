@@ -122,7 +122,10 @@ export function PickCard({ pick, rank }: Props) {
       </div>
 
       {/* Rationale */}
-      <div style={{ fontSize: "0.73rem", color: "#8098b8", lineHeight: 1.55 }}>
+      <div style={{
+        fontSize: "0.73rem", color: "#8098b8", lineHeight: 1.7,
+        borderTop: "1px solid #1e2d45", paddingTop: 10,
+      }}>
         {pick.rationale}
       </div>
     </div>

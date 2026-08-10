@@ -52,8 +52,9 @@ jobs:
             exit 1
           fi
 
-          PICK_COUNT=$(jq '.picks | length' response.json)
-          echo "Generated $PICK_COUNT picks for $DATE"
+          PICK_COUNT=$(jq '.allPicks | length' response.json)
+          BEST_BET_COUNT=$(jq '.bestBets | length' response.json)
+          echo "Generated $PICK_COUNT picks for $DATE, selected $BEST_BET_COUNT best bet(s)"
 
           # picks.json is what the dashboard reads (always the latest run);
           # picks/picks-<stamp>.json is the permanent archive the history page
@@ -64,6 +65,33 @@ jobs:
 
       - name: Track today's picks in the bankroll ledger
         run: node scripts/append-bankroll-bets.mjs apps/web/public/picks.json
+
+      - name: Log daily bet summary
+        run: |
+          cat > log_summary.py <<'PYEOF'
+          import json
+
+          d = json.load(open("apps/web/public/picks.json"))
+          s = d.get("summary", {})
+          bets = d.get("bestBets", [])
+
+          print(f"Best Bets: {len(bets)}")
+          for b in bets:
+              # A best bet can be a moneyline pick (has pickLabel) or a prop
+              # pick (playerName/propType/line/recommendedSide, no pickLabel)
+              # — build a label from whichever shape this one is.
+              label = b.get("pickLabel")
+              if not label:
+                  side = "Over" if b.get("recommendedSide") == "over" else "Under"
+                  label = f"{b.get('playerName', '?')} {side} {b.get('line', '?')} {b.get('propType', '')}".strip()
+              print(f"  - {label} ({b.get('odds', '?')}) stake: ${b.get('stakeAmount', 0):.2f}")
+
+          print(f"Total staked: ${s.get('totalStaked', 0):.2f}")
+          print(f"Potential payout: ${s.get('totalPotentialPayout', 0):.2f}")
+          print(f"Bankroll at risk: {s.get('bankrollAtRisk', 0)*100:.1f}%")
+          PYEOF
+          python3 log_summary.py
+          rm -f log_summary.py
 
       - name: Commit and push picks
         run: |
