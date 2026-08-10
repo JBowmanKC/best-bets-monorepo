@@ -165,7 +165,10 @@ export interface BestBetsResponse {
   cached: boolean;
   sportStatuses: SportStatus[];
 
-  // The (up to) 5 committed bets for today.
+  // Top 10 by composite score alone, across picks + props — "Today's Analysis" in the UI.
+  shortlist: (Pick | PropPick)[];
+
+  // The (up to) 5 committed bets for today, drawn from the shortlist above.
   bestBets: (Pick | PropPick)[]; // up to 3 singles
   safeParlay: Parlay;
   highOddsParlay: Parlay;

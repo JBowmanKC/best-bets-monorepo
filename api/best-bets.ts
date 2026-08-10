@@ -157,7 +157,10 @@ interface BestBetsResponse {
   cached: boolean;
   sportStatuses: SportStatus[];
 
-  // The (up to) 5 committed bets for today.
+  // Top 10 by composite score alone, across picks + props — "Today's Analysis" in the UI.
+  shortlist: (BetPick | PropPick)[];
+
+  // The (up to) 5 committed bets for today, drawn from the shortlist above.
   bestBets: (BetPick | PropPick)[]; // up to 3 singles
   safeParlay: Parlay;
   highOddsParlay: Parlay;
@@ -725,28 +728,28 @@ function toParlayLeg(item: BetPick | PropPick): ParlayLeg {
     : { pickId: item.id, matchup: item.matchup, pickLabel: item.pickLabel, sport: item.sport, odds: item.odds, startTime: item.startTime };
 }
 
-/** Top 3 best-bet singles: composite >= 68, sane odds window, sorted tier > EV edge > composite. */
-function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
-  const pickPool = picks.filter(p => p.scores.composite >= 68 && p.odds >= -250 && p.odds <= 300);
-  const propPool = propPicks.filter(p =>
-    p.scores.composite >= 68 &&
-    (p.voidRisk === "low" || p.voidRisk === "medium") &&
-    p.hitRateLast10 >= 0.6
-  );
+/** Top 10 across picks + props by composite score alone — no other filtering. Shown in the UI as "Today's Analysis". */
+function buildShortlist(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
+  const pool: (BetPick | PropPick)[] = [...picks, ...propPicks];
+  pool.sort((a, b) => b.scores.composite - a.scores.composite);
+  return pool.slice(0, 10);
+}
 
-  const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
-  const pool: (BetPick | PropPick)[] = [...pickPool, ...propPool];
-
-  pool.sort((a, b) => {
-    const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
-    if (tierDiff !== 0) return tierDiff;
-    const evDiff = b.evEdge - a.evEdge;
-    if (evDiff !== 0) return evDiff;
-    return b.scores.composite - a.scores.composite;
+/** Top 3 committed bets, chosen from the 10-item shortlist only: composite >= 68, positive EV, sane odds/prop-risk window, sorted by EV edge descending. */
+function selectBestBets(shortlist: (BetPick | PropPick)[]): (BetPick | PropPick)[] {
+  const qualified = shortlist.filter(item => {
+    if (item.scores.composite < 68) return false;
+    if (item.evEdge <= 0) return false;
+    if (isPropPick(item)) {
+      return (item.voidRisk === "low" || item.voidRisk === "medium") && item.hitRateLast10 >= 0.6;
+    }
+    return item.odds >= -250 && item.odds <= 300;
   });
 
-  if (pool.length === 0) console.warn("No qualifying picks today");
-  return pool.slice(0, 3);
+  qualified.sort((a, b) => b.evEdge - a.evEdge);
+
+  if (qualified.length === 0) console.warn("No qualifying picks today");
+  return qualified.slice(0, 3);
 }
 
 /** 2-3 elite/strong moneyline legs, preferring picks not already used as a best bet. */
@@ -913,6 +916,7 @@ function enforceDailyBudget(
 }
 
 interface DailyBetsResult {
+  shortlist: (BetPick | PropPick)[];
   bestBets: (BetPick | PropPick)[];
   safeParlay: Parlay;
   highOddsParlay: Parlay;
@@ -928,11 +932,15 @@ function emptyParlay(id: Parlay["id"], label: string, emoji: string): Parlay {
 }
 
 function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll: number): DailyBetsResult {
-  const bestBets = selectBestBets(allPicks, allPropPicks);
+  const shortlist = buildShortlist(allPicks, allPropPicks);
+  const shortlistPicks = shortlist.filter((item): item is BetPick => !isPropPick(item));
+  const shortlistProps = shortlist.filter(isPropPick);
+
+  const bestBets = selectBestBets(shortlist);
   const bestBetIds = new Set(bestBets.map(b => b.id));
 
-  const safeLegs = selectSafeParlayLegs(allPicks, bestBetIds);
-  const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks);
+  const safeLegs = selectSafeParlayLegs(shortlistPicks, bestBetIds);
+  const highLegs = selectHighOddsParlayLegs(shortlistPicks, shortlistProps);
 
   const safeParlay = safeLegs.length >= 2
     ? buildCommittedParlay(safeLegs, computeParlayStake(safeLegs, bankroll, 1), { id: "safe", label: "💚 Safe Parlay", emoji: "💚" })
@@ -943,7 +951,7 @@ function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll
     ? buildCommittedParlay(highLegs, computeParlayStake(highLegs, bankroll, 0.4), { id: "shot", label: "🚀 High Odds Parlay", emoji: "🚀" })
     : emptyParlay("shot", "🚀 High Odds Parlay", "🚀");
 
-  return enforceDailyBudget(bestBets, safeParlay, highOddsParlay, bankroll);
+  return { shortlist, ...enforceDailyBudget(bestBets, safeParlay, highOddsParlay, bankroll) };
 }
 
 // ─── Data sources ────────────────────────────────────────────────────────────
@@ -1928,10 +1936,12 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       // Never let a selection bug take down pick generation — fall back to a
       // simple top-3-by-composite single plus the reference safe/shot parlays.
       console.warn("selectDailyBets failed, falling back to top picks:", e);
-      const fallbackBestBets = [...picksWithExplanations].sort((a, b) => b.scores.composite - a.scores.composite).slice(0, 3);
+      const fallbackShortlist = buildShortlist(picksWithExplanations, propPicksWithExplanations);
+      const fallbackBestBets = fallbackShortlist.slice(0, 3);
       const fallbackSafe = allParlays.find(p => p.id === "safe") ?? emptyParlay("safe", "💚 Safe Parlay", "💚");
       const fallbackShot = allParlays.find(p => p.id === "shot") ?? emptyParlay("shot", "🚀 High Odds Parlay", "🚀");
       dailyBets = {
+        shortlist: fallbackShortlist,
         bestBets: fallbackBestBets,
         safeParlay: fallbackSafe,
         highOddsParlay: fallbackShot,
@@ -1965,6 +1975,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       generatedAt: new Date().toISOString(),
       cached: false,
       sportStatuses,
+      shortlist: dailyBets.shortlist,
       bestBets: dailyBets.bestBets,
       safeParlay: dailyBets.safeParlay,
       highOddsParlay: dailyBets.highOddsParlay,

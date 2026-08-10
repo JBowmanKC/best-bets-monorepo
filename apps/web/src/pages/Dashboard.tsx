@@ -79,9 +79,14 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
   );
 }
 
-// ─── Full Analysis (collapsible) ─────────────────────────────────────────────
-function FullAnalysisSection({ data }: { data: BestBetsResponse }) {
+// ─── Today's Top 10 Analysis (collapsible) ───────────────────────────────────
+function TopTenAnalysisSection({ data }: { data: BestBetsResponse }) {
   const [open, setOpen] = useState(false);
+
+  // RankedTable only understands moneyline Pick[], not the mixed Pick|PropPick
+  // shortlist — feed it the moneyline subset (still capped at 10, since it's
+  // a filter of the shortlist, never more).
+  const rankedPicks = data.shortlist.filter((item): item is Pick => !isPropPick(item));
 
   return (
     <div style={{ background: "#0f1623", border: "1px solid #1e2d45", borderRadius: 10, overflow: "hidden" }}>
@@ -95,34 +100,29 @@ function FullAnalysisSection({ data }: { data: BestBetsResponse }) {
         }}
       >
         <span style={{ color: "#4a6080", fontSize: "0.7rem" }}>{open ? "▾" : "▸"}</span>
-        <span style={{ fontWeight: 800, fontSize: "0.82rem" }}>{open ? "Hide" : "Show"} full analysis</span>
+        <span style={{ fontWeight: 800, fontSize: "0.82rem" }}>{open ? "Hide" : "Show"} today's top 10 analysis</span>
         <span style={{ color: "#4a6080", fontSize: "0.68rem", flex: 1 }}>
-          {data.allPicks.length} pick{data.allPicks.length === 1 ? "" : "s"} · {data.allPropPicks.length} prop{data.allPropPicks.length === 1 ? "" : "s"} scored
+          {data.shortlist.length} pick{data.shortlist.length === 1 ? "" : "s"} shortlisted
         </span>
       </button>
 
       {open && (
         <div style={{ padding: "0 16px 18px" }}>
           <div style={{ color: "#4a6080", fontSize: "0.72rem", lineHeight: 1.6, marginBottom: 16 }}>
-            These picks were analyzed but not selected for today's bets.
+            Top 10 picks by algorithm score — top 3 selected for today's bets.
           </div>
 
-          <SectionTitle>All Picks</SectionTitle>
+          <SectionTitle>Shortlist</SectionTitle>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 14, marginBottom: 8 }}>
-            {data.allPicks.map((pick, i) => <PickCard key={pick.id} pick={pick} rank={i + 1} />)}
+            {data.shortlist.map((item, i) =>
+              isPropPick(item)
+                ? <PropCard key={item.id} prop={item} rank={i + 1} />
+                : <PickCard key={item.id} pick={item} rank={i + 1} />
+            )}
           </div>
-
-          {data.allPropPicks.length > 0 && (
-            <>
-              <SectionTitle>All Prop Picks</SectionTitle>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 14, marginBottom: 8 }}>
-                {data.allPropPicks.map((prop, i) => <PropCard key={prop.id} prop={prop} rank={i + 1} />)}
-              </div>
-            </>
-          )}
 
           <SectionTitle>Ranked Table</SectionTitle>
-          <RankedTable picks={data.allPicks} />
+          <RankedTable picks={rankedPicks} />
         </div>
       )}
     </div>
@@ -268,11 +268,11 @@ export function Dashboard() {
         <EmptyNotice text="Picks generate at 8:00 AM EDT" />
       )}
 
-      {/* ── Section 4: Full Analysis ── */}
-      {data && (data.allPicks.length > 0 || data.allPropPicks.length > 0) && (
+      {/* ── Section 4: Today's Top 10 Analysis ── */}
+      {data && data.shortlist.length > 0 && (
         <>
-          <SectionTitle>🔍 Full Analysis</SectionTitle>
-          <FullAnalysisSection data={data} />
+          <SectionTitle>🔍 Today's Top 10 Analysis</SectionTitle>
+          <TopTenAnalysisSection data={data} />
         </>
       )}
 
