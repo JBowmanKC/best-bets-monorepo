@@ -1,0 +1,39 @@
+{
+  "picksFile": "picks-20260809T183738Z.json",
+  "date": "2026-08-09",
+  "picksGeneratedAt": "2026-08-09T18:37:40.223Z",
+  "gradedAt": "2026-08-10T03:10:54.639Z",
+  "summary": {
+    "total": 1,
+    "graded": 1,
+    "wins": 1,
+    "losses": 0,
+    "pushes": 0,
+    "pending": 0,
+    "unknown": 0,
+    "winRate": 1,
+    "unitsRisked": 1,
+    "unitsNet": 0.95,
+    "roi": 0.95
+  },
+  "results": [
+    {
+      "pickId": "823104-away",
+      "sport": "mlb",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "pickLabel": "Tampa Bay Rays ML",
+      "tier": "strong",
+      "odds": -105,
+      "startTime": "2026-08-09T20:10:00Z",
+      "unitsRisked": 1,
+      "unitsNet": 0.9524,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Seattle Mariners",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 1,
+        "awayScore": 4
+      }
+    }
+  ]
+}
