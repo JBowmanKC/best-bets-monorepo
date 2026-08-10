@@ -43,24 +43,46 @@ interface ApiResponse {
   end(): void;
 }
 
+/**
+ * One parlay leg. `pickLabel` + `odds` are what the original bankroll.json
+ * spec asked for; everything else here is added because a leg can't actually
+ * be graded without knowing which game it's from and (for a prop leg) which
+ * stat/line/side — same reasoning as the single-bet `line`/`recommendedSide`
+ * addition above.
+ */
+interface ParlayLegRecord {
+  pickLabel: string;
+  odds: number;
+  sport: RrSport;
+  matchup: string;
+  date: string;
+  propType?: string;
+  playerName?: string;
+  line?: number;
+  recommendedSide?: "over" | "under";
+}
+
 interface BankrollBet {
   betId: string;
   date: string;
-  sport: RrSport;
-  matchup: string;
-  pickLabel: string;
-  odds: number;
-  stakeAmount: number;
-  potentialPayout: number;
-  estimatedWinPct: number;
-  impliedWinPct: number;
-  evEdge: number;
-  tier: RrTier;
-  scores: { composite: number };
   result: BetResult;
   profitLoss: number | null;
   bankrollAfter: number | null;
   resolvedAt: string | null;
+  stakeAmount: number;
+  potentialPayout: number;
+  // Single bets only (moneyline or prop) — a parlay entry (betType: "parlay")
+  // carries parlayLegs instead and leaves these undefined, since none of them
+  // has a single well-defined value across multiple legs.
+  sport?: RrSport;
+  matchup?: string;
+  pickLabel?: string;
+  odds?: number;
+  estimatedWinPct?: number;
+  impliedWinPct?: number;
+  evEdge?: number;
+  tier?: RrTier;
+  scores?: { composite: number };
   // Prop bets only (absent/undefined on moneyline bets). `line` and
   // `recommendedSide` aren't in the original bankroll.json spec, which only
   // called for propType/playerName — but a prop can't be graded without
@@ -70,6 +92,10 @@ interface BankrollBet {
   playerName?: string;
   line?: number | null;
   recommendedSide?: "over" | "under" | null;
+  // Parlay bets only.
+  betType?: "single" | "parlay";
+  parlayLegs?: ParlayLegRecord[];
+  combinedOdds?: number;
 }
 
 interface Calibration {
@@ -305,8 +331,100 @@ async function resolvePropBet(bet: BankrollBet, game: FinalGame): Promise<Outcom
     : { result: "loss", profitLoss: -bet.stakeAmount };
 }
 
+function rrCalcParlayPayout(odds: number[]): number {
+  const decimalProduct = odds.reduce((acc, o) => {
+    const decimal = o > 0 ? 1 + o / 100 : 1 + 100 / Math.abs(o);
+    return acc * decimal;
+  }, 1);
+  return Math.round((decimalProduct - 1) * 100);
+}
+
+/**
+ * Resolves one parlay leg to a plain win/loss/void — never a dollar amount,
+ * since a leg's own stake isn't meaningful (only the parlay as a whole is
+ * staked). Returns null when the leg's game isn't final yet, so the whole
+ * parlay stays pending until every leg has an answer.
+ */
+async function resolveParlayLeg(
+  leg: ParlayLegRecord,
+  getFinals: (sport: RrSport, date: string) => Promise<FinalGame[]>
+): Promise<"win" | "loss" | "void" | null> {
+  const parts = leg.matchup.split(" @ ");
+  if (parts.length !== 2) return null;
+  const [awayTeam, homeTeam] = parts;
+
+  const finals = await getFinals(leg.sport, leg.date);
+  const game = findGame(finals, awayTeam, homeTeam);
+  if (!game) return null;
+
+  if (leg.propType) {
+    if (game.state === "no-action") return "void";
+    if (game.state !== "final" || !game.gamePk) return null;
+    if (leg.line === undefined || leg.line === null || !leg.recommendedSide) return null;
+
+    const boxscore = await fetchMlbBoxscore(game.gamePk);
+    if (!boxscore) return null;
+
+    const statValue = findBoxscoreStatValue(boxscore, leg.playerName ?? "", leg.propType);
+    if (statValue === null) return null;
+    if (statValue === leg.line) return "void"; // a push leg is dropped, same as a voided one
+
+    return (leg.recommendedSide === "over" ? statValue > leg.line : statValue < leg.line) ? "win" : "loss";
+  }
+
+  if (game.state === "no-action") return "void";
+  if (game.state !== "final" || game.homeScore === null || game.awayScore === null) return null;
+
+  const pickedTeam = leg.pickLabel.replace(/\s+ML$/, "").trim();
+  const pickedHome = rrNormalizeTeamName(pickedTeam) === rrNormalizeTeamName(homeTeam);
+  const pickedAway = rrNormalizeTeamName(pickedTeam) === rrNormalizeTeamName(awayTeam);
+  if (!pickedHome && !pickedAway) return null;
+
+  const pickedScore = pickedHome ? game.homeScore : game.awayScore;
+  const oppScore = pickedHome ? game.awayScore : game.homeScore;
+  if (pickedScore > oppScore) return "win";
+  if (pickedScore < oppScore) return "loss";
+  return "void"; // a push leg is dropped, same as a voided one
+}
+
+/**
+ * A parlay wins only if every leg wins. Any leg losing sinks the whole
+ * parlay. A voided (or pushed) leg is dropped and the payout is recalculated
+ * from the remaining winning legs' odds; if every leg voids, so does the
+ * parlay.
+ */
+async function resolveParlayBet(
+  bet: BankrollBet,
+  getFinals: (sport: RrSport, date: string) => Promise<FinalGame[]>
+): Promise<Outcome | null> {
+  const legs = bet.parlayLegs ?? [];
+  if (legs.length === 0) return null;
+
+  const results: ("win" | "loss" | "void")[] = [];
+  for (const leg of legs) {
+    const outcome = await resolveParlayLeg(leg, getFinals);
+    if (outcome === null) return null; // any leg still undecided — whole parlay stays pending
+    results.push(outcome);
+  }
+
+  if (results.every(r => r === "void")) return { result: "void", profitLoss: 0 };
+  if (results.some(r => r === "loss")) return { result: "loss", profitLoss: -bet.stakeAmount };
+
+  const survivingOdds = legs.filter((_, i) => results[i] === "win").map(l => l.odds);
+  const recalculatedOdds = survivingOdds.length > 0 ? rrCalcParlayPayout(survivingOdds) : 0;
+  const potentialPayout = Math.round((bet.stakeAmount + (bet.stakeAmount * recalculatedOdds) / 100) * 100) / 100;
+  return { result: "win", profitLoss: Math.round((potentialPayout - bet.stakeAmount) * 100) / 100 };
+}
+
 /** Returns null when the bet should stay pending (game not final / not found / side unclear). */
-async function resolveBet(bet: BankrollBet, finals: FinalGame[]): Promise<Outcome | null> {
+async function resolveBet(
+  bet: BankrollBet,
+  getFinals: (sport: RrSport, date: string) => Promise<FinalGame[]>
+): Promise<Outcome | null> {
+  if (bet.betType === "parlay") return resolveParlayBet(bet, getFinals);
+  if (!bet.sport || !bet.matchup || !bet.pickLabel) return null; // malformed single — nothing to resolve against
+
+  const finals = await getFinals(bet.sport, bet.date);
   const parts = bet.matchup.split(" @ ");
   if (parts.length !== 2) return null;
   const [awayTeam, homeTeam] = parts;
@@ -383,7 +501,7 @@ function tierActualWinRate(bets: BankrollBet[], tier: RrTier): number | null {
 function tierPredictedWinRate(bets: BankrollBet[], tier: RrTier): number | null {
   const decided = bets.filter(b => b.tier === tier && (b.result === "win" || b.result === "loss"));
   if (decided.length === 0) return null;
-  return decided.reduce((acc, b) => acc + b.estimatedWinPct, 0) / decided.length;
+  return decided.reduce((acc, b) => acc + (b.estimatedWinPct ?? 0), 0) / decided.length;
 }
 
 function sportRoi(bets: BankrollBet[], sport: RrSport): number | null {
@@ -456,8 +574,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
 
     let resolvedCount = 0;
     for (const bet of pendingBets) {
-      const finals = await getFinals(bet.sport, bet.date);
-      const outcome = await resolveBet(bet, finals);
+      const outcome = await resolveBet(bet, getFinals);
       if (!outcome) continue;
 
       bet.result = outcome.result;

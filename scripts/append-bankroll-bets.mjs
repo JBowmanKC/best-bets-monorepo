@@ -1,14 +1,16 @@
 #!/usr/bin/env node
-// Appends one pending bankroll bet per pick (and per prop pick) in a
-// freshly-fetched picks payload, without touching any bet that's already
-// recorded.
+// Appends a pending bankroll bet for each of today's *committed* daily bets
+// — the 3 bestBets singles plus the safeParlay and highOddsParlay — without
+// touching any bet that's already recorded. The much larger allPicks/
+// allPropPicks analysis pool is deliberately NOT tracked here: the whole
+// point of the daily-selection system is that the bankroll only ever commits
+// to the 5 bets selectDailyBets() actually chose.
 //
 //   node scripts/append-bankroll-bets.mjs [picksJsonPath]
 //
-// Run by the Daily Picks workflow right after picks.json is fetched, so every
-// pick and prop that goes out gets its Kelly stake tracked in
-// apps/web/public/bankroll.json from day one. Idempotent: re-running against
-// the same picks file is a no-op because bets are keyed by betId.
+// Run by the Daily Picks workflow right after picks.json is fetched.
+// Idempotent: re-running against the same picks file is a no-op because bets
+// are keyed by betId.
 
 import { readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -90,23 +92,60 @@ function propBetEntry(prop, date) {
   };
 }
 
+const isProp = item => "playerName" in item;
+
+/**
+ * A parlay leg only carries `matchup`/`sport`/`startTime` (see api/best-bets.ts's
+ * ParlayLeg) — `date` for grading is derived from the leg's own startTime
+ * rather than reused from the slate date, since a late game can start after
+ * midnight UTC and land on a different calendar date than the slate.
+ */
+function parlayLegRecord(leg) {
+  return {
+    pickLabel: leg.pickLabel,
+    odds: leg.odds,
+    sport: leg.sport,
+    matchup: leg.matchup,
+    date: String(leg.startTime).slice(0, 10),
+    ...(leg.propType ? { propType: leg.propType, playerName: leg.playerName, line: leg.line, recommendedSide: leg.recommendedSide } : {}),
+  };
+}
+
+function parlayBetEntry(parlay, kind, date) {
+  return {
+    betId: `parlay-${kind}-${date}`,
+    date,
+    betType: "parlay",
+    parlayLegs: (parlay.legs ?? []).map(parlayLegRecord),
+    combinedOdds: parlay.estimatedPayout,
+    stakeAmount: parlay.stakeAmount ?? 0,
+    potentialPayout: parlay.potentialPayout ?? 0,
+    result: "pending",
+    profitLoss: null,
+    bankrollAfter: null,
+    resolvedAt: null,
+  };
+}
+
 async function main() {
   const picksPath = process.argv[2] ?? join(PUBLIC_DIR, "picks.json");
   if (!existsSync(picksPath)) throw new Error(`No picks file at ${picksPath}`);
 
   const payload = await readJson(picksPath);
-  const picks = payload.picks ?? [];
-  const propPicks = payload.propPicks ?? [];
+  const bestBets = payload.bestBets ?? [];
+  const safeParlay = payload.safeParlay;
+  const highOddsParlay = payload.highOddsParlay;
 
   const bankroll = existsSync(BANKROLL_FILE) ? await readJson(BANKROLL_FILE) : defaultBankroll();
   const seen = new Set(bankroll.bets.map(b => b.betId));
 
-  let added = 0;
-  const candidates = [
-    ...picks.map(pick => moneylineBetEntry(pick, payload.date)),
-    ...propPicks.map(prop => propBetEntry(prop, payload.date)),
-  ];
+  const candidates = bestBets.map(item =>
+    isProp(item) ? propBetEntry(item, payload.date) : moneylineBetEntry(item, payload.date)
+  );
+  if (safeParlay?.legs?.length > 0) candidates.push(parlayBetEntry(safeParlay, "safe", payload.date));
+  if (highOddsParlay?.legs?.length > 0) candidates.push(parlayBetEntry(highOddsParlay, "high", payload.date));
 
+  let added = 0;
   for (const bet of candidates) {
     if (seen.has(bet.betId)) continue;
 
@@ -118,12 +157,12 @@ async function main() {
   }
 
   if (added === 0) {
-    console.log(`No new bets to add (${candidates.length} pick(s)/prop(s) already tracked for ${payload.date}).`);
+    console.log(`No new bets to add (${candidates.length} committed bet(s) already tracked for ${payload.date}).`);
     return;
   }
 
   await writeFile(BANKROLL_FILE, `${JSON.stringify(bankroll, null, 2)}\n`, "utf8");
-  console.log(`Added ${added} new bet(s) to bankroll.json for ${payload.date} (${picks.length} pick(s), ${propPicks.length} prop(s) in this run).`);
+  console.log(`Added ${added} new bet(s) to bankroll.json for ${payload.date} (${bestBets.length} single(s), ${candidates.length - bestBets.length} parlay(s)).`);
 }
 
 main().catch(err => {

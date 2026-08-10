@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { BankrollBet, BankrollCalibration, BetResult, Tier } from "@best-bets/algorithm";
 
 import { SectionTitle } from "../components/SectionTitle";
@@ -37,6 +37,19 @@ const fmtSigned = (n: number) => `${n >= 0 ? "+" : "-"}$${Math.abs(n).toFixed(2)
 const fmtOdds   = (o: number) => (o > 0 ? `+${o}` : String(o));
 const fmtPct    = (p: number | null | undefined) => (p === null || p === undefined ? "—" : `${(p * 100).toFixed(1)}%`);
 const plColor   = (n: number) => (n > 0 ? "#10b981" : n < 0 ? "#f87171" : "#8098b8");
+
+const TYPE_BADGE: Record<"single" | "parlay", { label: string; color: string; bg: string }> = {
+  single: { label: "Single", color: "#8098b8", bg: "#131c2e" },
+  parlay: { label: "Parlay", color: "#8b5cf6", bg: "#1a0d30" },
+};
+
+function betKind(bet: BankrollBet): "single" | "parlay" {
+  return bet.betType === "parlay" ? "parlay" : "single";
+}
+
+function parlayLabel(bet: BankrollBet): string {
+  return `${bet.parlayLegs?.length ?? 0}-Leg Parlay`;
+}
 
 function applyFilter(bets: BankrollBet[], filter: Filter): BankrollBet[] {
   switch (filter) {
@@ -155,16 +168,26 @@ function FilterBar({ active, onChange }: { active: Filter; onChange: (f: Filter)
 
 // ─── Bets table ───────────────────────────────────────────────────────────────
 function BetsTable({ bets }: { bets: BankrollBet[] }) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
   if (bets.length === 0) {
     return <div style={{ padding: 14, color: "#4a6080", fontSize: "0.75rem" }}>No bets match this filter.</div>;
   }
 
+  const toggle = (betId: string) => {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      if (next.has(betId)) next.delete(betId); else next.add(betId);
+      return next;
+    });
+  };
+
   return (
     <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 820 }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 900 }}>
         <thead>
           <tr>
-            {["Date", "Matchup", "Pick", "Odds", "Staked", "To Win", "Result", "P&L"].map(h => (
+            {["Date", "Type", "Matchup", "Pick", "Odds", "Staked", "To Win", "Result", "P&L"].map(h => (
               <th key={h} style={headStyle}>{h}</th>
             ))}
           </tr>
@@ -172,26 +195,70 @@ function BetsTable({ bets }: { bets: BankrollBet[] }) {
         <tbody>
           {bets.map(bet => {
             const pending = bet.result === "pending";
+            const isParlay = betKind(bet) === "parlay";
+            const odds = isParlay ? (bet.combinedOdds ?? 0) : (bet.odds ?? 0);
             const toWin = bet.potentialPayout - bet.stakeAmount;
+            const badge = TYPE_BADGE[betKind(bet)];
+            const isOpen = expanded.has(bet.betId);
 
             return (
-              <tr key={bet.betId} style={pending ? { opacity: 0.6 } : undefined}>
-                <td style={cellStyle}>{bet.date}</td>
-                <td style={{ ...cellStyle, color: "#8098b8" }}>{bet.matchup}</td>
-                <td style={{ ...cellStyle, fontWeight: 700 }} title={TIER_META[bet.tier].label}>
-                  {bet.pickLabel}
-                </td>
-                <td style={cellStyle}>{fmtOdds(bet.odds)}</td>
-                <td style={cellStyle}>{fmtMoney(bet.stakeAmount)}</td>
-                <td style={{ ...cellStyle, color: "#8098b8" }}>{fmtMoney(toWin)}</td>
-                <td style={cellStyle}><ResultBadge result={bet.result} /></td>
-                <td style={{
-                  ...cellStyle, fontWeight: 700,
-                  color: pending ? "#4a6080" : plColor(bet.profitLoss ?? 0),
-                }}>
-                  {pending ? "—" : fmtSigned(bet.profitLoss ?? 0)}
-                </td>
-              </tr>
+              <Fragment key={bet.betId}>
+                <tr style={pending ? { opacity: 0.6 } : undefined}>
+                  <td style={cellStyle}>{bet.date}</td>
+                  <td style={cellStyle}>
+                    {isParlay ? (
+                      <button
+                        onClick={() => toggle(bet.betId)}
+                        style={{
+                          background: badge.bg, color: badge.color, border: `1px solid ${badge.color}44`,
+                          borderRadius: 6, padding: "3px 8px", fontSize: "0.62rem", fontWeight: 800,
+                          cursor: "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 4,
+                        }}
+                      >
+                        {isOpen ? "▾" : "▸"} {badge.label}
+                      </button>
+                    ) : (
+                      <span style={{
+                        background: badge.bg, color: badge.color, border: `1px solid ${badge.color}44`,
+                        borderRadius: 6, padding: "3px 8px", fontSize: "0.62rem", fontWeight: 800,
+                      }}>
+                        {badge.label}
+                      </span>
+                    )}
+                  </td>
+                  <td style={{ ...cellStyle, color: "#8098b8" }}>
+                    {isParlay ? `${bet.parlayLegs?.length ?? 0} games` : bet.matchup}
+                  </td>
+                  <td style={{ ...cellStyle, fontWeight: 700 }} title={bet.tier ? TIER_META[bet.tier].label : undefined}>
+                    {isParlay ? parlayLabel(bet) : bet.pickLabel}
+                  </td>
+                  <td style={cellStyle}>{fmtOdds(odds)}</td>
+                  <td style={cellStyle}>{fmtMoney(bet.stakeAmount)}</td>
+                  <td style={{ ...cellStyle, color: "#8098b8" }}>{fmtMoney(toWin)}</td>
+                  <td style={cellStyle}><ResultBadge result={bet.result} /></td>
+                  <td style={{
+                    ...cellStyle, fontWeight: 700,
+                    color: pending ? "#4a6080" : plColor(bet.profitLoss ?? 0),
+                  }}>
+                    {pending ? "—" : fmtSigned(bet.profitLoss ?? 0)}
+                  </td>
+                </tr>
+                {isParlay && isOpen && (
+                  <tr>
+                    <td colSpan={9} style={{ ...cellStyle, background: "#080c14", padding: "8px 10px 8px 34px" }}>
+                      {(bet.parlayLegs ?? []).map((leg, i) => (
+                        <div key={i} style={{
+                          display: "flex", justifyContent: "space-between",
+                          padding: "3px 0", fontSize: "0.7rem", color: "#8098b8",
+                        }}>
+                          <span>{leg.pickLabel} <span style={{ color: "#4a6080" }}>· {leg.matchup}</span></span>
+                          <span style={{ fontWeight: 700, color: "#e2e8f0" }}>{fmtOdds(leg.odds)}</span>
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
@@ -293,7 +360,7 @@ function CalibrationPanel({ calibration, bets }: { calibration: BankrollCalibrat
 function predictedWinRate(bets: BankrollBet[], tier: Tier): number | null {
   const decided = bets.filter(b => b.tier === tier && (b.result === "win" || b.result === "loss"));
   if (decided.length === 0) return null;
-  return decided.reduce((acc, b) => acc + b.estimatedWinPct, 0) / decided.length;
+  return decided.reduce((acc, b) => acc + (b.estimatedWinPct ?? 0), 0) / decided.length;
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -356,6 +423,11 @@ export function PickHistory() {
 
       <SectionTitle>🗂 Bet Ledger</SectionTitle>
       <FilterBar active={filter} onChange={setFilter} />
+      <div style={{ color: "#4a6080", fontSize: "0.72rem", marginBottom: 10 }}>
+        Showing {filtered.length} committed bet{filtered.length === 1 ? "" : "s"} —{" "}
+        {filtered.filter(b => betKind(b) !== "parlay").length} single{filtered.filter(b => betKind(b) !== "parlay").length === 1 ? "" : "s"}
+        , {filtered.filter(b => betKind(b) === "parlay").length} parlay{filtered.filter(b => betKind(b) === "parlay").length === 1 ? "" : "s"}
+      </div>
       <BetsTable bets={filtered} />
 
       <SectionTitle>🧪 Algorithm Calibration</SectionTitle>

@@ -131,6 +131,11 @@ export interface ParlayLeg {
   sport: Sport;
   odds: number;
   startTime: string;
+  /** Prop legs only — needed to grade the leg later. */
+  propType?: PropType;
+  playerName?: string;
+  line?: number;
+  recommendedSide?: PropSide;
 }
 
 export interface Parlay {
@@ -140,17 +145,38 @@ export interface Parlay {
   legs: ParlayLeg[];
   estimatedPayout: number;   // e.g. 480 means +480
   combinedWinPct: number;    // 0.27
-  recommendedStake: string;  // "1–2 units"
+  recommendedStake: string;  // "1–2 units", or "$18.50" for a committed daily parlay
+  /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay). Absent on the reference-only allParlays entries. */
+  stakeAmount?: number;
+  potentialPayout?: number;
+}
+
+export interface DailySummary {
+  totalBetsPlaced: number;
+  totalStaked: number;
+  totalPotentialPayout: number;
+  bankrollAtRisk: number; // fraction, e.g. 0.14 = 14%
+  highestConfidencePick: string;
 }
 
 export interface BestBetsResponse {
   date: string;              // "2026-07-19"
   generatedAt: string;       // ISO timestamp
-  picks: Pick[];
-  parlays: Parlay[];
-  propPicks: PropPick[];
-  sportStatuses: SportStatus[];
   cached: boolean;
+  sportStatuses: SportStatus[];
+
+  // The (up to) 5 committed bets for today.
+  bestBets: (Pick | PropPick)[]; // up to 3 singles
+  safeParlay: Parlay;
+  highOddsParlay: Parlay;
+
+  // Full analysis pool — scored in full, shown for transparency, not bet on.
+  allPicks: Pick[];
+  allPropPicks: PropPick[];
+  allParlays: Parlay[];
+
+  summary: DailySummary;
+
   /**
    * Non-fatal problems that degrade pick quality (e.g. team context could not
    * be fetched). Present so the UI can avoid showing picks as authoritative.
@@ -288,31 +314,50 @@ export const STAKE_BY_TIER: Record<Tier, string> = {
 
 export type BetResult = "pending" | "win" | "loss" | "push" | "void";
 
+/** One parlay leg as recorded in a bankroll parlay bet — see BankrollBet.parlayLegs. */
+export interface ParlayLegRecord {
+  pickLabel: string;
+  odds: number;
+  sport: Sport;
+  matchup: string;
+  date: string;
+  propType?: PropType;
+  playerName?: string;
+  line?: number;
+  recommendedSide?: PropSide;
+}
+
 export interface BankrollBet {
   betId: string;
   date: string;
-  sport: Sport;
-  matchup: string;
-  pickLabel: string;
-  odds: number;
   stakeAmount: number;
   potentialPayout: number;
-  estimatedWinPct: number;
-  impliedWinPct: number;
-  evEdge: number;
-  tier: Tier;
-  scores: { composite: number };
   result: BetResult;
   /** Present once the bet is decided (null while pending). */
   profitLoss: number | null;
   /** Running bankroll balance right after this bet settled (null while pending). */
   bankrollAfter: number | null;
   resolvedAt: string | null;
+  // Single bets only (moneyline or prop) — a parlay entry (betType: "parlay")
+  // carries parlayLegs instead and leaves these undefined.
+  sport?: Sport;
+  matchup?: string;
+  pickLabel?: string;
+  odds?: number;
+  estimatedWinPct?: number;
+  impliedWinPct?: number;
+  evEdge?: number;
+  tier?: Tier;
+  scores?: { composite: number };
   /** Present only on prop bets (see api/resolve-results.ts for why line/recommendedSide had to be added too). */
   propType?: PropType;
   playerName?: string;
   line?: number | null;
   recommendedSide?: PropSide | null;
+  // Parlay bets only.
+  betType?: "single" | "parlay";
+  parlayLegs?: ParlayLegRecord[];
+  combinedOdds?: number;
 }
 
 export interface BankrollCalibration {
