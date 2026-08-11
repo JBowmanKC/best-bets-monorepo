@@ -1,0 +1,78 @@
+{
+  "picksFile": "picks-20260810T132542Z.json",
+  "date": "2026-08-10",
+  "picksGeneratedAt": "2026-08-10T13:25:44.980Z",
+  "gradedAt": "2026-08-11T03:03:27.551Z",
+  "summary": {
+    "total": 4,
+    "graded": 1,
+    "wins": 0,
+    "losses": 1,
+    "pushes": 0,
+    "pending": 3,
+    "unknown": 0,
+    "winRate": 0,
+    "unitsRisked": 1,
+    "unitsNet": -1,
+    "roi": -1
+  },
+  "results": [
+    {
+      "pickId": "824969-away",
+      "sport": "mlb",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "pickLabel": "Tampa Bay Rays ML",
+      "tier": "strong",
+      "odds": -160,
+      "startTime": "2026-08-11T01:40:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "824887-home",
+      "sport": "mlb",
+      "matchup": "New York Mets @ Atlanta Braves",
+      "pickLabel": "Atlanta Braves ML",
+      "tier": "strong",
+      "odds": -147,
+      "startTime": "2026-08-10T23:15:00Z",
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "Atlanta Braves",
+        "awayTeam": "New York Mets",
+        "homeScore": 5,
+        "awayScore": 8
+      }
+    },
+    {
+      "pickId": "823265-away",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ San Diego Padres",
+      "pickLabel": "Milwaukee Brewers ML",
+      "tier": "value",
+      "odds": -116,
+      "startTime": "2026-08-11T01:40:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    },
+    {
+      "pickId": "823998-away",
+      "sport": "mlb",
+      "matchup": "Texas Rangers @ Los Angeles Angels",
+      "pickLabel": "Texas Rangers ML",
+      "tier": "value",
+      "odds": -118,
+      "startTime": "2026-08-11T01:38:00Z",
+      "unitsRisked": 0,
+      "unitsNet": 0,
+      "outcome": "pending",
+      "note": "Game state: In Progress."
+    }
+  ]
+}
