@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 5,
+  "totalBets": 0,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 100.5,
+  "totalStaked": 0,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -23,166 +23,5 @@
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
-  "bets": [
-    {
-      "betId": "mlb-823265-prop-loganhenderson-pitcher_outs-2026-08-10",
-      "date": "2026-08-10",
-      "sport": "mlb",
-      "matchup": "Milwaukee Brewers @ San Diego Padres",
-      "pickLabel": "Logan Henderson Over 14.5",
-      "odds": -115,
-      "stakeAmount": 24,
-      "potentialPayout": 44.87,
-      "estimatedWinPct": 0.9,
-      "impliedWinPct": 0.535,
-      "evEdge": 0.365,
-      "tier": "elite",
-      "scores": {
-        "composite": 87
-      },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
-      "propType": "pitcher_outs",
-      "playerName": "Logan Henderson",
-      "line": 14.5,
-      "recommendedSide": "over"
-    },
-    {
-      "betId": "mlb-824887-prop-christianscott-pitcher_strikeouts-2026-08-10",
-      "date": "2026-08-10",
-      "sport": "mlb",
-      "matchup": "New York Mets @ Atlanta Braves",
-      "pickLabel": "Christian Scott Over 5.5",
-      "odds": -101,
-      "stakeAmount": 24,
-      "potentialPayout": 47.76,
-      "estimatedWinPct": 0.73,
-      "impliedWinPct": 0.502,
-      "evEdge": 0.228,
-      "tier": "elite",
-      "scores": {
-        "composite": 82
-      },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
-      "propType": "pitcher_strikeouts",
-      "playerName": "Christian Scott",
-      "line": 5.5,
-      "recommendedSide": "over"
-    },
-    {
-      "betId": "mlb-824887-prop-ronaldacuajr-batter_hits-2026-08-10",
-      "date": "2026-08-10",
-      "sport": "mlb",
-      "matchup": "New York Mets @ Atlanta Braves",
-      "pickLabel": "Ronald Acuña Jr. Over 0.5",
-      "odds": -115,
-      "stakeAmount": 24,
-      "potentialPayout": 44.87,
-      "estimatedWinPct": 0.74,
-      "impliedWinPct": 0.535,
-      "evEdge": 0.205,
-      "tier": "elite",
-      "scores": {
-        "composite": 83
-      },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
-      "propType": "batter_hits",
-      "playerName": "Ronald Acuña Jr.",
-      "line": 0.5,
-      "recommendedSide": "over"
-    },
-    {
-      "betId": "parlay-safe-2026-08-10",
-      "date": "2026-08-10",
-      "betType": "parlay",
-      "parlayLegs": [
-        {
-          "pickLabel": "Tampa Bay Rays ML",
-          "odds": -157,
-          "sport": "mlb",
-          "matchup": "Tampa Bay Rays @ Athletics",
-          "date": "2026-08-11"
-        },
-        {
-          "pickLabel": "Atlanta Braves ML",
-          "odds": -143,
-          "sport": "mlb",
-          "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-10"
-        }
-      ],
-      "combinedOdds": 178,
-      "stakeAmount": 20.5,
-      "potentialPayout": 56.99,
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
-    },
-    {
-      "betId": "parlay-high-2026-08-10",
-      "date": "2026-08-10",
-      "betType": "parlay",
-      "parlayLegs": [
-        {
-          "pickLabel": "Logan Henderson Over 14.5 Outs Recorded",
-          "odds": -115,
-          "sport": "mlb",
-          "matchup": "Milwaukee Brewers @ San Diego Padres",
-          "date": "2026-08-11",
-          "propType": "pitcher_outs",
-          "playerName": "Logan Henderson",
-          "line": 14.5,
-          "recommendedSide": "over"
-        },
-        {
-          "pickLabel": "Christian Scott Over 5.5 Strikeouts",
-          "odds": -101,
-          "sport": "mlb",
-          "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-10",
-          "propType": "pitcher_strikeouts",
-          "playerName": "Christian Scott",
-          "line": 5.5,
-          "recommendedSide": "over"
-        },
-        {
-          "pickLabel": "Atlanta Braves ML",
-          "odds": -143,
-          "sport": "mlb",
-          "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-10"
-        },
-        {
-          "pickLabel": "Texas Rangers ML",
-          "odds": -115,
-          "sport": "mlb",
-          "matchup": "Texas Rangers @ Los Angeles Angels",
-          "date": "2026-08-11"
-        },
-        {
-          "pickLabel": "Tampa Bay Rays ML",
-          "odds": -157,
-          "sport": "mlb",
-          "matchup": "Tampa Bay Rays @ Athletics",
-          "date": "2026-08-11"
-        }
-      ],
-      "combinedOdds": 1835,
-      "stakeAmount": 8,
-      "potentialPayout": 154.8,
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
-    }
-  ]
+  "bets": []
 }
