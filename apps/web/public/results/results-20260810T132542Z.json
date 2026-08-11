@@ -2,19 +2,19 @@
   "picksFile": "picks-20260810T132542Z.json",
   "date": "2026-08-10",
   "picksGeneratedAt": "2026-08-10T13:25:44.980Z",
-  "gradedAt": "2026-08-11T03:03:27.551Z",
+  "gradedAt": "2026-08-11T14:17:41.041Z",
   "summary": {
     "total": 4,
-    "graded": 1,
-    "wins": 0,
-    "losses": 1,
+    "graded": 4,
+    "wins": 2,
+    "losses": 2,
     "pushes": 0,
-    "pending": 3,
+    "pending": 0,
     "unknown": 0,
-    "winRate": 0,
-    "unitsRisked": 1,
-    "unitsNet": -1,
-    "roi": -1
+    "winRate": 0.5,
+    "unitsRisked": 4,
+    "unitsNet": -0.53,
+    "roi": -0.1325
   },
   "results": [
     {
@@ -25,10 +25,15 @@
       "tier": "strong",
       "odds": -160,
       "startTime": "2026-08-11T01:40:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.625,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Athletics",
+        "awayTeam": "Tampa Bay Rays",
+        "homeScore": 6,
+        "awayScore": 10
+      }
     },
     {
       "pickId": "824887-home",
@@ -56,10 +61,15 @@
       "tier": "value",
       "odds": -116,
       "startTime": "2026-08-11T01:40:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": -1,
+      "outcome": "loss",
+      "finalScore": {
+        "homeTeam": "San Diego Padres",
+        "awayTeam": "Milwaukee Brewers",
+        "homeScore": 3,
+        "awayScore": 2
+      }
     },
     {
       "pickId": "823998-away",
@@ -69,10 +79,15 @@
       "tier": "value",
       "odds": -118,
       "startTime": "2026-08-11T01:38:00Z",
-      "unitsRisked": 0,
-      "unitsNet": 0,
-      "outcome": "pending",
-      "note": "Game state: In Progress."
+      "unitsRisked": 1,
+      "unitsNet": 0.8475,
+      "outcome": "win",
+      "finalScore": {
+        "homeTeam": "Los Angeles Angels",
+        "awayTeam": "Texas Rangers",
+        "homeScore": 1,
+        "awayScore": 4
+      }
     }
   ]
 }
