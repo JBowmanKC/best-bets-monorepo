@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 4,
+  "totalBets": 5,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 100,
+  "totalStaked": 130.5,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -155,6 +155,31 @@
       "profitLoss": null,
       "bankrollAfter": null,
       "resolvedAt": null
+    },
+    {
+      "betId": "mlb-823511-prop-jhonnypereda-batter_hits-2026-08-12",
+      "date": "2026-08-12",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ New York Yankees",
+      "pickLabel": "Jhonny Pereda Over 0.5",
+      "odds": -115,
+      "stakeAmount": 30.5,
+      "potentialPayout": 57.02,
+      "estimatedWinPct": 0.74,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.205,
+      "tier": "elite",
+      "scores": {
+        "composite": 86
+      },
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Jhonny Pereda",
+      "line": 0.5,
+      "recommendedSide": "over"
     }
   ]
 }
