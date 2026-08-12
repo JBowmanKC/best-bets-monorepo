@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 0,
+  "totalBets": 4,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 0,
+  "totalStaked": 100,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -23,5 +23,138 @@
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
-  "bets": []
+  "bets": [
+    {
+      "betId": "mlb-823916-prop-lukemaile-batter_hits-2026-08-12",
+      "date": "2026-08-12",
+      "sport": "mlb",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "pickLabel": "Luke Maile Over 0.5",
+      "odds": -115,
+      "stakeAmount": 30.5,
+      "potentialPayout": 57.02,
+      "estimatedWinPct": 0.833,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.298,
+      "tier": "elite",
+      "scores": {
+        "composite": 87
+      },
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Luke Maile",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-824967-prop-chandlersimpson-batter_hits-2026-08-12",
+      "date": "2026-08-12",
+      "sport": "mlb",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "pickLabel": "Chandler Simpson Over 1.5",
+      "odds": 170,
+      "stakeAmount": 30.5,
+      "potentialPayout": 82.35,
+      "estimatedWinPct": 0.64,
+      "impliedWinPct": 0.37,
+      "evEdge": 0.27,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Chandler Simpson",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823833-prop-endyrodrguez-batter_hits-2026-08-12",
+      "date": "2026-08-12",
+      "sport": "mlb",
+      "matchup": "Pittsburgh Pirates @ Miami Marlins",
+      "pickLabel": "Endy Rodríguez Over 0.5",
+      "odds": -115,
+      "stakeAmount": 30.5,
+      "potentialPayout": 57.02,
+      "estimatedWinPct": 0.8,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.265,
+      "tier": "elite",
+      "scores": {
+        "composite": 90
+      },
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Endy Rodríguez",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-08-12",
+      "date": "2026-08-12",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Carmen Mlodzinski Under 3.5 Strikeouts",
+          "odds": -108,
+          "sport": "mlb",
+          "matchup": "Pittsburgh Pirates @ Miami Marlins",
+          "date": "2026-08-12",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Carmen Mlodzinski",
+          "line": 3.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Daniel Lynch IV Under 3 Outs Recorded",
+          "odds": -105,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+          "date": "2026-08-13",
+          "propType": "pitcher_outs",
+          "playerName": "Daniel Lynch IV",
+          "line": 3,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "New York Yankees ML",
+          "odds": -128,
+          "sport": "mlb",
+          "matchup": "Seattle Mariners @ New York Yankees",
+          "date": "2026-08-12"
+        },
+        {
+          "pickLabel": "Miami Marlins ML",
+          "odds": -109,
+          "sport": "mlb",
+          "matchup": "Pittsburgh Pirates @ Miami Marlins",
+          "date": "2026-08-12"
+        },
+        {
+          "pickLabel": "Atlanta Braves ML",
+          "odds": -177,
+          "sport": "mlb",
+          "matchup": "New York Mets @ Atlanta Braves",
+          "date": "2026-08-12"
+        }
+      ],
+      "combinedOdds": 1910,
+      "stakeAmount": 8.5,
+      "potentialPayout": 170.85,
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    }
+  ]
 }
