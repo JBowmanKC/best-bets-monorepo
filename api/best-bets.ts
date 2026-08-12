@@ -859,8 +859,20 @@ function buildCommittedParlay(
   };
 }
 
-/** Recomputes potentialPayout for a single at a new stakeAmount, same formula used at scoring time. */
+/**
+ * Recomputes potentialPayout for a single at a new stakeAmount, same formula
+ * used at scoring time.
+ *
+ * `odds: 0` and `stakeAmount: 0` are both real inputs here — emptyParlay()
+ * uses exactly that pair as its zeroed-out sentinel when a parlay doesn't
+ * have enough qualifying legs, and enforceDailyBudget() runs every bet
+ * (including those sentinels) through this function unconditionally. The
+ * unguarded formula divides by Math.abs(odds), so odds=0 produces Infinity
+ * (or NaN, if stakeAmount is also 0 — 0 * Infinity is NaN) instead of 0.
+ * Both serialize to `null` in JSON, which is what broke the summary.
+ */
 function payoutAt(odds: number, stakeAmount: number): number {
+  if (odds === 0 || stakeAmount <= 0) return 0;
   return Math.round((odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100) / 100;
 }
 
