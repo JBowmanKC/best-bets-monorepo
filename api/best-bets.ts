@@ -22,6 +22,22 @@ type Tier = "elite" | "strong" | "value";
 interface ApiRequest {
   method?: string;
   query: Record<string, string | string[] | undefined>;
+  headers?: Record<string, string | string[] | undefined>;
+}
+
+/**
+ * The base host to use for self-fetching this deployment's own static output
+ * (e.g. bankroll.json). `process.env.VERCEL_URL` is Vercel's own per-deployment
+ * URL — it commonly sits behind Vercel's deployment protection and isn't
+ * reliably fetchable from inside the function itself, which silently degrades
+ * every read to the empty-bankroll default. The incoming request's own Host
+ * header is the domain whatever called this function just successfully used,
+ * so it's used first; VERCEL_URL is kept only as a last-resort fallback.
+ */
+function selfBaseUrl(req: ApiRequest): string | null {
+  const header = req.headers?.["x-forwarded-host"] ?? req.headers?.host;
+  const fromHeader = Array.isArray(header) ? header[0] : header;
+  return fromHeader || process.env.VERCEL_URL || null;
 }
 
 interface ApiResponse {
@@ -1028,8 +1044,8 @@ async function fetchJson(url: string): Promise<any> {
  * $500 starting bankroll and neutral (1.0) multipliers whenever the file
  * doesn't exist yet (first run) or the fetch fails for any reason.
  */
-async function fetchBankrollState(): Promise<BankrollState> {
-  const host = process.env.VERCEL_URL;
+async function fetchBankrollState(req: ApiRequest): Promise<BankrollState> {
+  const host = selfBaseUrl(req);
   if (!host) return DEFAULT_BANKROLL_STATE;
 
   try {
@@ -1976,7 +1992,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     const oddsBySport = Object.fromEntries(oddsEntries);
     const chosenBook = chooseSportsbook(oddsBySport);
 
-    const bankrollState = await fetchBankrollState();
+    const bankrollState = await fetchBankrollState(req);
     const rawGames = attachOdds(games, oddsBySport, chosenBook);
     const picks = scoreAllGames(rawGames, bankrollState);
 
