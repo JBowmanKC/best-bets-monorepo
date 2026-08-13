@@ -34,6 +34,7 @@ type BetResult = "pending" | "win" | "loss" | "push" | "void";
 interface ApiRequest {
   method?: string;
   query: Record<string, string | string[] | undefined>;
+  headers?: Record<string, string | string[] | undefined>;
 }
 
 interface ApiResponse {
@@ -41,6 +42,23 @@ interface ApiResponse {
   status(code: number): ApiResponse;
   json(body: unknown): void;
   end(): void;
+}
+
+/**
+ * The base host to use for self-fetching this deployment's own static output
+ * (bankroll.json). `process.env.VERCEL_URL` is Vercel's own per-deployment
+ * URL — it commonly sits behind Vercel's deployment protection and isn't
+ * reliably fetchable from inside the function itself, which is why every
+ * "Resolve Results" run was silently falling back to an empty ledger and
+ * wiping out that day's bets instead of updating them. The incoming
+ * request's own Host header is the domain whatever called this function just
+ * successfully used, so it's used first; VERCEL_URL is kept only as a
+ * last-resort fallback.
+ */
+function rrSelfBaseUrl(req: ApiRequest): string | null {
+  const header = req.headers?.["x-forwarded-host"] ?? req.headers?.host;
+  const fromHeader = Array.isArray(header) ? header[0] : header;
+  return fromHeader || process.env.VERCEL_URL || null;
 }
 
 /**
@@ -183,18 +201,41 @@ function rrNormalizeTeamName(name: string): string {
   return (name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-/** Reads the live ledger from this deployment's own static output (see api/best-bets.ts for why). */
-async function fetchBankrollFile(): Promise<Bankroll> {
-  const host = process.env.VERCEL_URL;
-  if (!host) return defaultBankroll();
+/**
+ * Reads the live ledger from this deployment's own static output (see
+ * api/best-bets.ts for why this is a self-fetch rather than fs.readFileSync).
+ *
+ * Only a clean 404 (the file has genuinely never been written — the very
+ * first run) is treated as "start from an empty ledger." Any other failure
+ * (network error, non-404 status, malformed JSON) throws instead of silently
+ * defaulting — this handler's whole response gets persisted as the new
+ * bankroll.json by the calling workflow, so quietly returning an empty
+ * ledger on a transient failure would overwrite every real bet ever tracked.
+ * Better to fail the workflow loudly and retry next run.
+ */
+async function fetchBankrollFile(req: ApiRequest): Promise<Bankroll> {
+  const host = rrSelfBaseUrl(req);
+  if (!host) {
+    throw new Error("Could not determine this deployment's own host (no Host header and no VERCEL_URL).");
+  }
 
-  try {
-    const data = await rrFetchJson(`https://${host}/bankroll.json`);
-    return data && Array.isArray(data.bets) ? (data as Bankroll) : defaultBankroll();
-  } catch (e) {
-    console.warn("bankroll.json fetch failed, starting from an empty ledger:", e);
+  const url = `https://${host}/bankroll.json`;
+  const res = await fetch(url);
+
+  if (res.status === 404) {
+    console.warn(`bankroll.json not found at ${url} — starting from an empty ledger (first run).`);
     return defaultBankroll();
   }
+  if (!res.ok) {
+    throw new Error(`Fetching the live ledger failed: HTTP ${res.status} for ${url}.`);
+  }
+
+  const data = (await res.json()) as any;
+  if (!data || !Array.isArray(data.bets)) {
+    throw new Error(`bankroll.json at ${url} was malformed (missing/invalid "bets" array).`);
+  }
+
+  return data as Bankroll;
 }
 
 async function fetchMlbFinals(date: string): Promise<FinalGame[]> {
@@ -556,7 +597,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
   if (req.method !== "GET" && req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
 
   try {
-    const bankroll = await fetchBankrollFile();
+    const bankroll = await fetchBankrollFile(req);
     const pendingBets = bankroll.bets.filter(b => b.result === "pending");
 
     const finalsCache = new Map<string, Promise<FinalGame[]>>();
