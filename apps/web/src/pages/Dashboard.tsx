@@ -143,13 +143,24 @@ export function Dashboard() {
         <div style={{ color: "#4a6080", fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "3px" }}>
           {data ? formatDate(data.date) : "Loading…"}
         </div>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 7,
-          background: "#0f1623", border: "1px solid #243450",
-          borderRadius: 20, padding: "6px 14px", fontSize: "0.72rem", color: "#8098b8", marginTop: 12,
-        }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: loading ? "#f59e0b" : "#10b981", animation: "pulse 1.5s infinite" }} />
-          {loading ? "Fetching picks…" : lastFetch ? `Updated ${lastFetch.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "Ready"}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginTop: 12 }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 7,
+            background: "#0f1623", border: "1px solid #243450",
+            borderRadius: 20, padding: "6px 14px", fontSize: "0.72rem", color: "#8098b8",
+          }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: loading ? "#f59e0b" : "#10b981", animation: "pulse 1.5s infinite" }} />
+            {loading ? "Fetching picks…" : lastFetch ? `Updated ${lastFetch.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "Ready"}
+          </div>
+          {data?.sportsbook && (
+            <div style={{
+              display: "inline-flex", alignItems: "center",
+              background: "#0f1623", border: "1px solid #243450",
+              borderRadius: 20, padding: "6px 14px", fontSize: "0.72rem", color: "#8098b8",
+            }}>
+              📖 All picks priced via <strong style={{ color: "#e2e8f0", marginLeft: 4 }}>{data.sportsbook}</strong>
+            </div>
+          )}
         </div>
       </div>
 

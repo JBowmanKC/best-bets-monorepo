@@ -69,7 +69,7 @@ export function PickCard({ pick, rank }: Props) {
       {/* Matchup */}
       <div style={{ fontSize: "0.92rem", fontWeight: 800, marginBottom: 2 }}>{pick.matchup}</div>
       <div style={{ fontSize: "0.68rem", color: "#4a6080", marginBottom: 10 }}>
-        {pick.betType} · {localTime}
+        {pick.betType} · {localTime} · via {pick.sportsbook}
       </div>
 
       {/* Pick box */}

@@ -63,7 +63,7 @@ interface ScheduledGame {
 }
 
 /** A scheduled game with a moneyline (live or estimated) attached. */
-type RawGame = ScheduledGame & { odds: GameOdds };
+type RawGame = ScheduledGame & { odds: GameOdds; sportsbook: Sportsbook | "estimated" };
 
 interface FactorScores {
   winProbability: number;
@@ -91,6 +91,8 @@ interface BetPick {
   isPositiveEV: boolean;
   stakeAmount: number;
   potentialPayout: number;
+  /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
+  sportsbook: string;
 }
 
 /** Shape read back from the bankroll ledger (see apps/web/public/bankroll.json). */
@@ -121,6 +123,8 @@ interface ParlayLeg {
   playerName?: string;
   line?: number;
   recommendedSide?: PropSide;
+  /** Same book as every other leg in the parlay — see the sportsbook-selection note above. */
+  sportsbook: string;
 }
 
 interface Parlay {
@@ -134,6 +138,8 @@ interface Parlay {
   /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay). Absent on the reference-only allParlays entries. */
   stakeAmount?: number;
   potentialPayout?: number;
+  /** The single book every leg is from. Absent when there are no legs. */
+  sportsbook?: string;
 }
 
 interface SportStatus {
@@ -156,6 +162,9 @@ interface BestBetsResponse {
   generatedAt: string;
   cached: boolean;
   sportStatuses: SportStatus[];
+
+  /** The book every bet/leg today is priced from, or null if none could be determined (e.g. no ODDS_API_KEY). */
+  sportsbook: string | null;
 
   // The (up to) 5 committed bets for today.
   bestBets: (BetPick | PropPick)[]; // up to 3 singles
@@ -222,6 +231,8 @@ interface PropPick {
   potentialPayout: number;
   voidRisk: VoidRisk;
   isPositiveEV: boolean;
+  /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
+  sportsbook: string;
 }
 
 const PROP_TYPE_LABELS: Record<PropType, string> = {
@@ -265,6 +276,32 @@ const ODDS_SPORT_KEYS: Record<Sport, string> = {
   nfl: "americanfootball_nfl",
   nhl: "icehockey_nhl",
 };
+
+// ─── Sportsbook selection ────────────────────────────────────────────────────
+//
+// A parlay can only be placed at a single book, and even for singles, mixing
+// books game-to-game makes the picks harder to actually go place. So rather
+// than blending prices across books, one book is chosen for the whole run
+// (whichever of the three covers the most of today's games — see
+// chooseSportsbook) and every pick/leg is priced from that book alone. A game
+// that book doesn't list falls back to the record-gap estimate and is tagged
+// "Estimated" rather than misattributed to a book that didn't actually offer
+// it — and estimated picks are never eligible to be bet on (see
+// selectBestBets/selectSafeParlayLegs/selectHighOddsParlayLegs/selectParlayLegs).
+const SPORTSBOOKS = ["draftkings", "fanduel", "betmgm"] as const;
+type Sportsbook = typeof SPORTSBOOKS[number];
+
+const SPORTSBOOK_LABELS: Record<Sportsbook, string> = {
+  draftkings: "DraftKings",
+  fanduel: "FanDuel",
+  betmgm: "BetMGM",
+};
+
+const ESTIMATED_SOURCE_LABEL = "Estimated";
+
+function sportsbookLabel(book: Sportsbook | "estimated"): string {
+  return book === "estimated" ? ESTIMATED_SOURCE_LABEL : SPORTSBOOK_LABELS[book];
+}
 
 // ─── Odds math ───────────────────────────────────────────────────────────────
 function oddsToImpliedProb(americanOdds: number): number {
@@ -545,6 +582,7 @@ function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
       isPositiveEV: true,
       stakeAmount,
       potentialPayout,
+      sportsbook: sportsbookLabel(game.sportsbook),
     });
   }
 
@@ -607,7 +645,7 @@ function pickCandidates(picks: BetPick[]): ParlayCandidate[] {
     odds: p.odds,
     sport: p.sport,
     voidRisk: null,
-    leg: { pickId: p.id, matchup: p.matchup, pickLabel: p.pickLabel, sport: p.sport, odds: p.odds, startTime: p.startTime },
+    leg: { pickId: p.id, matchup: p.matchup, pickLabel: p.pickLabel, sport: p.sport, odds: p.odds, startTime: p.startTime, sportsbook: p.sportsbook },
   }));
 }
 
@@ -620,7 +658,7 @@ function propCandidates(props: PropPick[]): ParlayCandidate[] {
     odds: p.odds,
     sport: p.sport,
     voidRisk: p.voidRisk,
-    leg: { pickId: p.id, matchup: p.matchup, pickLabel: propLegLabel(p), sport: p.sport, odds: p.odds, startTime: p.startTime },
+    leg: { pickId: p.id, matchup: p.matchup, pickLabel: propLegLabel(p), sport: p.sport, odds: p.odds, startTime: p.startTime, sportsbook: p.sportsbook },
   }));
 }
 
@@ -628,11 +666,13 @@ function propCandidates(props: PropPick[]): ParlayCandidate[] {
  * The reusable selection engine behind buildCustomParlay: filters candidates
  * by risk level and sport, then greedily fills legs — highest-composite
  * moneylines first, then highest-composite props up to the per-risk-level cap.
- * A high-voidRisk prop is never eligible, at any risk level.
+ * A high-voidRisk prop is never eligible, at any risk level. An "Estimated"
+ * pick (no real book listed it) is never eligible either — a parlay has to be
+ * placeable at one real book, and a synthetic price isn't placeable anywhere.
  */
 function selectParlayLegs(picks: BetPick[], propPicks: PropPick[], options: ParlayOptions): ParlayCandidate[] {
-  let pickPool = picks;
-  let propPool = options.includeProps ? propPicks.filter(p => p.voidRisk !== "high") : [];
+  let pickPool = picks.filter(p => p.sportsbook !== ESTIMATED_SOURCE_LABEL);
+  let propPool = options.includeProps ? propPicks.filter(p => p.voidRisk !== "high" && p.sportsbook !== ESTIMATED_SOURCE_LABEL) : [];
 
   if (options.sports?.length) {
     pickPool = pickPool.filter(p => options.sports!.includes(p.sport));
@@ -691,6 +731,7 @@ function buildCustomParlay(picks: BetPick[], propPicks: PropPick[], options: Par
     estimatedPayout: calcParlayPayout(legs.map(l => l.odds)),
     combinedWinPct: Math.round(legs.reduce((acc, l) => acc * l.winPct, 1) * 100) / 100,
     recommendedStake: brand.recommendedStake,
+    sportsbook: legs[0].leg.sportsbook,
   };
 }
 
@@ -721,17 +762,23 @@ function toParlayLeg(item: BetPick | PropPick): ParlayLeg {
         pickId: item.id, matchup: item.matchup, pickLabel: propLegLabel(item), sport: item.sport,
         odds: item.odds, startTime: item.startTime,
         propType: item.propType, playerName: item.playerName, line: item.line, recommendedSide: item.recommendedSide,
+        sportsbook: item.sportsbook,
       }
-    : { pickId: item.id, matchup: item.matchup, pickLabel: item.pickLabel, sport: item.sport, odds: item.odds, startTime: item.startTime };
+    : { pickId: item.id, matchup: item.matchup, pickLabel: item.pickLabel, sport: item.sport, odds: item.odds, startTime: item.startTime, sportsbook: item.sportsbook };
 }
 
-/** Top 3 best-bet singles: composite >= 68, sane odds window, sorted tier > EV edge > composite. */
+/**
+ * Top 3 best-bet singles: composite >= 68, sane odds window, sorted tier > EV
+ * edge > composite. "Estimated" picks are excluded — nothing gets committed
+ * to a synthetic price that no real book actually offered.
+ */
 function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
-  const pickPool = picks.filter(p => p.scores.composite >= 68 && p.odds >= -250 && p.odds <= 300);
+  const pickPool = picks.filter(p => p.scores.composite >= 68 && p.odds >= -250 && p.odds <= 300 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
   const propPool = propPicks.filter(p =>
     p.scores.composite >= 68 &&
     (p.voidRisk === "low" || p.voidRisk === "medium") &&
-    p.hitRateLast10 >= 0.6
+    p.hitRateLast10 >= 0.6 &&
+    p.sportsbook !== ESTIMATED_SOURCE_LABEL
   );
 
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
@@ -751,7 +798,9 @@ function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | Pro
 
 /** 2-3 elite/strong moneyline legs, preferring picks not already used as a best bet. */
 function selectSafeParlayLegs(picks: BetPick[], excludeIds: Set<string>): BetPick[] {
-  const eligible = picks.filter(p => (p.tier === "elite" || p.tier === "strong") && p.odds >= -200 && p.odds <= 150);
+  const eligible = picks.filter(p =>
+    (p.tier === "elite" || p.tier === "strong") && p.odds >= -200 && p.odds <= 150 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
+  );
   if (eligible.length === 0) return [];
 
   const targetLegs = eligible.length < 3 ? Math.min(2, eligible.length) : 3;
@@ -770,8 +819,8 @@ function selectSafeParlayLegs(picks: BetPick[], excludeIds: Set<string>): BetPic
 
 /** 4-5 legs (moneylines + up to 2 low-void-risk props), highest EV edge first, with payout adjustment. */
 function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
-  const pickPool = picks.filter(p => p.odds >= -300 && p.odds <= 250);
-  const propPool = propPicks.filter(p => p.voidRisk === "low" && p.odds >= -300 && p.odds <= 250);
+  const pickPool = picks.filter(p => p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
+  const propPool = propPicks.filter(p => p.voidRisk === "low" && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
   const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool].sort((a, b) => b.evEdge - a.evEdge);
   if (combined.length === 0) return [];
 
@@ -856,6 +905,7 @@ function buildCommittedParlay(
     recommendedStake: `$${stakeInfo.stakeAmount.toFixed(2)}`,
     stakeAmount: stakeInfo.stakeAmount,
     potentialPayout: stakeInfo.potentialPayout,
+    sportsbook: legs[0].sportsbook,
   };
 }
 
@@ -1328,35 +1378,32 @@ interface OddsApiEntry {
   id: string; // OddsAPI's own event id — needed for the per-event prop odds endpoint
   homeTeam: string;
   awayTeam: string;
-  odds: GameOdds;
+  /** Each candidate book's own price — nothing blended. Absent key = that book didn't list this game. */
+  byBook: Partial<Record<Sportsbook, GameOdds>>;
 }
 
-/**
- * Averaging raw American odds prices is invalid whenever books disagree on
- * who's favored — e.g. -150 and +130 straight-averaged is -10, which isn't a
- * legal American odds value at all (real lines never fall between -99 and
- * +99). Averaging implied probabilities instead, then converting back, always
- * lands back in a valid American odds range no matter how the books split.
- */
-function averageBookmakerOdds(game: any): GameOdds {
-  const home: number[] = [];
-  const away: number[] = [];
+/** Pulls each candidate book's own home/away price out of one OddsAPI game entry — no cross-book blending. */
+function extractBookOdds(game: any): Partial<Record<Sportsbook, GameOdds>> {
+  const byBook: Partial<Record<Sportsbook, GameOdds>> = {};
 
   for (const bm of game.bookmakers ?? []) {
+    const book = bm.key as Sportsbook;
+    if (!SPORTSBOOKS.includes(book)) continue;
+
     const h2h = (bm.markets ?? []).find((m: any) => m.key === "h2h");
     if (!h2h) continue;
+
+    let homeMoneyline: number | null = null;
+    let awayMoneyline: number | null = null;
     for (const outcome of h2h.outcomes ?? []) {
-      if (outcome.name === game.home_team) home.push(oddsToImpliedProb(outcome.price));
-      else if (outcome.name === game.away_team) away.push(oddsToImpliedProb(outcome.price));
+      if (outcome.name === game.home_team) homeMoneyline = outcome.price;
+      else if (outcome.name === game.away_team) awayMoneyline = outcome.price;
     }
+
+    if (homeMoneyline !== null || awayMoneyline !== null) byBook[book] = { homeMoneyline, awayMoneyline };
   }
 
-  const avg = (probs: number[]) => probs.reduce((a, b) => a + b, 0) / probs.length;
-
-  return {
-    homeMoneyline: home.length ? probToAmericanOdds(avg(home)) : null,
-    awayMoneyline: away.length ? probToAmericanOdds(avg(away)) : null,
-  };
+  return byBook;
 }
 
 async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
@@ -1364,7 +1411,7 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
   if (!ODDS_API_KEY || !sportKey) return [];
 
   try {
-    const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${ODDS_API_KEY}&regions=us&markets=h2h&oddsFormat=american&bookmakers=draftkings,fanduel,betmgm`;
+    const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${ODDS_API_KEY}&regions=us&markets=h2h&oddsFormat=american&bookmakers=${SPORTSBOOKS.join(",")}`;
     const res = await fetch(url);
     if (!res.ok) {
       console.warn(`OddsAPI ${sport} failed: ${res.status}`);
@@ -1375,7 +1422,7 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
       id: String(g.id),
       homeTeam: g.home_team,
       awayTeam: g.away_team,
-      odds: averageBookmakerOdds(g),
+      byBook: extractBookOdds(g),
     }));
   } catch (e) {
     console.warn(`OddsAPI ${sport} fetch threw:`, e);
@@ -1383,11 +1430,37 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
   }
 }
 
+/**
+ * Picks the one book every pick/leg today will be priced from — whichever of
+ * the candidates lists a price for the most games across every sport in this
+ * run, tie-broken by SPORTSBOOKS order. Returns null only when none of them
+ * listed anything at all (no ODDS_API_KEY, or every fetch failed).
+ */
+function chooseSportsbook(oddsBySport: Record<string, OddsApiEntry[]>): Sportsbook | null {
+  const counts: Record<Sportsbook, number> = { draftkings: 0, fanduel: 0, betmgm: 0 };
+
+  for (const entries of Object.values(oddsBySport)) {
+    for (const entry of entries) {
+      for (const book of SPORTSBOOKS) {
+        if (entry.byBook[book]) counts[book] += 1;
+      }
+    }
+  }
+
+  let best: Sportsbook | null = null;
+  for (const book of SPORTSBOOKS) {
+    if (best === null || counts[book] > counts[best]) best = book;
+  }
+  return best && counts[best] > 0 ? best : null;
+}
+
 // ─── Prop odds (selective — top 5 games only, to stay within OddsAPI's free tier) ──
 interface PropOddsEntry {
   line: number;
   overOdds: number;
   underOdds: number;
+  /** The chosen book for a real quote, or "estimated" — see resolvePropOdds's fallback branch. */
+  sportsbook: Sportsbook | "estimated";
 }
 type PropOddsMap = Map<string, PropOddsEntry>; // key: "playerName-propType"
 
@@ -1399,13 +1472,14 @@ const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
   batter_total_bases: "batter_total_bases",
 };
 
-async function fetchPropOddsForGame(eventId: string): Promise<PropOddsMap> {
+/** Same book chosen for moneylines — a parlay leg can't come from a different book than the rest of the slip. */
+async function fetchPropOddsForGame(eventId: string, book: Sportsbook): Promise<PropOddsMap> {
   const map: PropOddsMap = new Map();
   if (!ODDS_API_KEY) return map;
 
   try {
     const url = `https://api.the-odds-api.com/v4/sports/baseball_mlb/events/${eventId}/odds`
-      + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${MLB_PROP_MARKETS}&oddsFormat=american&bookmakers=draftkings,fanduel`;
+      + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${MLB_PROP_MARKETS}&oddsFormat=american&bookmakers=${book}`;
     const res = await fetch(url);
     if (!res.ok) {
       console.warn(`OddsAPI props ${eventId} failed: ${res.status}`);
@@ -1413,11 +1487,11 @@ async function fetchPropOddsForGame(eventId: string): Promise<PropOddsMap> {
     }
     const data: any = await res.json();
 
-    // Bucket every bookmaker's over/under quote by player+propType+line, then
-    // average implied probability per side the same way moneylines are averaged.
-    const buckets = new Map<string, { line: number; propType: PropType; player: string; overProbs: number[]; underProbs: number[] }>();
+    // Pair each player+propType+line's over and under quote from this one book.
+    const buckets = new Map<string, { line: number; propType: PropType; player: string; overOdds?: number; underOdds?: number }>();
 
     for (const bm of data.bookmakers ?? []) {
+      if (bm.key !== book) continue; // the query already scopes to one book — defensive only
       for (const market of bm.markets ?? []) {
         const propType = ODDS_API_MARKET_TO_PROP[market.key as string];
         if (!propType) continue;
@@ -1429,21 +1503,22 @@ async function fetchPropOddsForGame(eventId: string): Promise<PropOddsMap> {
           if (!player || (side !== "over" && side !== "under") || Number.isNaN(line)) continue;
 
           const key = `${player}-${propType}-${line}`;
-          if (!buckets.has(key)) buckets.set(key, { line, propType, player, overProbs: [], underProbs: [] });
+          if (!buckets.has(key)) buckets.set(key, { line, propType, player });
           const bucket = buckets.get(key)!;
-          const prob = oddsToImpliedProb(outcome.price);
-          if (side === "over") bucket.overProbs.push(prob);
-          else bucket.underProbs.push(prob);
+          if (side === "over") bucket.overOdds = outcome.price;
+          else bucket.underOdds = outcome.price;
         }
       }
     }
 
-    const avg = (probs: number[]) => probs.reduce((a, b) => a + b, 0) / probs.length;
     for (const bucket of buckets.values()) {
-      if (bucket.overProbs.length === 0 && bucket.underProbs.length === 0) continue;
-      const overOdds = bucket.overProbs.length ? probToAmericanOdds(avg(bucket.overProbs)) : -110;
-      const underOdds = bucket.underProbs.length ? probToAmericanOdds(avg(bucket.underProbs)) : -110;
-      map.set(`${bucket.player}-${bucket.propType}`, { line: bucket.line, overOdds, underOdds });
+      if (bucket.overOdds === undefined && bucket.underOdds === undefined) continue;
+      map.set(`${bucket.player}-${bucket.propType}`, {
+        line: bucket.line,
+        overOdds: bucket.overOdds ?? -110,
+        underOdds: bucket.underOdds ?? -110,
+        sportsbook: book,
+      });
     }
   } catch (e) {
     console.warn(`OddsAPI props fetch threw for ${eventId}:`, e);
@@ -1453,11 +1528,11 @@ async function fetchPropOddsForGame(eventId: string): Promise<PropOddsMap> {
 }
 
 /** Fetches prop markets for up to TOP_GAMES_FOR_PROPS OddsAPI event ids in parallel and merges the results. */
-async function fetchPropOdds(gameIds: string[], sport: Sport): Promise<PropOddsMap> {
+async function fetchPropOdds(gameIds: string[], sport: Sport, book: Sportsbook | null): Promise<PropOddsMap> {
   const merged: PropOddsMap = new Map();
-  if (sport !== "mlb" || gameIds.length === 0) return merged;
+  if (sport !== "mlb" || gameIds.length === 0 || !book) return merged;
 
-  const perGame = await Promise.all(gameIds.slice(0, TOP_GAMES_FOR_PROPS).map(fetchPropOddsForGame));
+  const perGame = await Promise.all(gameIds.slice(0, TOP_GAMES_FOR_PROPS).map(id => fetchPropOddsForGame(id, book)));
   for (const m of perGame) for (const [k, v] of m) merged.set(k, v);
   return merged;
 }
@@ -1474,7 +1549,7 @@ function estimateOddsFromRecords(homeRecord: TeamRecord, awayRecord: TeamRecord)
   };
 }
 
-function attachOdds(games: ScheduledGame[], oddsBySport: Record<string, OddsApiEntry[]>): RawGame[] {
+function attachOdds(games: ScheduledGame[], oddsBySport: Record<string, OddsApiEntry[]>, chosenBook: Sportsbook | null): RawGame[] {
   return games.map(g => {
     const pool = oddsBySport[g.sport] ?? [];
     const match = pool.find(
@@ -1482,11 +1557,12 @@ function attachOdds(games: ScheduledGame[], oddsBySport: Record<string, OddsApiE
            normalizeTeamName(o.awayTeam) === normalizeTeamName(g.awayTeam)
     );
 
-    const odds = match && (match.odds.homeMoneyline !== null || match.odds.awayMoneyline !== null)
-      ? match.odds
-      : estimateOddsFromRecords(g.homeRecord, g.awayRecord);
+    const bookOdds = chosenBook ? match?.byBook[chosenBook] : undefined;
 
-    return { ...g, odds };
+    if (bookOdds && (bookOdds.homeMoneyline !== null || bookOdds.awayMoneyline !== null)) {
+      return { ...g, odds: bookOdds, sportsbook: chosenBook! };
+    }
+    return { ...g, odds: estimateOddsFromRecords(g.homeRecord, g.awayRecord), sportsbook: "estimated" as const };
   });
 }
 
@@ -1711,6 +1787,7 @@ function scoreProp(
     potentialPayout,
     voidRisk,
     isPositiveEV: true,
+    sportsbook: sportsbookLabel(oddsEntry.sportsbook),
   };
 }
 
@@ -1726,14 +1803,14 @@ function resolvePropOdds(
 
   const avg = recentAvg[statKey] ?? 0;
   if (propType === "pitcher_strikeouts") {
-    return { line: Math.round(avg * 10) / 10 - 0.5, overOdds: -115, underOdds: -105 };
+    return { line: Math.round(avg * 10) / 10 - 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated" };
   }
   if (propType === "batter_hits") {
-    return { line: avg >= 1.2 ? 1.5 : 0.5, overOdds: -115, underOdds: -105 };
+    return { line: avg >= 1.2 ? 1.5 : 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated" };
   }
   // No explicit fallback formula given for total_bases/home_runs/outs — extrapolate
   // the same "recent average rounded to the nearest half, minus half" convention.
-  return { line: Math.max(0.5, Math.round(avg * 2) / 2 - 0.5), overOdds: -115, underOdds: -105 };
+  return { line: Math.max(0.5, Math.round(avg * 2) / 2 - 0.5), overOdds: -115, underOdds: -105, sportsbook: "estimated" };
 }
 
 async function buildPropsForGame(
@@ -1827,7 +1904,8 @@ async function buildPropPicks(
   rawGames: RawGame[],
   mlbOddsEntries: OddsApiEntry[],
   bankrollState: BankrollState,
-  date: string
+  date: string,
+  book: Sportsbook | null
 ): Promise<PropPick[]> {
   const topGameIds = moneylinePicks
     .filter(p => p.sport === "mlb")
@@ -1850,7 +1928,7 @@ async function buildPropPicks(
     if (match) eventIdByGameId.set(game.id, match.id);
   }
 
-  const propOddsMap = await fetchPropOdds([...eventIdByGameId.values()], "mlb");
+  const propOddsMap = await fetchPropOdds([...eventIdByGameId.values()], "mlb", book);
   const season = date.slice(0, 4);
 
   const perGame = await Promise.all(topGames.map(async game => {
@@ -1896,16 +1974,17 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       sports.map(async (sport): Promise<[Sport, OddsApiEntry[]]> => [sport, await fetchOddsForSport(sport)])
     );
     const oddsBySport = Object.fromEntries(oddsEntries);
+    const chosenBook = chooseSportsbook(oddsBySport);
 
     const bankrollState = await fetchBankrollState();
-    const rawGames = attachOdds(games, oddsBySport);
+    const rawGames = attachOdds(games, oddsBySport, chosenBook);
     const picks = scoreAllGames(rawGames, bankrollState);
 
     // Prop bets are best-effort: any failure here must never take down the
     // moneyline picks that already succeeded above.
     let propPicks: PropPick[] = [];
     try {
-      propPicks = await buildPropPicks(picks, rawGames, oddsBySport.mlb ?? [], bankrollState, date);
+      propPicks = await buildPropPicks(picks, rawGames, oddsBySport.mlb ?? [], bankrollState, date, chosenBook);
     } catch (e) {
       console.warn("Prop pipeline failed entirely, continuing with moneyline picks only:", e);
     }
@@ -1977,6 +2056,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       generatedAt: new Date().toISOString(),
       cached: false,
       sportStatuses,
+      sportsbook: chosenBook ? SPORTSBOOK_LABELS[chosenBook] : null,
       bestBets: dailyBets.bestBets,
       safeParlay: dailyBets.safeParlay,
       highOddsParlay: dailyBets.highOddsParlay,
