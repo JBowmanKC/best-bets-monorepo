@@ -65,6 +65,7 @@ export function RankedTable({ picks }: Props) {
               <th style={{ padding: "9px 12px", textAlign: "left", color: "#4a6080", fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", background: "#131c2e", borderBottom: "1px solid #243450" }}>Tier</th>
               {th("winPct", "Win %")}
               {th("ev",     "EV")}
+              <th style={{ padding: "9px 12px", textAlign: "left", color: "#4a6080", fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", background: "#131c2e", borderBottom: "1px solid #243450" }}>Book</th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +104,9 @@ export function RankedTable({ picks }: Props) {
                   <td style={{ padding: "9px 12px" }}>{Math.round(pick.estimatedWinPct * 100)}%</td>
                   <td style={{ padding: "9px 12px", color: "#10b981", fontWeight: 700 }}>
                     +{Math.round(pick.evEdge * 100)}%
+                  </td>
+                  <td style={{ padding: "9px 12px", color: pick.sportsbook === "Estimated" ? "#f59e0b" : "#8098b8", fontSize: "0.7rem" }}>
+                    {pick.sportsbook}
                   </td>
                 </tr>
               );

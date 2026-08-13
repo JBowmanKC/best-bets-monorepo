@@ -60,6 +60,8 @@ export interface Pick {
   rationale: string;
   stake: string;             // "2–3 units"
   isPositiveEV: boolean;
+  /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
+  sportsbook: string;
 }
 
 // ─── Prop bets (MLB only today — see api/best-bets.ts) ──────────────────────
@@ -113,6 +115,8 @@ export interface PropPick {
   potentialPayout: number;
   voidRisk: VoidRisk;
   isPositiveEV: boolean;
+  /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
+  sportsbook: string;
 }
 
 // ─── Custom parlay builder (server + client share this options shape) ───────
@@ -136,6 +140,8 @@ export interface ParlayLeg {
   playerName?: string;
   line?: number;
   recommendedSide?: PropSide;
+  /** Same book as every other leg in the parlay. */
+  sportsbook: string;
 }
 
 export interface Parlay {
@@ -149,6 +155,8 @@ export interface Parlay {
   /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay). Absent on the reference-only allParlays entries. */
   stakeAmount?: number;
   potentialPayout?: number;
+  /** The single book every leg is from. Absent when there are no legs. */
+  sportsbook?: string;
 }
 
 export interface DailySummary {
@@ -164,6 +172,9 @@ export interface BestBetsResponse {
   generatedAt: string;       // ISO timestamp
   cached: boolean;
   sportStatuses: SportStatus[];
+
+  /** The book every bet/leg today is priced from, or null if none could be determined (e.g. no ODDS_API_KEY). */
+  sportsbook: string | null;
 
   // The (up to) 5 committed bets for today.
   bestBets: (Pick | PropPick)[]; // up to 3 singles
@@ -325,6 +336,7 @@ export interface ParlayLegRecord {
   playerName?: string;
   line?: number;
   recommendedSide?: PropSide;
+  sportsbook?: string;
 }
 
 export interface BankrollBet {
@@ -354,6 +366,8 @@ export interface BankrollBet {
   playerName?: string;
   line?: number | null;
   recommendedSide?: PropSide | null;
+  /** Which book this bet is from — a real book name, or "Estimated" (singles only; parlays are never estimated). */
+  sportsbook?: string;
   // Parlay bets only.
   betType?: "single" | "parlay";
   parlayLegs?: ParlayLegRecord[];

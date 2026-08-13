@@ -67,6 +67,7 @@ function moneylineBetEntry(pick, date) {
     evEdge: pick.evEdge,
     tier: pick.tier,
     scores: { composite: pick.scores.composite },
+    sportsbook: pick.sportsbook,
     result: "pending",
     profitLoss: null,
     bankrollAfter: null,
@@ -107,6 +108,7 @@ function parlayLegRecord(leg) {
     sport: leg.sport,
     matchup: leg.matchup,
     date: String(leg.startTime).slice(0, 10),
+    sportsbook: leg.sportsbook,
     ...(leg.propType ? { propType: leg.propType, playerName: leg.playerName, line: leg.line, recommendedSide: leg.recommendedSide } : {}),
   };
 }
@@ -120,6 +122,7 @@ function parlayBetEntry(parlay, kind, date) {
     combinedOdds: parlay.estimatedPayout,
     stakeAmount: parlay.stakeAmount ?? 0,
     potentialPayout: parlay.potentialPayout ?? 0,
+    sportsbook: parlay.sportsbook,
     result: "pending",
     profitLoss: null,
     bankrollAfter: null,

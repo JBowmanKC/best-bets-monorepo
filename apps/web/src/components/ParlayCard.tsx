@@ -35,7 +35,10 @@ export function ParlayCard({ parlay }: Props) {
           <div style={{ fontSize: "0.66rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: style.nameColor, marginBottom: 2 }}>
             {parlay.emoji} {parlay.label}
           </div>
-          <div style={{ fontSize: "0.67rem", color: "#4a6080" }}>{style.sub}</div>
+          <div style={{ fontSize: "0.67rem", color: "#4a6080" }}>
+            {style.sub}
+            {parlay.sportsbook && ` · all legs via ${parlay.sportsbook}`}
+          </div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontSize: "0.6rem", color: "#4a6080" }}>Est. Payout</div>

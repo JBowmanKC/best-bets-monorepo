@@ -75,6 +75,7 @@ jobs:
           s = d.get("summary", {})
           bets = d.get("bestBets", [])
 
+          print(f"Sportsbook: {d.get('sportsbook') or 'none (no real book price found)'}")
           print(f"Best Bets: {len(bets)}")
           for b in bets:
               # A best bet can be a moneyline pick (has pickLabel) or a prop

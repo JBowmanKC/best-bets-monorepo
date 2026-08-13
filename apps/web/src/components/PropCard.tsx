@@ -98,7 +98,7 @@ export function PropCard({ prop, rank }: Props) {
       {/* Player section */}
       <div style={{ fontSize: "0.92rem", fontWeight: 800, marginBottom: 2 }}>{prop.playerName}</div>
       <div style={{ fontSize: "0.68rem", color: "#4a6080", marginBottom: 10 }}>
-        {prop.team} · {prop.matchup} · {localTime}
+        {prop.team} · {prop.matchup} · {localTime} · via {prop.sportsbook}
       </div>
 
       {/* Prop line box */}
