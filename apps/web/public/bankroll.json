@@ -1,15 +1,15 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 500,
+  "currentBankroll": 516.34,
   "totalBets": 18,
-  "wins": 0,
-  "losses": 0,
+  "wins": 5,
+  "losses": 4,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 431.5,
-  "totalProfit": 0,
-  "roi": 0,
-  "peakBankroll": 500,
+  "totalProfit": 16.34,
+  "roi": 0.0731,
+  "peakBankroll": 565.5,
   "lowestBankroll": 500,
   "calibration": {
     "eliteWinRate": null,
@@ -21,7 +21,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 0
+    "totalResultsTracked": 9
   },
   "bets": [
     {
@@ -40,10 +40,10 @@
       "scores": {
         "composite": 87
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20.87,
+      "bankrollAfter": 520.87,
+      "resolvedAt": "2026-08-14T14:58:29.356Z",
       "propType": "pitcher_outs",
       "playerName": "Logan Henderson",
       "line": 14.5,
@@ -65,10 +65,10 @@
       "scores": {
         "composite": 82
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 23.76,
+      "bankrollAfter": 544.63,
+      "resolvedAt": "2026-08-14T14:58:29.372Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Christian Scott",
       "line": 5.5,
@@ -90,10 +90,10 @@
       "scores": {
         "composite": 83
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20.87,
+      "bankrollAfter": 565.5,
+      "resolvedAt": "2026-08-14T14:58:29.391Z",
       "propType": "batter_hits",
       "playerName": "Ronald Acuña Jr.",
       "line": 0.5,
@@ -179,10 +179,10 @@
       "combinedOdds": 178,
       "stakeAmount": 20.5,
       "potentialPayout": 56.99,
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -20.5,
+      "bankrollAfter": 545,
+      "resolvedAt": "2026-08-14T14:58:29.431Z"
     },
     {
       "betId": "mlb-823511-prop-jhonnypereda-batter_hits-2026-08-12",
@@ -250,10 +250,10 @@
       "scores": {
         "composite": 87
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30.5,
+      "bankrollAfter": 514.5,
+      "resolvedAt": "2026-08-14T14:58:29.469Z",
       "propType": "batter_hits",
       "playerName": "Luke Maile",
       "line": 0.5,
@@ -358,10 +358,10 @@
         "composite": 92
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 18.75,
+      "bankrollAfter": 533.25,
+      "resolvedAt": "2026-08-14T14:58:29.496Z",
       "propType": "batter_hits",
       "playerName": "Andruw Monasterio",
       "line": 0.5,
@@ -384,10 +384,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -31.5,
+      "bankrollAfter": 501.75,
+      "resolvedAt": "2026-08-14T14:58:29.508Z",
       "propType": "batter_hits",
       "playerName": "Max Clark",
       "line": 0.5,
@@ -410,10 +410,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20.59,
+      "bankrollAfter": 522.34,
+      "resolvedAt": "2026-08-14T14:58:29.514Z",
       "propType": "batter_hits",
       "playerName": "Spencer Torkelson",
       "line": 0.5,
@@ -477,10 +477,10 @@
       "stakeAmount": 6,
       "potentialPayout": 162.84,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -6,
+      "bankrollAfter": 516.34,
+      "resolvedAt": "2026-08-14T14:58:29.543Z"
     },
     {
       "betId": "mlb-823591-prop-robertstock-pitcher_strikeouts-2026-08-14",
