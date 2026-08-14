@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 516.34,
-  "totalBets": 18,
+  "totalBets": 19,
   "wins": 5,
   "losses": 4,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 431.5,
+  "totalStaked": 464,
   "totalProfit": 16.34,
   "roi": 0.0731,
   "peakBankroll": 565.5,
@@ -622,6 +622,32 @@
       "profitLoss": null,
       "bankrollAfter": null,
       "resolvedAt": null
+    },
+    {
+      "betId": "mlb-822942-prop-chandlersimpson-batter_hits-2026-08-14",
+      "date": "2026-08-14",
+      "sport": "mlb",
+      "matchup": "Baltimore Orioles @ Tampa Bay Rays",
+      "pickLabel": "Chandler Simpson Over 1.5",
+      "odds": 177,
+      "stakeAmount": 32.5,
+      "potentialPayout": 90.03,
+      "estimatedWinPct": 0.64,
+      "impliedWinPct": 0.361,
+      "evEdge": 0.279,
+      "tier": "elite",
+      "scores": {
+        "composite": 83
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Chandler Simpson",
+      "line": 1.5,
+      "recommendedSide": "over"
     }
   ]
 }
