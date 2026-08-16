@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 718.46,
-  "totalBets": 19,
+  "totalBets": 23,
   "wins": 8,
   "losses": 6,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 464,
+  "totalStaked": 608,
   "totalProfit": 218.46,
   "roi": 0.6137,
   "peakBankroll": 750.96,
@@ -648,6 +648,139 @@
       "playerName": "Chandler Simpson",
       "line": 1.5,
       "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823991-prop-jaccaglianone-batter_hits-2026-08-16",
+      "date": "2026-08-16",
+      "sport": "mlb",
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "pickLabel": "Jac Caglianone Over 0.5",
+      "odds": -237,
+      "stakeAmount": 45.5,
+      "potentialPayout": 64.7,
+      "estimatedWinPct": 0.9,
+      "impliedWinPct": 0.703,
+      "evEdge": 0.197,
+      "tier": "elite",
+      "scores": {
+        "composite": 92
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Jac Caglianone",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823912-prop-jakebauers-batter_hits-2026-08-16",
+      "date": "2026-08-16",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+      "pickLabel": "Jake Bauers Over 0.5",
+      "odds": -131,
+      "stakeAmount": 45.5,
+      "potentialPayout": 80.23,
+      "estimatedWinPct": 0.74,
+      "impliedWinPct": 0.567,
+      "evEdge": 0.173,
+      "tier": "strong",
+      "scores": {
+        "composite": 74
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Jake Bauers",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823912-prop-loganhenderson-pitcher_strikeouts-2026-08-16",
+      "date": "2026-08-16",
+      "sport": "mlb",
+      "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+      "pickLabel": "Logan Henderson Over 5.5",
+      "odds": -101,
+      "stakeAmount": 45.5,
+      "potentialPayout": 90.55,
+      "estimatedWinPct": 0.675,
+      "impliedWinPct": 0.502,
+      "evEdge": 0.172,
+      "tier": "strong",
+      "scores": {
+        "composite": 77
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "pitcher_strikeouts",
+      "playerName": "Logan Henderson",
+      "line": 5.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-08-16",
+      "date": "2026-08-16",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Logan Henderson Over 5.5 Strikeouts",
+          "odds": -101,
+          "sport": "mlb",
+          "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+          "date": "2026-08-16",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Logan Henderson",
+          "line": 5.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Milwaukee Brewers ML",
+          "odds": 169,
+          "sport": "mlb",
+          "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+          "date": "2026-08-16",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Ryan Johnson Under 3.5 Strikeouts",
+          "odds": 129,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Los Angeles Angels",
+          "date": "2026-08-16",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Ryan Johnson",
+          "line": 3.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Los Angeles Angels ML",
+          "odds": 106,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Los Angeles Angels",
+          "date": "2026-08-16",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 2425,
+      "stakeAmount": 7.5,
+      "potentialPayout": 189.38,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
