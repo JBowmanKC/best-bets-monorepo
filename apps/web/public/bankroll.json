@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 492.7,
+  "currentBankroll": 718.46,
   "totalBets": 19,
-  "wins": 7,
+  "wins": 8,
   "losses": 6,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 464,
-  "totalProfit": -7.3,
-  "roi": -0.021,
-  "peakBankroll": 565.5,
-  "lowestBankroll": 492.7,
+  "totalProfit": 218.46,
+  "roi": 0.6137,
+  "peakBankroll": 750.96,
+  "lowestBankroll": 500,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -21,7 +21,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 13
+    "totalResultsTracked": 14
   },
   "bets": [
     {
@@ -618,10 +618,10 @@
       "stakeAmount": 8.5,
       "potentialPayout": 234.26,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 225.76,
+      "bankrollAfter": 750.96,
+      "resolvedAt": "2026-08-16T14:29:37.619Z"
     },
     {
       "betId": "mlb-822942-prop-chandlersimpson-batter_hits-2026-08-14",
@@ -642,7 +642,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -32.5,
-      "bankrollAfter": 492.7,
+      "bankrollAfter": 718.46,
       "resolvedAt": "2026-08-15T14:29:51.116Z",
       "propType": "batter_hits",
       "playerName": "Chandler Simpson",
