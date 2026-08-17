@@ -1,15 +1,15 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 718.46,
+  "currentBankroll": 745.24,
   "totalBets": 23,
-  "wins": 8,
-  "losses": 6,
+  "wins": 10,
+  "losses": 8,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 608,
-  "totalProfit": 218.46,
-  "roi": 0.6137,
-  "peakBankroll": 750.96,
+  "totalProfit": 245.24,
+  "roi": 0.4905,
+  "peakBankroll": 752.74,
   "lowestBankroll": 500,
   "calibration": {
     "eliteWinRate": null,
@@ -21,7 +21,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 14
+    "totalResultsTracked": 18
   },
   "bets": [
     {
@@ -666,10 +666,10 @@
         "composite": 92
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -45.5,
+      "bankrollAfter": 672.96,
+      "resolvedAt": "2026-08-17T14:35:21.176Z",
       "propType": "batter_hits",
       "playerName": "Jac Caglianone",
       "line": 0.5,
@@ -692,10 +692,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 34.73,
+      "bankrollAfter": 707.69,
+      "resolvedAt": "2026-08-17T14:35:21.186Z",
       "propType": "batter_hits",
       "playerName": "Jake Bauers",
       "line": 0.5,
@@ -718,10 +718,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 45.05,
+      "bankrollAfter": 752.74,
+      "resolvedAt": "2026-08-17T14:35:21.194Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Logan Henderson",
       "line": 5.5,
@@ -777,10 +777,10 @@
       "stakeAmount": 7.5,
       "potentialPayout": 189.38,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7.5,
+      "bankrollAfter": 745.24,
+      "resolvedAt": "2026-08-17T14:35:21.210Z"
     }
   ]
 }
