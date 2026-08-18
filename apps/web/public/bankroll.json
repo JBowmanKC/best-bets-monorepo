@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 745.24,
-  "totalBets": 23,
+  "totalBets": 27,
   "wins": 10,
   "losses": 8,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 608,
+  "totalStaked": 757.5,
   "totalProfit": 245.24,
   "roi": 0.4905,
   "peakBankroll": 752.74,
@@ -781,6 +781,147 @@
       "profitLoss": -7.5,
       "bankrollAfter": 745.24,
       "resolvedAt": "2026-08-17T14:35:21.210Z"
+    },
+    {
+      "betId": "mlb-823341-prop-brettcallahan-batter_hits-2026-08-18",
+      "date": "2026-08-18",
+      "sport": "mlb",
+      "matchup": "Detroit Tigers @ Pittsburgh Pirates",
+      "pickLabel": "Brett Callahan Over 0.5",
+      "odds": -141,
+      "stakeAmount": 48.5,
+      "potentialPayout": 82.9,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.585,
+      "evEdge": 0.405,
+      "tier": "elite",
+      "scores": {
+        "composite": 85
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Brett Callahan",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823423-prop-brysonstott-batter_hits-2026-08-18",
+      "date": "2026-08-18",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ Philadelphia Phillies",
+      "pickLabel": "Bryson Stott Over 0.5",
+      "odds": -231,
+      "stakeAmount": 48.5,
+      "potentialPayout": 69.5,
+      "estimatedWinPct": 0.86,
+      "impliedWinPct": 0.698,
+      "evEdge": 0.162,
+      "tier": "elite",
+      "scores": {
+        "composite": 93
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Bryson Stott",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823423-prop-justincrawford-batter_hits-2026-08-18",
+      "date": "2026-08-18",
+      "sport": "mlb",
+      "matchup": "Miami Marlins @ Philadelphia Phillies",
+      "pickLabel": "Justin Crawford Over 0.5",
+      "odds": -188,
+      "stakeAmount": 48.5,
+      "potentialPayout": 74.3,
+      "estimatedWinPct": 0.78,
+      "impliedWinPct": 0.653,
+      "evEdge": 0.127,
+      "tier": "elite",
+      "scores": {
+        "composite": 88
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Justin Crawford",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-08-18",
+      "date": "2026-08-18",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Keider Montero Under 3.5 Strikeouts",
+          "odds": 107,
+          "sport": "mlb",
+          "matchup": "Detroit Tigers @ Pittsburgh Pirates",
+          "date": "2026-08-18",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Keider Montero",
+          "line": 3.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Detroit Tigers ML",
+          "odds": 137,
+          "sport": "mlb",
+          "matchup": "Detroit Tigers @ Pittsburgh Pirates",
+          "date": "2026-08-18",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Tampa Bay Rays ML",
+          "odds": -129,
+          "sport": "mlb",
+          "matchup": "Toronto Blue Jays @ Tampa Bay Rays",
+          "date": "2026-08-18",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Milwaukee Brewers ML",
+          "odds": -165,
+          "sport": "mlb",
+          "matchup": "Seattle Mariners @ Milwaukee Brewers",
+          "date": "2026-08-18",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Zack Wheeler Under 7.5 Strikeouts",
+          "odds": -147,
+          "sport": "mlb",
+          "matchup": "Miami Marlins @ Philadelphia Phillies",
+          "date": "2026-08-18",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Zack Wheeler",
+          "line": 7.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 2250,
+      "stakeAmount": 4,
+      "potentialPayout": 94,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
