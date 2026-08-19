@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 745.24,
-  "totalBets": 27,
+  "totalBets": 29,
   "wins": 10,
   "losses": 8,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 757.5,
+  "totalStaked": 821.5,
   "totalProfit": 245.24,
   "roi": 0.4905,
   "peakBankroll": 752.74,
@@ -917,6 +917,83 @@
       "combinedOdds": 2250,
       "stakeAmount": 4,
       "potentialPayout": 94,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "mlb-823748-home-2026-08-19",
+      "date": "2026-08-19",
+      "sport": "mlb",
+      "matchup": "Seattle Mariners @ Milwaukee Brewers",
+      "pickLabel": "Milwaukee Brewers ML",
+      "odds": -118,
+      "stakeAmount": 59.5,
+      "potentialPayout": 109.92,
+      "estimatedWinPct": 0.659,
+      "impliedWinPct": 0.541,
+      "evEdge": 0.118,
+      "tier": "strong",
+      "scores": {
+        "composite": 75
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-08-19",
+      "date": "2026-08-19",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Milwaukee Brewers ML",
+          "odds": -118,
+          "sport": "mlb",
+          "matchup": "Seattle Mariners @ Milwaukee Brewers",
+          "date": "2026-08-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "St. Louis Cardinals ML",
+          "odds": 138,
+          "sport": "mlb",
+          "matchup": "St. Louis Cardinals @ Cincinnati Reds",
+          "date": "2026-08-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Atlanta Braves ML",
+          "odds": -104,
+          "sport": "mlb",
+          "matchup": "Atlanta Braves @ Minnesota Twins",
+          "date": "2026-08-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Philadelphia Phillies ML",
+          "odds": -123,
+          "sport": "mlb",
+          "matchup": "Miami Marlins @ Philadelphia Phillies",
+          "date": "2026-08-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "New York Yankees ML",
+          "odds": -118,
+          "sport": "mlb",
+          "matchup": "New York Yankees @ Baltimore Orioles",
+          "date": "2026-08-19",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 2789,
+      "stakeAmount": 4.5,
+      "potentialPayout": 130.01,
       "sportsbook": "DraftKings",
       "result": "pending",
       "profitLoss": null,
