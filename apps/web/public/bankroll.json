@@ -1,27 +1,27 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 822.44,
+  "currentBankroll": 758.44,
   "totalBets": 29,
   "wins": 13,
-  "losses": 9,
+  "losses": 11,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 821.5,
-  "totalProfit": 322.44,
-  "roi": 0.4964,
+  "totalProfit": 258.44,
+  "roi": 0.3622,
   "peakBankroll": 826.44,
   "lowestBankroll": 500,
   "calibration": {
     "eliteWinRate": 0.6667,
-    "strongWinRate": 1,
+    "strongWinRate": 0.6667,
     "valueWinRate": null,
-    "mlbRoi": 0.2233,
+    "mlbRoi": 0.1135,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-08-19T14:40:43.164Z",
-    "totalResultsTracked": 22
+    "lastCalibrated": "2026-08-20T14:42:57.636Z",
+    "totalResultsTracked": 24
   },
   "bets": [
     {
@@ -940,10 +940,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -59.5,
+      "bankrollAfter": 762.94,
+      "resolvedAt": "2026-08-20T14:42:57.635Z"
     },
     {
       "betId": "parlay-high-2026-08-19",
@@ -995,10 +995,10 @@
       "stakeAmount": 4.5,
       "potentialPayout": 130.01,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -4.5,
+      "bankrollAfter": 758.44,
+      "resolvedAt": "2026-08-20T14:42:57.636Z"
     }
   ]
 }
