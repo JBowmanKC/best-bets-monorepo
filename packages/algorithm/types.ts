@@ -337,6 +337,8 @@ export interface ParlayLegRecord {
   line?: number;
   recommendedSide?: PropSide;
   sportsbook?: string;
+  /** Set once the whole parlay is graded (resolve-results grades every leg together) — undefined while pending. */
+  result?: "win" | "loss" | "void";
 }
 
 export interface BankrollBet {
