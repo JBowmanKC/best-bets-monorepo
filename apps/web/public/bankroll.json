@@ -166,14 +166,16 @@
           "odds": -157,
           "sport": "mlb",
           "matchup": "Tampa Bay Rays @ Athletics",
-          "date": "2026-08-11"
+          "date": "2026-08-11",
+          "result": "win"
         },
         {
           "pickLabel": "Atlanta Braves ML",
           "odds": -143,
           "sport": "mlb",
           "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-10"
+          "date": "2026-08-10",
+          "result": "loss"
         }
       ],
       "combinedOdds": 178,
@@ -434,7 +436,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Max Scherzer",
           "line": 4.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Tyler Phillips Under 3.5 Strikeouts",
@@ -446,7 +449,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Tyler Phillips",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Miami Marlins ML",
@@ -454,7 +458,8 @@
           "sport": "mlb",
           "matchup": "Pittsburgh Pirates @ Miami Marlins",
           "date": "2026-08-13",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Detroit Tigers ML",
@@ -462,7 +467,8 @@
           "sport": "mlb",
           "matchup": "Cleveland Guardians @ Detroit Tigers",
           "date": "2026-08-13",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "New York Yankees ML",
@@ -470,7 +476,8 @@
           "sport": "mlb",
           "matchup": "Seattle Mariners @ New York Yankees",
           "date": "2026-08-13",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2614,
@@ -575,7 +582,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Robert Stock",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Michael King Over 3.5 Strikeouts",
@@ -587,7 +595,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Michael King",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Chicago White Sox ML",
@@ -595,7 +604,8 @@
           "sport": "mlb",
           "matchup": "Chicago White Sox @ Detroit Tigers",
           "date": "2026-08-14",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "San Diego Padres ML",
@@ -603,7 +613,8 @@
           "sport": "mlb",
           "matchup": "San Diego Padres @ Cleveland Guardians",
           "date": "2026-08-14",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Texas Rangers ML",
@@ -611,7 +622,8 @@
           "sport": "mlb",
           "matchup": "Texas Rangers @ Athletics",
           "date": "2026-08-15",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2656,
@@ -742,7 +754,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Logan Henderson",
           "line": 5.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Milwaukee Brewers ML",
@@ -750,7 +763,8 @@
           "sport": "mlb",
           "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
           "date": "2026-08-16",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Ryan Johnson Under 3.5 Strikeouts",
@@ -762,7 +776,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Ryan Johnson",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Los Angeles Angels ML",
@@ -770,7 +785,8 @@
           "sport": "mlb",
           "matchup": "Kansas City Royals @ Los Angeles Angels",
           "date": "2026-08-16",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2425,
@@ -875,7 +891,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Keider Montero",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Detroit Tigers ML",
@@ -883,7 +900,8 @@
           "sport": "mlb",
           "matchup": "Detroit Tigers @ Pittsburgh Pirates",
           "date": "2026-08-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Tampa Bay Rays ML",
@@ -891,7 +909,8 @@
           "sport": "mlb",
           "matchup": "Toronto Blue Jays @ Tampa Bay Rays",
           "date": "2026-08-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Milwaukee Brewers ML",
@@ -899,7 +918,8 @@
           "sport": "mlb",
           "matchup": "Seattle Mariners @ Milwaukee Brewers",
           "date": "2026-08-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Zack Wheeler Under 7.5 Strikeouts",
@@ -911,7 +931,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Zack Wheeler",
           "line": 7.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2250,
@@ -956,7 +977,8 @@
           "sport": "mlb",
           "matchup": "Seattle Mariners @ Milwaukee Brewers",
           "date": "2026-08-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "St. Louis Cardinals ML",
@@ -964,7 +986,8 @@
           "sport": "mlb",
           "matchup": "St. Louis Cardinals @ Cincinnati Reds",
           "date": "2026-08-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Atlanta Braves ML",
@@ -972,7 +995,8 @@
           "sport": "mlb",
           "matchup": "Atlanta Braves @ Minnesota Twins",
           "date": "2026-08-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Philadelphia Phillies ML",
@@ -980,7 +1004,8 @@
           "sport": "mlb",
           "matchup": "Miami Marlins @ Philadelphia Phillies",
           "date": "2026-08-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "New York Yankees ML",
@@ -988,7 +1013,8 @@
           "sport": "mlb",
           "matchup": "New York Yankees @ Baltimore Orioles",
           "date": "2026-08-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2789,
