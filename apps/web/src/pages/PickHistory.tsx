@@ -96,6 +96,28 @@ function ResultBadge({ result }: { result: BetResult }) {
   );
 }
 
+function LegResultIcon({ result }: { result?: "win" | "loss" | "void" }) {
+  const meta = result === "win"
+    ? { symbol: "✓", color: "#10b981", title: "Won" }
+    : result === "loss"
+    ? { symbol: "✗", color: "#f87171", title: "Lost" }
+    : result === "void"
+    ? { symbol: "–", color: "#64748b", title: "Void/push" }
+    : { symbol: "•", color: "#fbbf24", title: "Pending" };
+
+  return (
+    <span title={meta.title} style={{
+      display: "inline-flex", alignItems: "center", justifyContent: "center",
+      width: 14, height: 14, borderRadius: "50%",
+      fontSize: "0.62rem", fontWeight: 900, lineHeight: 1,
+      color: meta.color, border: `1px solid ${meta.color}66`,
+      flexShrink: 0,
+    }}>
+      {meta.symbol}
+    </span>
+  );
+}
+
 const cellStyle: React.CSSProperties = {
   padding: "9px 10px", borderBottom: "1px solid #16213a",
   fontSize: "0.74rem", textAlign: "left", verticalAlign: "middle",
@@ -248,10 +270,13 @@ function BetsTable({ bets }: { bets: BankrollBet[] }) {
                     <td colSpan={9} style={{ ...cellStyle, background: "#080c14", padding: "8px 10px 8px 34px" }}>
                       {(bet.parlayLegs ?? []).map((leg, i) => (
                         <div key={i} style={{
-                          display: "flex", justifyContent: "space-between",
+                          display: "flex", alignItems: "center", justifyContent: "space-between",
                           padding: "3px 0", fontSize: "0.7rem", color: "#8098b8",
                         }}>
-                          <span>{leg.pickLabel} <span style={{ color: "#4a6080" }}>· {leg.matchup}</span></span>
+                          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <LegResultIcon result={leg.result} />
+                            {leg.pickLabel} <span style={{ color: "#4a6080" }}>· {leg.matchup}</span>
+                          </span>
                           <span style={{ fontWeight: 700, color: "#e2e8f0" }}>{fmtOdds(leg.odds)}</span>
                         </div>
                       ))}

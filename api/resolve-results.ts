@@ -78,6 +78,8 @@ interface ParlayLegRecord {
   playerName?: string;
   line?: number;
   recommendedSide?: "over" | "under";
+  /** Set once the whole parlay is graded (see resolveParlayBet) — undefined while pending. */
+  result?: "win" | "loss" | "void";
 }
 
 interface BankrollBet {
@@ -447,6 +449,10 @@ async function resolveParlayBet(
     if (outcome === null) return null; // any leg still undecided — whole parlay stays pending
     results.push(outcome);
   }
+
+  // Every leg is decided at this point — record each leg's own outcome so
+  // the ledger UI can show which legs won/lost, not just the parlay overall.
+  legs.forEach((leg, i) => { leg.result = results[i]; });
 
   if (results.every(r => r === "void")) return { result: "void", profitLoss: 0 };
   if (results.some(r => r === "loss")) return { result: "loss", profitLoss: -bet.stakeAmount };
