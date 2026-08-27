@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 758.44,
-  "totalBets": 29,
+  "totalBets": 33,
   "wins": 13,
   "losses": 11,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 821.5,
+  "totalStaked": 973.5,
   "totalProfit": 258.44,
   "roi": 0.3622,
   "peakBankroll": 826.44,
@@ -1025,6 +1025,139 @@
       "profitLoss": -4.5,
       "bankrollAfter": 758.44,
       "resolvedAt": "2026-08-20T14:42:57.636Z"
+    },
+    {
+      "betId": "mlb-823179-prop-gabrielmoreno-batter_total_bases-2026-08-27",
+      "date": "2026-08-27",
+      "sport": "mlb",
+      "matchup": "Arizona Diamondbacks @ San Francisco Giants",
+      "pickLabel": "Gabriel Moreno Over 1.5",
+      "odds": 112,
+      "stakeAmount": 47.5,
+      "potentialPayout": 100.7,
+      "estimatedWinPct": 0.7,
+      "impliedWinPct": 0.472,
+      "evEdge": 0.228,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_total_bases",
+      "playerName": "Gabriel Moreno",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-822771-prop-vladimirguerrerojr-batter_hits-2026-08-27",
+      "date": "2026-08-27",
+      "sport": "mlb",
+      "matchup": "Kansas City Royals @ Toronto Blue Jays",
+      "pickLabel": "Vladimir Guerrero Jr. Over 0.5",
+      "odds": -224,
+      "stakeAmount": 47.5,
+      "potentialPayout": 68.71,
+      "estimatedWinPct": 0.84,
+      "impliedWinPct": 0.691,
+      "evEdge": 0.149,
+      "tier": "elite",
+      "scores": {
+        "composite": 86
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Vladimir Guerrero Jr.",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-822771-prop-kazumaokamoto-batter_hits-2026-08-27",
+      "date": "2026-08-27",
+      "sport": "mlb",
+      "matchup": "Kansas City Royals @ Toronto Blue Jays",
+      "pickLabel": "Kazuma Okamoto Over 0.5",
+      "odds": -164,
+      "stakeAmount": 47.5,
+      "potentialPayout": 76.46,
+      "estimatedWinPct": 0.76,
+      "impliedWinPct": 0.621,
+      "evEdge": 0.139,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Kazuma Okamoto",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-08-27",
+      "date": "2026-08-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Jose Cabrera Under 3.5 Strikeouts",
+          "odds": -119,
+          "sport": "mlb",
+          "matchup": "Arizona Diamondbacks @ San Francisco Giants",
+          "date": "2026-08-28",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Jose Cabrera",
+          "line": 3.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Noah Cameron Over 4.5 Strikeouts",
+          "odds": 111,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Toronto Blue Jays",
+          "date": "2026-08-27",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Noah Cameron",
+          "line": 4.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Arizona Diamondbacks ML",
+          "odds": -105,
+          "sport": "mlb",
+          "matchup": "Arizona Diamondbacks @ San Francisco Giants",
+          "date": "2026-08-28",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Toronto Blue Jays ML",
+          "odds": -101,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Toronto Blue Jays",
+          "date": "2026-08-27",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1409,
+      "stakeAmount": 9.5,
+      "potentialPayout": 143.35,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
