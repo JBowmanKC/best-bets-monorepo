@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 758.44,
-  "totalBets": 33,
+  "totalBets": 35,
   "wins": 13,
   "losses": 11,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 973.5,
+  "totalStaked": 1094.5,
   "totalProfit": 258.44,
   "roi": 0.3622,
   "peakBankroll": 826.44,
@@ -1158,6 +1158,58 @@
       "profitLoss": null,
       "bankrollAfter": null,
       "resolvedAt": null
+    },
+    {
+      "betId": "mlb-823178-prop-gabrielmoreno-batter_total_bases-2026-08-28",
+      "date": "2026-08-28",
+      "sport": "mlb",
+      "matchup": "Arizona Diamondbacks @ San Francisco Giants",
+      "pickLabel": "Gabriel Moreno Over 1.5",
+      "odds": 118,
+      "stakeAmount": 60.5,
+      "potentialPayout": 131.89,
+      "estimatedWinPct": 0.7,
+      "impliedWinPct": 0.459,
+      "evEdge": 0.241,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_total_bases",
+      "playerName": "Gabriel Moreno",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823178-prop-bryceeldridge-batter_hits-2026-08-28",
+      "date": "2026-08-28",
+      "sport": "mlb",
+      "matchup": "Arizona Diamondbacks @ San Francisco Giants",
+      "pickLabel": "Bryce Eldridge Over 0.5",
+      "odds": -200,
+      "stakeAmount": 60.5,
+      "potentialPayout": 90.75,
+      "estimatedWinPct": 0.78,
+      "impliedWinPct": 0.667,
+      "evEdge": 0.113,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Bryce Eldridge",
+      "line": 0.5,
+      "recommendedSide": "over"
     }
   ]
 }
