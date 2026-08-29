@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 793.1,
-  "totalBets": 35,
+  "totalBets": 39,
   "wins": 15,
   "losses": 12,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1094.5,
+  "totalStaked": 1253,
   "totalProfit": 293.1,
   "roi": 0.3424,
   "peakBankroll": 826.44,
@@ -1210,6 +1210,131 @@
       "playerName": "Bryce Eldridge",
       "line": 0.5,
       "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-822936-prop-juniorcaminero-batter_hits-2026-08-29",
+      "date": "2026-08-29",
+      "sport": "mlb",
+      "matchup": "San Diego Padres @ Tampa Bay Rays",
+      "pickLabel": "Junior Caminero Over 0.5",
+      "odds": 210,
+      "stakeAmount": 50.5,
+      "potentialPayout": 156.55,
+      "estimatedWinPct": 0.82,
+      "impliedWinPct": 0.323,
+      "evEdge": 0.497,
+      "tier": "elite",
+      "scores": {
+        "composite": 90
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Junior Caminero",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823986-prop-zachneto-batter_hits-2026-08-29",
+      "date": "2026-08-29",
+      "sport": "mlb",
+      "matchup": "Philadelphia Phillies @ Los Angeles Angels",
+      "pickLabel": "Zach Neto Over 0.5",
+      "odds": -181,
+      "stakeAmount": 50.5,
+      "potentialPayout": 78.4,
+      "estimatedWinPct": 0.8,
+      "impliedWinPct": 0.644,
+      "evEdge": 0.156,
+      "tier": "elite",
+      "scores": {
+        "composite": 88
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Zach Neto",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823986-prop-bryceharper-batter_hits-2026-08-29",
+      "date": "2026-08-29",
+      "sport": "mlb",
+      "matchup": "Philadelphia Phillies @ Los Angeles Angels",
+      "pickLabel": "Bryce Harper Over 0.5",
+      "odds": -208,
+      "stakeAmount": 49.5,
+      "potentialPayout": 73.3,
+      "estimatedWinPct": 0.76,
+      "impliedWinPct": 0.675,
+      "evEdge": 0.085,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Bryce Harper",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-08-29",
+      "date": "2026-08-29",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Houston Astros ML",
+          "odds": 210,
+          "sport": "mlb",
+          "matchup": "Houston Astros @ New York Mets",
+          "date": "2026-08-29",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Boston Red Sox ML",
+          "odds": 242,
+          "sport": "mlb",
+          "matchup": "Boston Red Sox @ New York Yankees",
+          "date": "2026-08-29",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Cleveland Guardians ML",
+          "odds": 158,
+          "sport": "mlb",
+          "matchup": "Kansas City Royals @ Cleveland Guardians",
+          "date": "2026-08-29",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Philadelphia Phillies ML",
+          "odds": -113,
+          "sport": "mlb",
+          "matchup": "Philadelphia Phillies @ Los Angeles Angels",
+          "date": "2026-08-30",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 5056,
+      "stakeAmount": 8,
+      "potentialPayout": 412.48,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
