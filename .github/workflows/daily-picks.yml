@@ -2,8 +2,10 @@ name: Daily Picks
 
 on:
   schedule:
-    # 12 PM EDT — single daily run to stay within the OddsAPI free-tier quota.
-    - cron: "0 16 * * *"
+    # ~12 PM EDT — single daily run to stay within the OddsAPI free-tier
+    # quota. Offset a few minutes off the hour: GitHub's scheduler is most
+    # congested exactly on the hour and can delay or drop runs there.
+    - cron: "7 16 * * *"
   workflow_dispatch: {}
 
 permissions:

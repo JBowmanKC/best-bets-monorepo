@@ -10,8 +10,10 @@ name: Resolve Results
 
 on:
   schedule:
-    # 10 AM EDT — after overnight games have finished.
-    - cron: "0 14 * * *"
+    # ~10 AM EDT — after overnight games have finished. Offset off the
+    # hour: GitHub's scheduler is most congested exactly on the hour and
+    # can delay or drop runs there.
+    - cron: "22 14 * * *"
   workflow_dispatch: {}
 
 permissions:

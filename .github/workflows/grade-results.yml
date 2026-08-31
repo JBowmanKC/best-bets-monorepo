@@ -10,10 +10,12 @@ name: Grade Results
 
 on:
   schedule:
-    # 9 AM EDT — grades the previous night's slate.
-    - cron: "0 13 * * *"
-    # 9 PM EDT — catches afternoon games same-day.
-    - cron: "0 1 * * *"
+    # ~9 AM EDT — grades the previous night's slate. Offset off the hour:
+    # GitHub's scheduler is most congested exactly on the hour and can
+    # delay or drop runs there.
+    - cron: "4 13 * * *"
+    # ~9 PM EDT — catches afternoon games same-day.
+    - cron: "11 1 * * *"
   workflow_dispatch:
     inputs:
       regrade_all:
