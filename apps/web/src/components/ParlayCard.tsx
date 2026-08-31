@@ -1,9 +1,10 @@
 import type { Parlay } from "@best-bets/algorithm";
 
 const PARLAY_STYLE = {
-  safe:  { border: "linear-gradient(90deg,#10b981,#6ee7b7)", nameColor: "#10b981", sub: "Highest win probability · Best for consistent bettors" },
-  value: { border: "linear-gradient(90deg,#8b5cf6,#f59e0b)", nameColor: "#8b5cf6", sub: "High EV legs · Maximum profit angle"                   },
-  shot:  { border: "linear-gradient(90deg,#ef4444,#f59e0b)", nameColor: "#ef4444", sub: "Lottery ticket · Tiny stake only"                       },
+  safe:   { border: "linear-gradient(90deg,#10b981,#6ee7b7)", nameColor: "#10b981", sub: "Highest win probability · Best for consistent bettors" },
+  value:  { border: "linear-gradient(90deg,#8b5cf6,#f59e0b)", nameColor: "#8b5cf6", sub: "High EV legs · Maximum profit angle"                   },
+  shot:   { border: "linear-gradient(90deg,#ef4444,#f59e0b)", nameColor: "#ef4444", sub: "Lottery ticket · Tiny stake only"                       },
+  double: { border: "linear-gradient(90deg,#3b82f6,#06b6d4)", nameColor: "#3b82f6", sub: "Heavy favorites · Targets ~2x your stake"               },
 };
 
 const SPORT_COLOR: Record<string, string> = {

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // Appends a pending bankroll bet for each of today's *committed* daily bets
-// — the 3 bestBets singles plus the safeParlay and highOddsParlay — without
-// touching any bet that's already recorded. The much larger allPicks/
-// allPropPicks analysis pool is deliberately NOT tracked here: the whole
-// point of the daily-selection system is that the bankroll only ever commits
-// to the 5 bets selectDailyBets() actually chose.
+// — the 3 bestBets singles plus the safeParlay, highOddsParlay, and
+// doubleUpParlay — without touching any bet that's already recorded. The
+// much larger allPicks/allPropPicks analysis pool is deliberately NOT
+// tracked here: the whole point of the daily-selection system is that the
+// bankroll only ever commits to the 6 bets selectDailyBets() actually chose.
 //
 //   node scripts/append-bankroll-bets.mjs [picksJsonPath]
 //
@@ -138,6 +138,7 @@ async function main() {
   const bestBets = payload.bestBets ?? [];
   const safeParlay = payload.safeParlay;
   const highOddsParlay = payload.highOddsParlay;
+  const doubleUpParlay = payload.doubleUpParlay;
 
   const bankroll = existsSync(BANKROLL_FILE) ? await readJson(BANKROLL_FILE) : defaultBankroll();
   const seen = new Set(bankroll.bets.map(b => b.betId));
@@ -147,6 +148,7 @@ async function main() {
   );
   if (safeParlay?.legs?.length > 0) candidates.push(parlayBetEntry(safeParlay, "safe", payload.date));
   if (highOddsParlay?.legs?.length > 0) candidates.push(parlayBetEntry(highOddsParlay, "high", payload.date));
+  if (doubleUpParlay?.legs?.length > 0) candidates.push(parlayBetEntry(doubleUpParlay, "double", payload.date));
 
   let added = 0;
   for (const bet of candidates) {

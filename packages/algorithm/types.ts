@@ -145,14 +145,14 @@ export interface ParlayLeg {
 }
 
 export interface Parlay {
-  id: "safe" | "value" | "shot";
+  id: "safe" | "value" | "shot" | "double";
   label: string;
   emoji: string;
   legs: ParlayLeg[];
   estimatedPayout: number;   // e.g. 480 means +480
   combinedWinPct: number;    // 0.27
   recommendedStake: string;  // "1–2 units", or "$18.50" for a committed daily parlay
-  /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay). Absent on the reference-only allParlays entries. */
+  /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay/doubleUpParlay). Absent on the reference-only allParlays entries. */
   stakeAmount?: number;
   potentialPayout?: number;
   /** The single book every leg is from. Absent when there are no legs. */
@@ -176,10 +176,11 @@ export interface BestBetsResponse {
   /** The book every bet/leg today is priced from, or null if none could be determined (e.g. no ODDS_API_KEY). */
   sportsbook: string | null;
 
-  // The (up to) 5 committed bets for today.
+  // The (up to) 6 committed bets for today.
   bestBets: (Pick | PropPick)[]; // up to 3 singles
   safeParlay: Parlay;
   highOddsParlay: Parlay;
+  doubleUpParlay: Parlay;
 
   // Full analysis pool — scored in full, shown for transparency, not bet on.
   allPicks: Pick[];

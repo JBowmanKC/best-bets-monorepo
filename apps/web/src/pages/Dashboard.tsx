@@ -247,7 +247,7 @@ export function Dashboard() {
       {loading ? (
         <CardSkeleton count={3} height={220} />
       ) : !data || data.bestBets.length === 0 ? (
-        <EmptyNotice text="Picks generate at 8:00 AM EDT" />
+        <EmptyNotice text="Picks generate at 12:00 PM EDT" />
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 14 }}>
           {data.bestBets.map((item, i) => (
@@ -269,14 +269,15 @@ export function Dashboard() {
       {/* ── Section 3: Committed Parlays ── */}
       <SectionTitle>🎰 Committed Parlays</SectionTitle>
       {loading ? (
-        <CardSkeleton count={2} height={260} />
-      ) : data && (data.safeParlay.legs.length > 0 || data.highOddsParlay.legs.length > 0) ? (
+        <CardSkeleton count={3} height={260} />
+      ) : data && (data.safeParlay.legs.length > 0 || data.highOddsParlay.legs.length > 0 || data.doubleUpParlay.legs.length > 0) ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 14 }}>
           {data.safeParlay.legs.length > 0 && <ParlayCard parlay={data.safeParlay} />}
           {data.highOddsParlay.legs.length > 0 && <ParlayCard parlay={data.highOddsParlay} />}
+          {data.doubleUpParlay.legs.length > 0 && <ParlayCard parlay={data.doubleUpParlay} />}
         </div>
       ) : (
-        <EmptyNotice text="Picks generate at 8:00 AM EDT" />
+        <EmptyNotice text="Picks generate at 12:00 PM EDT" />
       )}
 
       {/* ── Section 4: Full Analysis ── */}

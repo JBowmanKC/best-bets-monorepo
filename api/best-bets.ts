@@ -144,14 +144,14 @@ interface ParlayLeg {
 }
 
 interface Parlay {
-  id: "safe" | "value" | "shot";
+  id: "safe" | "value" | "shot" | "double";
   label: string;
   emoji: string;
   legs: ParlayLeg[];
   estimatedPayout: number;
   combinedWinPct: number;
   recommendedStake: string;
-  /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay). Absent on the reference-only allParlays entries. */
+  /** Dollar stake/payout for a committed daily parlay (safeParlay/highOddsParlay/doubleUpParlay). Absent on the reference-only allParlays entries. */
   stakeAmount?: number;
   potentialPayout?: number;
   /** The single book every leg is from. Absent when there are no legs. */
@@ -182,10 +182,11 @@ interface BestBetsResponse {
   /** The book every bet/leg today is priced from, or null if none could be determined (e.g. no ODDS_API_KEY). */
   sportsbook: string | null;
 
-  // The (up to) 5 committed bets for today.
+  // The (up to) 6 committed bets for today.
   bestBets: (BetPick | PropPick)[]; // up to 3 singles
   safeParlay: Parlay;
   highOddsParlay: Parlay;
+  doubleUpParlay: Parlay;
 
   // Full analysis pool — scored in full, shown for transparency, not bet on.
   allPicks: BetPick[];
@@ -759,7 +760,7 @@ function buildDefaultParlays(picks: BetPick[], propPicks: PropPick[]): Parlay[] 
   return [safe, value, shot].filter((p): p is Parlay => p !== null);
 }
 
-// ─── Daily bet selection — 3 singles + 2 committed parlays ──────────────────
+// ─── Daily bet selection — 3 singles + 3 committed parlays ──────────────────
 //
 // The algorithm still scores every game and prop (scoreAllGames/buildPropPicks
 // run unchanged, in full, before any of this). selectDailyBets() only decides
@@ -888,6 +889,33 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
   return legs;
 }
 
+/**
+ * 2+ heavy-favorite moneyline legs targeting a combined payout near +100 —
+ * "double up": stake $10, walk away with $20. Needs legs negative enough
+ * that even multiplied together the parlay stays close to even money;
+ * lighter favorites (as used by selectSafeParlayLegs) would blow well past
+ * +100 the moment a second leg is added.
+ */
+function selectDoubleUpParlayLegs(picks: BetPick[]): BetPick[] {
+  const eligible = picks.filter(p => p.odds <= -110 && p.odds >= -450 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
+  if (eligible.length < 2) return [];
+
+  const byComposite = (a: BetPick, b: BetPick) => b.scores.composite - a.scores.composite;
+  const pool = [...eligible].sort(byComposite);
+
+  let legs = pool.slice(0, 2);
+  let payout = calcParlayPayout(legs.map(l => l.odds));
+
+  // Target band +70 to +150 (as close to doubling the stake as the board
+  // allows) — keep adding the next-best favorite while running too hot.
+  for (let i = 2; payout > 150 && i < pool.length; i++) {
+    legs.push(pool[i]);
+    payout = calcParlayPayout(legs.map(l => l.odds));
+  }
+
+  return legs;
+}
+
 interface ParlayStakeInfo {
   stakeAmount: number;
   potentialPayout: number;
@@ -943,20 +971,21 @@ function payoutAt(odds: number, stakeAmount: number): number {
 }
 
 /**
- * Caps each bet at 8% of bankroll, then scales all five bets proportionally
+ * Caps each bet at 8% of bankroll, then scales all six bets proportionally
  * down (never up) so the combined total never exceeds 20% of bankroll.
  */
 function enforceDailyBudget(
-  bestBets: (BetPick | PropPick)[], safeParlay: Parlay, highOddsParlay: Parlay, bankroll: number
-): { bestBets: (BetPick | PropPick)[]; safeParlay: Parlay; highOddsParlay: Parlay; totalDailyStake: number } {
+  bestBets: (BetPick | PropPick)[], safeParlay: Parlay, highOddsParlay: Parlay, doubleUpParlay: Parlay, bankroll: number
+): { bestBets: (BetPick | PropPick)[]; safeParlay: Parlay; highOddsParlay: Parlay; doubleUpParlay: Parlay; totalDailyStake: number } {
   const maxSingle = bankroll * MAX_SINGLE_BET_PCT;
   const cap = (n: number) => Math.min(n, maxSingle);
 
   const cappedBestBets = bestBets.map(b => cap(b.stakeAmount));
   const cappedSafe = cap(safeParlay.stakeAmount ?? 0);
   const cappedHigh = cap(highOddsParlay.stakeAmount ?? 0);
+  const cappedDouble = cap(doubleUpParlay.stakeAmount ?? 0);
 
-  const total = cappedBestBets.reduce((a, b) => a + b, 0) + cappedSafe + cappedHigh;
+  const total = cappedBestBets.reduce((a, b) => a + b, 0) + cappedSafe + cappedHigh + cappedDouble;
   const maxTotal = bankroll * MAX_DAILY_RISK_PCT;
   const scale = total > maxTotal && total > 0 ? maxTotal / total : 1;
 
@@ -983,17 +1012,29 @@ function enforceDailyBudget(
     recommendedStake: `$${highStake.toFixed(2)}`,
   };
 
+  const doubleStake = round2(cappedDouble * scale);
+  const finalDoubleUpParlay: Parlay = {
+    ...doubleUpParlay,
+    stakeAmount: doubleStake,
+    potentialPayout: payoutAt(doubleUpParlay.estimatedPayout, doubleStake),
+    recommendedStake: `$${doubleStake.toFixed(2)}`,
+  };
+
   const totalDailyStake = Math.round(
-    (finalBestBets.reduce((a, b) => a + b.stakeAmount, 0) + safeStake + highStake) * 100
+    (finalBestBets.reduce((a, b) => a + b.stakeAmount, 0) + safeStake + highStake + doubleStake) * 100
   ) / 100;
 
-  return { bestBets: finalBestBets, safeParlay: finalSafeParlay, highOddsParlay: finalHighOddsParlay, totalDailyStake };
+  return {
+    bestBets: finalBestBets, safeParlay: finalSafeParlay, highOddsParlay: finalHighOddsParlay,
+    doubleUpParlay: finalDoubleUpParlay, totalDailyStake,
+  };
 }
 
 interface DailyBetsResult {
   bestBets: (BetPick | PropPick)[];
   safeParlay: Parlay;
   highOddsParlay: Parlay;
+  doubleUpParlay: Parlay;
   totalDailyStake: number;
 }
 
@@ -1011,6 +1052,7 @@ function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll
 
   const safeLegs = selectSafeParlayLegs(allPicks, bestBetIds);
   const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks);
+  const doubleLegs = selectDoubleUpParlayLegs(allPicks);
 
   const safeParlay = safeLegs.length >= 2
     ? buildCommittedParlay(safeLegs, computeParlayStake(safeLegs, bankroll, 1), { id: "safe", label: "💚 Safe Parlay", emoji: "💚" })
@@ -1021,7 +1063,12 @@ function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll
     ? buildCommittedParlay(highLegs, computeParlayStake(highLegs, bankroll, 0.4), { id: "shot", label: "🚀 High Odds Parlay", emoji: "🚀" })
     : emptyParlay("shot", "🚀 High Odds Parlay", "🚀");
 
-  return enforceDailyBudget(bestBets, safeParlay, highOddsParlay, bankroll);
+  // Heavy favorites, near-even payout — stake at 0.7x Kelly (lower variance than the other two).
+  const doubleUpParlay = doubleLegs.length >= 2
+    ? buildCommittedParlay(doubleLegs, computeParlayStake(doubleLegs, bankroll, 0.7), { id: "double", label: "2️⃣ Double Up Parlay", emoji: "2️⃣" })
+    : emptyParlay("double", "2️⃣ Double Up Parlay", "2️⃣");
+
+  return enforceDailyBudget(bestBets, safeParlay, highOddsParlay, doubleUpParlay, bankroll);
 }
 
 // ─── Data sources ────────────────────────────────────────────────────────────
@@ -2023,7 +2070,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       propPicks.map(async (prop) => ({ ...prop, rationale: await generatePropExplanation(prop) }))
     );
 
-    // Reference-only trio (safe/value/shot) — unrelated to the 5 bets actually
+    // Reference-only trio (safe/value/shot) — unrelated to the 6 bets actually
     // committed below, kept purely so the "Full Analysis" view has something
     // to show under allParlays.
     const allParlays = buildDefaultParlays(picksWithExplanations, propPicksWithExplanations);
@@ -2034,6 +2081,8 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     } catch (e) {
       // Never let a selection bug take down pick generation — fall back to a
       // simple top-3-by-composite single plus the reference safe/shot parlays.
+      // (No "double up" equivalent exists in the reference trio, so that one
+      // just falls back to empty.)
       console.warn("selectDailyBets failed, falling back to top picks:", e);
       const fallbackBestBets = [...picksWithExplanations].sort((a, b) => b.scores.composite - a.scores.composite).slice(0, 3);
       const fallbackSafe = allParlays.find(p => p.id === "safe") ?? emptyParlay("safe", "💚 Safe Parlay", "💚");
@@ -2042,6 +2091,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
         bestBets: fallbackBestBets,
         safeParlay: fallbackSafe,
         highOddsParlay: fallbackShot,
+        doubleUpParlay: emptyParlay("double", "2️⃣ Double Up Parlay", "2️⃣"),
         totalDailyStake: fallbackBestBets.reduce((a, b) => a + b.stakeAmount, 0),
       };
     }
@@ -2050,12 +2100,14 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     const totalPotentialPayout = Math.round(
       (dailyBets.bestBets.reduce((a, b) => a + b.potentialPayout, 0) +
         (dailyBets.safeParlay.potentialPayout ?? 0) +
-        (dailyBets.highOddsParlay.potentialPayout ?? 0)) * 100
+        (dailyBets.highOddsParlay.potentialPayout ?? 0) +
+        (dailyBets.doubleUpParlay.potentialPayout ?? 0)) * 100
     ) / 100;
     const totalBetsPlaced =
       dailyBets.bestBets.length +
       (dailyBets.safeParlay.legs.length > 0 ? 1 : 0) +
-      (dailyBets.highOddsParlay.legs.length > 0 ? 1 : 0);
+      (dailyBets.highOddsParlay.legs.length > 0 ? 1 : 0) +
+      (dailyBets.doubleUpParlay.legs.length > 0 ? 1 : 0);
 
     const summary: DailySummary = {
       totalBetsPlaced,
@@ -2076,6 +2128,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
       bestBets: dailyBets.bestBets,
       safeParlay: dailyBets.safeParlay,
       highOddsParlay: dailyBets.highOddsParlay,
+      doubleUpParlay: dailyBets.doubleUpParlay,
       allPicks: picksWithExplanations,
       allPropPicks: propPicksWithExplanations,
       allParlays,
