@@ -319,42 +319,55 @@ async function fetchMlbBoxscore(gamePk: string): Promise<any | null> {
   }
 }
 
-/** Finds `playerName` in either team's boxscore and reads the stat `propType` bets against. Null = not found (scratched/DNP) or stat missing. */
-function findBoxscoreStatValue(boxscore: any, playerName: string, propType: string): number | null {
-  const isPitcherProp = propType === "pitcher_strikeouts" || propType === "pitcher_outs";
+/**
+ * Finds `playerName` in either team's boxscore. Null means they never appear
+ * at all — not on the active roster for this game (healthy scratch, demoted,
+ * etc.) — the caller should void the bet rather than wait forever, since a
+ * final game's roster list is never going to grow a missing player.
+ */
+function findBoxscorePlayer(boxscore: any, playerName: string): any | null {
   const sides = [boxscore?.teams?.home, boxscore?.teams?.away];
 
   for (const side of sides) {
     const players = side?.players ?? {};
     for (const key of Object.keys(players)) {
       const p = players[key];
-      if (rrNormalizeTeamName(p?.person?.fullName ?? "") !== rrNormalizeTeamName(playerName)) continue;
-
-      const stat = isPitcherProp ? p?.stats?.pitching : p?.stats?.batting;
-      if (!stat) return null;
-
-      const num = (v: any) => (v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v));
-
-      switch (propType) {
-        case "pitcher_strikeouts": return num(stat.strikeOuts);
-        case "pitcher_outs": {
-          const outs = num(stat.outs);
-          if (outs !== null) return outs;
-          const ip = parseFloat(stat.inningsPitched ?? "");
-          return Number.isNaN(ip) ? null : Math.round(ip * 3);
-        }
-        case "batter_hits": return num(stat.hits);
-        case "batter_total_bases": return num(stat.totalBases);
-        case "batter_home_runs": return num(stat.homeRuns);
-        default: return null;
-      }
+      if (rrNormalizeTeamName(p?.person?.fullName ?? "") === rrNormalizeTeamName(playerName)) return p;
     }
   }
 
   return null;
 }
 
-/** Returns null when the bet should stay pending (game not final / boxscore not posted / player not found). */
+/**
+ * Reads the stat `propType` bets against for a player already confirmed
+ * present in a final game's boxscore. A missing counting-stat field (e.g. a
+ * bench bat with zero plate appearances, or a reliever who warmed up but
+ * never entered) means they recorded zero of it — the game is final, so
+ * that's a real result, not data still waiting to post — hence `?? 0` rather
+ * than treating it as unresolvable.
+ */
+function readBoxscoreStatValue(player: any, propType: string): number {
+  const isPitcherProp = propType === "pitcher_strikeouts" || propType === "pitcher_outs";
+  const stat = isPitcherProp ? player?.stats?.pitching : player?.stats?.batting;
+  const num = (v: any) => (v === null || v === undefined || v === "" || Number.isNaN(Number(v)) ? null : Number(v));
+
+  switch (propType) {
+    case "pitcher_strikeouts": return num(stat?.strikeOuts) ?? 0;
+    case "pitcher_outs": {
+      const outs = num(stat?.outs);
+      if (outs !== null) return outs;
+      const ip = parseFloat(stat?.inningsPitched ?? "");
+      return Number.isNaN(ip) ? 0 : Math.round(ip * 3);
+    }
+    case "batter_hits": return num(stat?.hits) ?? 0;
+    case "batter_total_bases": return num(stat?.totalBases) ?? 0;
+    case "batter_home_runs": return num(stat?.homeRuns) ?? 0;
+    default: return 0;
+  }
+}
+
+/** Returns null when the bet should stay pending (game not final / boxscore not posted). */
 async function resolvePropBet(bet: BankrollBet, game: FinalGame): Promise<Outcome | null> {
   if (game.state === "no-action") return { result: "void", profitLoss: 0 };
   if (game.state !== "final" || !game.gamePk) return null;
@@ -363,9 +376,10 @@ async function resolvePropBet(bet: BankrollBet, game: FinalGame): Promise<Outcom
   const boxscore = await fetchMlbBoxscore(game.gamePk);
   if (!boxscore) return null; // couldn't fetch — stays pending, retried next run
 
-  const statValue = findBoxscoreStatValue(boxscore, bet.playerName ?? "", bet.propType);
-  if (statValue === null) return null; // player scratched or stat not posted yet — stays pending
+  const player = findBoxscorePlayer(boxscore, bet.playerName ?? "");
+  if (!player) return { result: "void", profitLoss: 0 }; // scratched/not on the active roster — no action
 
+  const statValue = readBoxscoreStatValue(player, bet.propType);
   if (statValue === bet.line) return { result: "push", profitLoss: 0 };
 
   const won = bet.recommendedSide === "over" ? statValue > bet.line : statValue < bet.line;
@@ -408,8 +422,10 @@ async function resolveParlayLeg(
     const boxscore = await fetchMlbBoxscore(game.gamePk);
     if (!boxscore) return null;
 
-    const statValue = findBoxscoreStatValue(boxscore, leg.playerName ?? "", leg.propType);
-    if (statValue === null) return null;
+    const player = findBoxscorePlayer(boxscore, leg.playerName ?? "");
+    if (!player) return "void"; // scratched/not on the active roster — no action, same as a voided leg
+
+    const statValue = readBoxscoreStatValue(player, leg.propType);
     if (statValue === leg.line) return "void"; // a push leg is dropped, same as a voided one
 
     return (leg.recommendedSide === "over" ? statValue > leg.line : statValue < leg.line) ? "win" : "loss";
