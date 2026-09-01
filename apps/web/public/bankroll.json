@@ -1,27 +1,27 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 865.72,
+  "currentBankroll": 778.72,
   "totalBets": 50,
   "wins": 21,
-  "losses": 17,
+  "losses": 22,
   "pushes": 0,
-  "voids": 0,
+  "voids": 1,
   "totalStaked": 1719,
-  "totalProfit": 365.72,
-  "roi": 0.26,
-  "peakBankroll": 897.58,
-  "lowestBankroll": 500,
+  "totalProfit": 278.72,
+  "roi": 0.1866,
+  "peakBankroll": 810.58,
+  "lowestBankroll": 424.25,
   "calibration": {
-    "eliteWinRate": 0.6538,
+    "eliteWinRate": 0.6071,
     "strongWinRate": 0.6,
     "valueWinRate": null,
-    "mlbRoi": 0.1413,
+    "mlbRoi": 0.0919,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-01T17:53:07.788Z",
-    "totalResultsTracked": 38
+    "lastCalibrated": "2026-09-01T20:35:26.454Z",
+    "totalResultsTracked": 44
   },
   "bets": [
     {
@@ -113,7 +113,8 @@
           "propType": "pitcher_outs",
           "playerName": "Logan Henderson",
           "line": 14.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Christian Scott Over 5.5 Strikeouts",
@@ -124,37 +125,41 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Christian Scott",
           "line": 5.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Atlanta Braves ML",
           "odds": -143,
           "sport": "mlb",
           "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-10"
+          "date": "2026-08-10",
+          "result": "loss"
         },
         {
           "pickLabel": "Texas Rangers ML",
           "odds": -115,
           "sport": "mlb",
           "matchup": "Texas Rangers @ Los Angeles Angels",
-          "date": "2026-08-11"
+          "date": "2026-08-11",
+          "result": "loss"
         },
         {
           "pickLabel": "Tampa Bay Rays ML",
           "odds": -157,
           "sport": "mlb",
           "matchup": "Tampa Bay Rays @ Athletics",
-          "date": "2026-08-11"
+          "date": "2026-08-11",
+          "result": "win"
         }
       ],
       "combinedOdds": 1835,
       "stakeAmount": 8,
       "potentialPayout": 154.8,
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -8,
+      "bankrollAfter": 557.5,
+      "resolvedAt": "2026-09-01T20:35:26.342Z"
     },
     {
       "betId": "parlay-safe-2026-08-10",
@@ -183,7 +188,7 @@
       "potentialPayout": 56.99,
       "result": "loss",
       "profitLoss": -20.5,
-      "bankrollAfter": 545,
+      "bankrollAfter": 537,
       "resolvedAt": "2026-08-14T14:58:29.431Z"
     },
     {
@@ -202,10 +207,10 @@
       "scores": {
         "composite": 86
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30.5,
+      "bankrollAfter": 506.5,
+      "resolvedAt": "2026-09-01T20:35:26.360Z",
       "propType": "batter_hits",
       "playerName": "Jhonny Pereda",
       "line": 0.5,
@@ -227,10 +232,10 @@
       "scores": {
         "composite": 90
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "void",
+      "profitLoss": 0,
+      "bankrollAfter": 506.5,
+      "resolvedAt": "2026-09-01T20:35:26.370Z",
       "propType": "batter_hits",
       "playerName": "Endy Rodríguez",
       "line": 0.5,
@@ -254,7 +259,7 @@
       },
       "result": "loss",
       "profitLoss": -30.5,
-      "bankrollAfter": 514.5,
+      "bankrollAfter": 476,
       "resolvedAt": "2026-08-14T14:58:29.469Z",
       "propType": "batter_hits",
       "playerName": "Luke Maile",
@@ -277,10 +282,10 @@
       "scores": {
         "composite": 80
       },
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30.5,
+      "bankrollAfter": 445.5,
+      "resolvedAt": "2026-09-01T20:35:26.381Z",
       "propType": "batter_hits",
       "playerName": "Chandler Simpson",
       "line": 1.5,
@@ -300,7 +305,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Carmen Mlodzinski",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Daniel Lynch IV Under 3 Outs Recorded",
@@ -311,37 +317,41 @@
           "propType": "pitcher_outs",
           "playerName": "Daniel Lynch IV",
           "line": 3,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "New York Yankees ML",
           "odds": -128,
           "sport": "mlb",
           "matchup": "Seattle Mariners @ New York Yankees",
-          "date": "2026-08-12"
+          "date": "2026-08-12",
+          "result": "win"
         },
         {
           "pickLabel": "Miami Marlins ML",
           "odds": -109,
           "sport": "mlb",
           "matchup": "Pittsburgh Pirates @ Miami Marlins",
-          "date": "2026-08-12"
+          "date": "2026-08-12",
+          "result": "win"
         },
         {
           "pickLabel": "Atlanta Braves ML",
           "odds": -177,
           "sport": "mlb",
           "matchup": "New York Mets @ Atlanta Braves",
-          "date": "2026-08-12"
+          "date": "2026-08-12",
+          "result": "win"
         }
       ],
       "combinedOdds": 1910,
       "stakeAmount": 8.5,
       "potentialPayout": 170.85,
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -8.5,
+      "bankrollAfter": 437,
+      "resolvedAt": "2026-09-01T20:35:26.405Z"
     },
     {
       "betId": "mlb-822776-prop-andruwmonasterio-batter_hits-2026-08-13",
@@ -362,7 +372,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 18.75,
-      "bankrollAfter": 533.25,
+      "bankrollAfter": 455.75,
       "resolvedAt": "2026-08-14T14:58:29.496Z",
       "propType": "batter_hits",
       "playerName": "Andruw Monasterio",
@@ -388,7 +398,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -31.5,
-      "bankrollAfter": 501.75,
+      "bankrollAfter": 424.25,
       "resolvedAt": "2026-08-14T14:58:29.508Z",
       "propType": "batter_hits",
       "playerName": "Max Clark",
@@ -414,7 +424,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 20.59,
-      "bankrollAfter": 522.34,
+      "bankrollAfter": 444.84,
       "resolvedAt": "2026-08-14T14:58:29.514Z",
       "propType": "batter_hits",
       "playerName": "Spencer Torkelson",
@@ -486,7 +496,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -6,
-      "bankrollAfter": 516.34,
+      "bankrollAfter": 438.84,
       "resolvedAt": "2026-08-14T14:58:29.543Z"
     },
     {
@@ -508,7 +518,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 19.93,
-      "bankrollAfter": 536.27,
+      "bankrollAfter": 458.77,
       "resolvedAt": "2026-08-15T14:29:51.073Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Robert Stock",
@@ -534,7 +544,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 19.43,
-      "bankrollAfter": 555.7,
+      "bankrollAfter": 478.2,
       "resolvedAt": "2026-08-15T14:29:51.081Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Michael King",
@@ -560,7 +570,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -30.5,
-      "bankrollAfter": 525.2,
+      "bankrollAfter": 447.7,
       "resolvedAt": "2026-08-15T14:29:51.089Z",
       "propType": "batter_hits",
       "playerName": "Jackson Merrill",
@@ -632,7 +642,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 225.76,
-      "bankrollAfter": 750.96,
+      "bankrollAfter": 673.46,
       "resolvedAt": "2026-08-16T14:29:37.619Z"
     },
     {
@@ -654,7 +664,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -32.5,
-      "bankrollAfter": 718.46,
+      "bankrollAfter": 640.96,
       "resolvedAt": "2026-08-15T14:29:51.116Z",
       "propType": "batter_hits",
       "playerName": "Chandler Simpson",
@@ -680,7 +690,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -45.5,
-      "bankrollAfter": 672.96,
+      "bankrollAfter": 595.46,
       "resolvedAt": "2026-08-17T14:35:21.176Z",
       "propType": "batter_hits",
       "playerName": "Jac Caglianone",
@@ -706,7 +716,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 34.73,
-      "bankrollAfter": 707.69,
+      "bankrollAfter": 630.19,
       "resolvedAt": "2026-08-17T14:35:21.186Z",
       "propType": "batter_hits",
       "playerName": "Jake Bauers",
@@ -732,7 +742,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 45.05,
-      "bankrollAfter": 752.74,
+      "bankrollAfter": 675.24,
       "resolvedAt": "2026-08-17T14:35:21.194Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Logan Henderson",
@@ -795,7 +805,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -7.5,
-      "bankrollAfter": 745.24,
+      "bankrollAfter": 667.74,
       "resolvedAt": "2026-08-17T14:35:21.210Z"
     },
     {
@@ -817,7 +827,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 34.4,
-      "bankrollAfter": 779.64,
+      "bankrollAfter": 702.14,
       "resolvedAt": "2026-08-19T14:40:43.134Z",
       "propType": "batter_hits",
       "playerName": "Brett Callahan",
@@ -843,7 +853,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 21,
-      "bankrollAfter": 800.64,
+      "bankrollAfter": 723.14,
       "resolvedAt": "2026-08-19T14:40:43.141Z",
       "propType": "batter_hits",
       "playerName": "Bryson Stott",
@@ -869,7 +879,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 25.8,
-      "bankrollAfter": 826.44,
+      "bankrollAfter": 748.94,
       "resolvedAt": "2026-08-19T14:40:43.147Z",
       "propType": "batter_hits",
       "playerName": "Justin Crawford",
@@ -941,7 +951,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -4,
-      "bankrollAfter": 822.44,
+      "bankrollAfter": 744.94,
       "resolvedAt": "2026-08-19T14:40:43.158Z"
     },
     {
@@ -963,7 +973,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -59.5,
-      "bankrollAfter": 762.94,
+      "bankrollAfter": 685.44,
       "resolvedAt": "2026-08-20T14:42:57.635Z"
     },
     {
@@ -1023,7 +1033,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -4.5,
-      "bankrollAfter": 758.44,
+      "bankrollAfter": 680.94,
       "resolvedAt": "2026-08-20T14:42:57.636Z"
     },
     {
@@ -1045,7 +1055,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 53.2,
-      "bankrollAfter": 811.64,
+      "bankrollAfter": 734.14,
       "resolvedAt": "2026-08-28T23:30:21.498Z",
       "propType": "batter_total_bases",
       "playerName": "Gabriel Moreno",
@@ -1071,7 +1081,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -47.5,
-      "bankrollAfter": 764.14,
+      "bankrollAfter": 686.64,
       "resolvedAt": "2026-08-28T23:30:21.513Z",
       "propType": "batter_hits",
       "playerName": "Vladimir Guerrero Jr.",
@@ -1097,7 +1107,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 28.96,
-      "bankrollAfter": 793.1,
+      "bankrollAfter": 715.6,
       "resolvedAt": "2026-08-28T23:30:21.519Z",
       "propType": "batter_hits",
       "playerName": "Kazuma Okamoto",
@@ -1119,7 +1129,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Jose Cabrera",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Noah Cameron Over 4.5 Strikeouts",
@@ -1131,7 +1142,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Noah Cameron",
           "line": 4.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Arizona Diamondbacks ML",
@@ -1139,7 +1151,8 @@
           "sport": "mlb",
           "matchup": "Arizona Diamondbacks @ San Francisco Giants",
           "date": "2026-08-28",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Toronto Blue Jays ML",
@@ -1147,17 +1160,18 @@
           "sport": "mlb",
           "matchup": "Kansas City Royals @ Toronto Blue Jays",
           "date": "2026-08-27",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 1409,
       "stakeAmount": 9.5,
       "potentialPayout": 143.35,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9.5,
+      "bankrollAfter": 706.1,
+      "resolvedAt": "2026-09-01T20:35:26.437Z"
     },
     {
       "betId": "mlb-823178-prop-gabrielmoreno-batter_total_bases-2026-08-28",
@@ -1178,7 +1192,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -60.5,
-      "bankrollAfter": 732.6,
+      "bankrollAfter": 645.6,
       "resolvedAt": "2026-08-29T17:38:15.499Z",
       "propType": "batter_total_bases",
       "playerName": "Gabriel Moreno",
@@ -1204,7 +1218,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 30.25,
-      "bankrollAfter": 762.85,
+      "bankrollAfter": 675.85,
       "resolvedAt": "2026-08-29T17:38:15.505Z",
       "propType": "batter_hits",
       "playerName": "Bryce Eldridge",
@@ -1230,7 +1244,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 106.05,
-      "bankrollAfter": 868.9,
+      "bankrollAfter": 781.9,
       "resolvedAt": "2026-08-30T18:00:36.556Z",
       "propType": "batter_hits",
       "playerName": "Junior Caminero",
@@ -1256,7 +1270,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 27.9,
-      "bankrollAfter": 896.8,
+      "bankrollAfter": 809.8,
       "resolvedAt": "2026-08-30T18:00:36.565Z",
       "propType": "batter_hits",
       "playerName": "Zach Neto",
@@ -1282,7 +1296,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -49.5,
-      "bankrollAfter": 847.3,
+      "bankrollAfter": 760.3,
       "resolvedAt": "2026-08-30T18:00:36.573Z",
       "propType": "batter_hits",
       "playerName": "Bryce Harper",
@@ -1337,7 +1351,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -8,
-      "bankrollAfter": 839.3,
+      "bankrollAfter": 752.3,
       "resolvedAt": "2026-09-01T17:53:07.756Z"
     },
     {
@@ -1359,7 +1373,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 58.28,
-      "bankrollAfter": 897.58,
+      "bankrollAfter": 810.58,
       "resolvedAt": "2026-08-30T18:00:36.589Z",
       "propType": "batter_total_bases",
       "playerName": "Gabriel Moreno",
@@ -1385,7 +1399,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -47,
-      "bankrollAfter": 850.58,
+      "bankrollAfter": 763.58,
       "resolvedAt": "2026-08-30T18:00:36.596Z",
       "propType": "batter_hits",
       "playerName": "Bryce Eldridge",
@@ -1411,7 +1425,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -47,
-      "bankrollAfter": 803.58,
+      "bankrollAfter": 716.58,
       "resolvedAt": "2026-08-30T18:00:36.604Z",
       "propType": "batter_hits",
       "playerName": "Bryce Eldridge",
@@ -1437,7 +1451,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 32.99,
-      "bankrollAfter": 836.57,
+      "bankrollAfter": 749.57,
       "resolvedAt": "2026-09-01T17:53:07.772Z",
       "propType": "batter_hits",
       "playerName": "Zach Neto",
@@ -1463,7 +1477,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 29.15,
-      "bankrollAfter": 865.72,
+      "bankrollAfter": 778.72,
       "resolvedAt": "2026-09-01T17:53:07.779Z",
       "propType": "batter_hits",
       "playerName": "Cody Bellinger",
