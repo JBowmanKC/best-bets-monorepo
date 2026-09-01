@@ -396,6 +396,12 @@ function rrCalcParlayPayout(odds: number[]): number {
   return Math.round((decimalProduct - 1) * 100);
 }
 
+function shiftDate(date: string, days: number): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 /**
  * Resolves one parlay leg to a plain win/loss/void — never a dollar amount,
  * since a leg's own stake isn't meaningful (only the parlay as a whole is
@@ -410,8 +416,18 @@ async function resolveParlayLeg(
   if (parts.length !== 2) return null;
   const [awayTeam, homeTeam] = parts;
 
-  const finals = await getFinals(leg.sport, leg.date);
-  const game = findGame(finals, awayTeam, homeTeam);
+  // leg.date comes from the UTC calendar day of the game's startTime, but an
+  // MLB evening game almost always starts after 8pm local — which is already
+  // past midnight UTC for every US time zone — while MLB's own schedule
+  // endpoint still buckets that game under the earlier, local date. Search a
+  // 1-day window on each side so this near-universal off-by-one never
+  // strands a leg (and, by extension, the whole parlay) pending forever.
+  let game: FinalGame | undefined;
+  for (const candidateDate of [leg.date, shiftDate(leg.date, -1), shiftDate(leg.date, 1)]) {
+    const finals = await getFinals(leg.sport, candidateDate);
+    game = findGame(finals, awayTeam, homeTeam);
+    if (game) break;
+  }
   if (!game) return null;
 
   if (leg.propType) {
