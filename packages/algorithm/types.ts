@@ -178,9 +178,9 @@ export interface BestBetsResponse {
 
   // The (up to) 6 committed bets for today.
   bestBets: (Pick | PropPick)[]; // up to 3 singles
-  safeParlay: Parlay;
-  highOddsParlay: Parlay;
-  doubleUpParlay: Parlay;
+  safeParlay?: Parlay;
+  highOddsParlay?: Parlay;
+  doubleUpParlay?: Parlay;
 
   // Full analysis pool — scored in full, shown for transparency, not bet on.
   allPicks: Pick[];

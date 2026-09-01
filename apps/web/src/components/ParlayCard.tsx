@@ -7,6 +7,10 @@ const PARLAY_STYLE = {
   double: { border: "linear-gradient(90deg,#3b82f6,#06b6d4)", nameColor: "#3b82f6", sub: "Heavy favorites · Targets ~2x your stake"               },
 };
 
+const FALLBACK_STYLE = {
+  border: "linear-gradient(90deg,#475569,#94a3b8)", nameColor: "#8098b8", sub: "Parlay",
+};
+
 const SPORT_COLOR: Record<string, string> = {
   mlb:    "#60a5fa",
   nfl:    "#c084fc",
@@ -17,7 +21,8 @@ const SPORT_COLOR: Record<string, string> = {
 interface Props { parlay: Parlay; }
 
 export function ParlayCard({ parlay }: Props) {
-  const style = PARLAY_STYLE[parlay.id];
+  const style = PARLAY_STYLE[parlay.id] ?? FALLBACK_STYLE;
+  const legs  = parlay.legs ?? [];
 
   return (
     <div style={{
@@ -50,14 +55,14 @@ export function ParlayCard({ parlay }: Props) {
       </div>
 
       {/* Legs */}
-      {parlay.legs.map((leg, i) => {
+      {legs.map((leg, i) => {
         const isPlus = leg.odds > 0;
         const time   = new Date(leg.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
         return (
           <div key={leg.pickId} style={{
             display: "flex", alignItems: "center", gap: 9,
             padding: "7px 0",
-            borderBottom: i < parlay.legs.length - 1 ? "1px solid #1e2d45" : "none",
+            borderBottom: i < legs.length - 1 ? "1px solid #1e2d45" : "none",
           }}>
             <div style={{
               width: 22, height: 22, borderRadius: "50%", background: "#1e2d45",
@@ -92,7 +97,7 @@ export function ParlayCard({ parlay }: Props) {
       <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
         {[
           ["~" + Math.round(parlay.combinedWinPct * 100) + "%", "Hit Rate"],
-          [String(parlay.legs.length), "Legs"],
+          [String(legs.length), "Legs"],
           [parlay.recommendedStake, "Stake"],
         ].map(([val, lbl]) => (
           <div key={lbl} style={{

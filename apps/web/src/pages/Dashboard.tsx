@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Pick, PropPick, BestBetsResponse } from "@best-bets/algorithm";
+import type { Pick, Parlay, PropPick, BestBetsResponse } from "@best-bets/algorithm";
 
 import { useBestBets }  from "../hooks/useBestBets";
 import { useBankroll }  from "../hooks/useBankroll";
@@ -135,6 +135,10 @@ export function Dashboard() {
 
   const { data, loading, error, refresh, lastFetch } = useBestBets({ date, sports: [...SPORTS] });
   const { data: bankroll } = useBankroll();
+  // A payload can omit a committed parlay entirely (older generator versions,
+  // archived slates), so drop anything missing or empty before rendering.
+  const committedParlays = [data?.safeParlay, data?.highOddsParlay, data?.doubleUpParlay]
+    .filter((p): p is Parlay => (p?.legs?.length ?? 0) > 0);
 
   return (
     <>
@@ -270,11 +274,9 @@ export function Dashboard() {
       <SectionTitle>🎰 Committed Parlays</SectionTitle>
       {loading ? (
         <CardSkeleton count={3} height={260} />
-      ) : data && (data.safeParlay.legs.length > 0 || data.highOddsParlay.legs.length > 0 || data.doubleUpParlay.legs.length > 0) ? (
+      ) : committedParlays.length > 0 ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 14 }}>
-          {data.safeParlay.legs.length > 0 && <ParlayCard parlay={data.safeParlay} />}
-          {data.highOddsParlay.legs.length > 0 && <ParlayCard parlay={data.highOddsParlay} />}
-          {data.doubleUpParlay.legs.length > 0 && <ParlayCard parlay={data.doubleUpParlay} />}
+          {committedParlays.map(parlay => <ParlayCard key={parlay.id} parlay={parlay} />)}
         </div>
       ) : (
         <EmptyNotice text="Picks generate at 12:00 PM EDT" />
