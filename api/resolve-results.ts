@@ -422,11 +422,20 @@ async function resolveParlayLeg(
   // endpoint still buckets that game under the earlier, local date. Search a
   // 1-day window on each side so this near-universal off-by-one never
   // strands a leg (and, by extension, the whole parlay) pending forever.
+  //
+  // A same-matchup series means more than one of those three dates can
+  // return a real game, so take whichever is actually decided (final/
+  // no-action) over one that's merely scheduled — e.g. a leg misdated into
+  // today when the real game was yesterday must not match today's
+  // not-yet-played game in the same series just because it's the first date
+  // tried.
   let game: FinalGame | undefined;
   for (const candidateDate of [leg.date, shiftDate(leg.date, -1), shiftDate(leg.date, 1)]) {
     const finals = await getFinals(leg.sport, candidateDate);
-    game = findGame(finals, awayTeam, homeTeam);
-    if (game) break;
+    const candidate = findGame(finals, awayTeam, homeTeam);
+    if (!candidate) continue;
+    if (candidate.state !== "scheduled") { game = candidate; break; }
+    if (!game) game = candidate;
   }
   if (!game) return null;
 
