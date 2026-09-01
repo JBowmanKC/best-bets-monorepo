@@ -1,14 +1,14 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 778.72,
+  "currentBankroll": 747.22,
   "totalBets": 50,
   "wins": 21,
-  "losses": 22,
+  "losses": 24,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 1719,
-  "totalProfit": 278.72,
-  "roi": 0.1866,
+  "totalProfit": 247.22,
+  "roi": 0.1621,
   "peakBankroll": 810.58,
   "lowestBankroll": 424.25,
   "calibration": {
@@ -20,8 +20,8 @@
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-01T20:35:26.454Z",
-    "totalResultsTracked": 44
+    "lastCalibrated": "2026-09-01T20:39:15.300Z",
+    "totalResultsTracked": 46
   },
   "bets": [
     {
@@ -1499,7 +1499,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Tanner Gordon",
           "line": 4.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "New York Yankees ML",
@@ -1507,7 +1508,8 @@
           "sport": "mlb",
           "matchup": "New York Yankees @ Los Angeles Angels",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Baltimore Orioles ML",
@@ -1515,17 +1517,18 @@
           "sport": "mlb",
           "matchup": "Baltimore Orioles @ Colorado Rockies",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 546,
       "stakeAmount": 21.5,
       "potentialPayout": 138.89,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -21.5,
+      "bankrollAfter": 757.22,
+      "resolvedAt": "2026-09-01T20:39:15.263Z"
     },
     {
       "betId": "mlb-824716-prop-bryanwoo-pitcher_strikeouts-2026-09-01",
@@ -1679,7 +1682,8 @@
           "sport": "mlb",
           "matchup": "New York Mets @ Tampa Bay Rays",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Boston Red Sox ML",
@@ -1687,17 +1691,18 @@
           "sport": "mlb",
           "matchup": "Seattle Mariners @ Boston Red Sox",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 208,
       "stakeAmount": 10,
       "potentialPayout": 30.8,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -10,
+      "bankrollAfter": 747.22,
+      "resolvedAt": "2026-09-01T20:39:15.300Z"
     }
   ]
 }
