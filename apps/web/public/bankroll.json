@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 747.22,
-  "totalBets": 50,
+  "totalBets": 54,
   "wins": 21,
   "losses": 24,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 1719,
+  "totalStaked": 1868.5,
   "totalProfit": 247.22,
   "roi": 0.1621,
   "peakBankroll": 810.58,
@@ -1703,6 +1703,139 @@
       "profitLoss": -10,
       "bankrollAfter": 747.22,
       "resolvedAt": "2026-09-01T20:39:15.300Z"
+    },
+    {
+      "betId": "mlb-824390-prop-dylancease-pitcher_strikeouts-2026-09-02",
+      "date": "2026-09-02",
+      "sport": "mlb",
+      "matchup": "Toronto Blue Jays @ Cleveland Guardians",
+      "pickLabel": "Dylan Cease Over 6.5",
+      "odds": -106,
+      "stakeAmount": 44,
+      "potentialPayout": 85.51,
+      "estimatedWinPct": 0.98,
+      "impliedWinPct": 0.515,
+      "evEdge": 0.465,
+      "tier": "elite",
+      "scores": {
+        "composite": 87
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "pitcher_strikeouts",
+      "playerName": "Dylan Cease",
+      "line": 6.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823660-prop-kaelenculpepper-batter_hits-2026-09-02",
+      "date": "2026-09-02",
+      "sport": "mlb",
+      "matchup": "Detroit Tigers @ Minnesota Twins",
+      "pickLabel": "Kaelen Culpepper Over 0.5",
+      "odds": -158,
+      "stakeAmount": 44,
+      "potentialPayout": 71.85,
+      "estimatedWinPct": 0.86,
+      "impliedWinPct": 0.612,
+      "evEdge": 0.248,
+      "tier": "elite",
+      "scores": {
+        "composite": 90
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Kaelen Culpepper",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823660-prop-lukekeaschall-batter_total_bases-2026-09-02",
+      "date": "2026-09-02",
+      "sport": "mlb",
+      "matchup": "Detroit Tigers @ Minnesota Twins",
+      "pickLabel": "Luke Keaschall Over 1.5",
+      "odds": 135,
+      "stakeAmount": 44,
+      "potentialPayout": 103.4,
+      "estimatedWinPct": 0.66,
+      "impliedWinPct": 0.426,
+      "evEdge": 0.234,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_total_bases",
+      "playerName": "Luke Keaschall",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-02",
+      "date": "2026-09-02",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Dylan Cease Over 6.5 Strikeouts",
+          "odds": -106,
+          "sport": "mlb",
+          "matchup": "Toronto Blue Jays @ Cleveland Guardians",
+          "date": "2026-09-02",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Dylan Cease",
+          "line": 6.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Drew Anderson Under 4.5 Strikeouts",
+          "odds": -160,
+          "sport": "mlb",
+          "matchup": "Detroit Tigers @ Minnesota Twins",
+          "date": "2026-09-02",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Drew Anderson",
+          "line": 4.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Cleveland Guardians ML",
+          "odds": 109,
+          "sport": "mlb",
+          "matchup": "Toronto Blue Jays @ Cleveland Guardians",
+          "date": "2026-09-02",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Minnesota Twins ML",
+          "odds": -112,
+          "sport": "mlb",
+          "matchup": "Detroit Tigers @ Minnesota Twins",
+          "date": "2026-09-02",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1149,
+      "stakeAmount": 17.5,
+      "potentialPayout": 218.58,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
