@@ -1,27 +1,27 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 747.22,
+  "currentBankroll": 728.43,
   "totalBets": 54,
-  "wins": 21,
-  "losses": 24,
+  "wins": 23,
+  "losses": 27,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 1868.5,
-  "totalProfit": 247.22,
-  "roi": 0.1621,
-  "peakBankroll": 810.58,
+  "totalProfit": 228.43,
+  "roi": 0.1339,
+  "peakBankroll": 815.43,
   "lowestBankroll": 424.25,
   "calibration": {
-    "eliteWinRate": 0.6071,
+    "eliteWinRate": 0.6129,
     "strongWinRate": 0.6,
     "valueWinRate": null,
-    "mlbRoi": 0.0919,
+    "mlbRoi": 0.0867,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-01T20:39:15.300Z",
-    "totalResultsTracked": 46
+    "lastCalibrated": "2026-09-02T17:57:02.326Z",
+    "totalResultsTracked": 51
   },
   "bets": [
     {
@@ -1547,10 +1547,10 @@
         "composite": 87
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 37.41,
+      "bankrollAfter": 794.63,
+      "resolvedAt": "2026-09-02T17:57:02.230Z",
       "propType": "pitcher_strikeouts",
       "playerName": "Bryan Woo",
       "line": 4.5,
@@ -1573,10 +1573,10 @@
         "composite": 89
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20.8,
+      "bankrollAfter": 815.43,
+      "resolvedAt": "2026-09-02T17:57:02.249Z",
       "propType": "batter_hits",
       "playerName": "Junior Caminero",
       "line": 0.5,
@@ -1599,10 +1599,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -52,
+      "bankrollAfter": 763.43,
+      "resolvedAt": "2026-09-02T17:57:02.274Z",
       "propType": "batter_hits",
       "playerName": "Brett Bateman",
       "line": 0.5,
@@ -1623,7 +1623,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Bryan Woo",
           "line": 4.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Gavin Williams Over 6.5 Strikeouts",
@@ -1635,7 +1636,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Gavin Williams",
           "line": 6.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Toronto Blue Jays ML",
@@ -1643,7 +1645,8 @@
           "sport": "mlb",
           "matchup": "Toronto Blue Jays @ Cleveland Guardians",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Tampa Bay Rays ML",
@@ -1651,7 +1654,8 @@
           "sport": "mlb",
           "matchup": "New York Mets @ Tampa Bay Rays",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Boston Red Sox ML",
@@ -1659,17 +1663,18 @@
           "sport": "mlb",
           "matchup": "Seattle Mariners @ Boston Red Sox",
           "date": "2026-09-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2781,
       "stakeAmount": 7.5,
       "potentialPayout": 216.08,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7.5,
+      "bankrollAfter": 755.93,
+      "resolvedAt": "2026-09-02T17:57:02.299Z"
     },
     {
       "betId": "parlay-double-2026-09-01",
@@ -1701,7 +1706,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -10,
-      "bankrollAfter": 747.22,
+      "bankrollAfter": 745.93,
       "resolvedAt": "2026-09-01T20:39:15.300Z"
     },
     {
@@ -1797,7 +1802,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Dylan Cease",
           "line": 6.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Drew Anderson Under 4.5 Strikeouts",
@@ -1809,7 +1815,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Drew Anderson",
           "line": 4.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Cleveland Guardians ML",
@@ -1817,7 +1824,8 @@
           "sport": "mlb",
           "matchup": "Toronto Blue Jays @ Cleveland Guardians",
           "date": "2026-09-02",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Minnesota Twins ML",
@@ -1825,17 +1833,18 @@
           "sport": "mlb",
           "matchup": "Detroit Tigers @ Minnesota Twins",
           "date": "2026-09-02",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 1149,
       "stakeAmount": 17.5,
       "potentialPayout": 218.58,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17.5,
+      "bankrollAfter": 728.43,
+      "resolvedAt": "2026-09-02T17:57:02.325Z"
     }
   ]
 }
