@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 596.43,
-  "totalBets": 54,
+  "totalBets": 56,
   "wins": 23,
   "losses": 30,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 1868.5,
+  "totalStaked": 1906,
   "totalProfit": 96.43,
   "roi": 0.0525,
   "peakBankroll": 815.43,
@@ -1845,6 +1845,67 @@
       "profitLoss": -17.5,
       "bankrollAfter": 596.43,
       "resolvedAt": "2026-09-02T17:57:02.325Z"
+    },
+    {
+      "betId": "mlb-823907-prop-freddiefreeman-batter_hits-2026-09-03",
+      "date": "2026-09-03",
+      "sport": "mlb",
+      "matchup": "St. Louis Cardinals @ Los Angeles Dodgers",
+      "pickLabel": "Freddie Freeman Over 0.5",
+      "odds": -237,
+      "stakeAmount": 22,
+      "potentialPayout": 31.28,
+      "estimatedWinPct": 0.74,
+      "impliedWinPct": 0.703,
+      "evEdge": 0.037,
+      "tier": "strong",
+      "scores": {
+        "composite": 74
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Freddie Freeman",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-03",
+      "date": "2026-09-03",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "St. Louis Cardinals ML",
+          "odds": 246,
+          "sport": "mlb",
+          "matchup": "St. Louis Cardinals @ Los Angeles Dodgers",
+          "date": "2026-09-04",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Tarik Skubal Under 7.5 Strikeouts",
+          "odds": 107,
+          "sport": "mlb",
+          "matchup": "St. Louis Cardinals @ Los Angeles Dodgers",
+          "date": "2026-09-04",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Tarik Skubal",
+          "line": 7.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 616,
+      "stakeAmount": 15.5,
+      "potentialPayout": 110.98,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
