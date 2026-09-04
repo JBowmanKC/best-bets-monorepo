@@ -1,27 +1,27 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 596.43,
+  "currentBankroll": 558.93,
   "totalBets": 56,
   "wins": 23,
-  "losses": 30,
+  "losses": 32,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 1906,
-  "totalProfit": 96.43,
-  "roi": 0.0525,
+  "totalProfit": 58.93,
+  "roi": 0.0314,
   "peakBankroll": 815.43,
   "lowestBankroll": 424.25,
   "calibration": {
     "eliteWinRate": 0.5588,
-    "strongWinRate": 0.6,
+    "strongWinRate": 0.5,
     "valueWinRate": null,
-    "mlbRoi": 0.0022,
+    "mlbRoi": -0.0107,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-03T17:54:35.098Z",
-    "totalResultsTracked": 54
+    "lastCalibrated": "2026-09-04T17:40:22.913Z",
+    "totalResultsTracked": 56
   },
   "bets": [
     {
@@ -1863,10 +1863,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -22,
+      "bankrollAfter": 574.43,
+      "resolvedAt": "2026-09-04T17:40:22.876Z",
       "propType": "batter_hits",
       "playerName": "Freddie Freeman",
       "line": 0.5,
@@ -1883,7 +1883,8 @@
           "sport": "mlb",
           "matchup": "St. Louis Cardinals @ Los Angeles Dodgers",
           "date": "2026-09-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Tarik Skubal Under 7.5 Strikeouts",
@@ -1895,17 +1896,18 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Tarik Skubal",
           "line": 7.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 616,
       "stakeAmount": 15.5,
       "potentialPayout": 110.98,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -15.5,
+      "bankrollAfter": 558.93,
+      "resolvedAt": "2026-09-04T17:40:22.912Z"
     }
   ]
 }
