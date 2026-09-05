@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 558.93,
-  "totalBets": 56,
+  "totalBets": 60,
   "wins": 23,
   "losses": 32,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 1906,
+  "totalStaked": 2017.5,
   "totalProfit": 58.93,
   "roi": 0.0314,
   "peakBankroll": 815.43,
@@ -1908,6 +1908,139 @@
       "profitLoss": -15.5,
       "bankrollAfter": 558.93,
       "resolvedAt": "2026-09-04T17:40:22.912Z"
+    },
+    {
+      "betId": "mlb-823094-prop-lawrencebutler-batter_hits-2026-09-05",
+      "date": "2026-09-05",
+      "sport": "mlb",
+      "matchup": "Athletics @ Seattle Mariners",
+      "pickLabel": "Lawrence Butler Over 0.5",
+      "odds": -149,
+      "stakeAmount": 35.5,
+      "potentialPayout": 59.33,
+      "estimatedWinPct": 0.96,
+      "impliedWinPct": 0.598,
+      "evEdge": 0.362,
+      "tier": "elite",
+      "scores": {
+        "composite": 89
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Lawrence Butler",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823419-prop-ozziealbies-batter_hits-2026-09-05",
+      "date": "2026-09-05",
+      "sport": "mlb",
+      "matchup": "Atlanta Braves @ Philadelphia Phillies",
+      "pickLabel": "Ozzie Albies Over 0.5",
+      "odds": -174,
+      "stakeAmount": 35.5,
+      "potentialPayout": 55.9,
+      "estimatedWinPct": 0.84,
+      "impliedWinPct": 0.635,
+      "evEdge": 0.205,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Ozzie Albies",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823094-prop-jonahheim-batter_hits-2026-09-05",
+      "date": "2026-09-05",
+      "sport": "mlb",
+      "matchup": "Athletics @ Seattle Mariners",
+      "pickLabel": "Jonah Heim Over 0.5",
+      "odds": -129,
+      "stakeAmount": 35.5,
+      "potentialPayout": 63.02,
+      "estimatedWinPct": 0.74,
+      "impliedWinPct": 0.563,
+      "evEdge": 0.177,
+      "tier": "elite",
+      "scores": {
+        "composite": 85
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Jonah Heim",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-05",
+      "date": "2026-09-05",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Jeffrey Springs Under 4.5 Strikeouts",
+          "odds": -156,
+          "sport": "mlb",
+          "matchup": "Athletics @ Seattle Mariners",
+          "date": "2026-09-06",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Jeffrey Springs",
+          "line": 4.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Athletics ML",
+          "odds": 201,
+          "sport": "mlb",
+          "matchup": "Athletics @ Seattle Mariners",
+          "date": "2026-09-06",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Atlanta Braves ML",
+          "odds": 135,
+          "sport": "mlb",
+          "matchup": "Atlanta Braves @ Philadelphia Phillies",
+          "date": "2026-09-05",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Zack Wheeler Under 6.5 Strikeouts",
+          "odds": -117,
+          "sport": "mlb",
+          "matchup": "Atlanta Braves @ Philadelphia Phillies",
+          "date": "2026-09-05",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Zack Wheeler",
+          "line": 6.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 2053,
+      "stakeAmount": 5,
+      "potentialPayout": 107.65,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
