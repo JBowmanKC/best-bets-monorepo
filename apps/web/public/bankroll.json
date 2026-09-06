@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 506.76,
-  "totalBets": 60,
+  "totalBets": 64,
   "wins": 24,
   "losses": 35,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 2017.5,
+  "totalStaked": 2118,
   "totalProfit": 6.76,
   "roi": 0.0034,
   "peakBankroll": 815.43,
@@ -2045,6 +2045,119 @@
       "profitLoss": -5,
       "bankrollAfter": 506.76,
       "resolvedAt": "2026-09-06T17:09:26.167Z"
+    },
+    {
+      "betId": "mlb-823091-prop-lawrencebutler-batter_hits-2026-09-06",
+      "date": "2026-09-06",
+      "sport": "mlb",
+      "matchup": "Athletics @ Seattle Mariners",
+      "pickLabel": "Lawrence Butler Over 0.5",
+      "odds": -165,
+      "stakeAmount": 31,
+      "potentialPayout": 49.79,
+      "estimatedWinPct": 0.98,
+      "impliedWinPct": 0.623,
+      "evEdge": 0.357,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Lawrence Butler",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823091-prop-calraleigh-batter_hits-2026-09-06",
+      "date": "2026-09-06",
+      "sport": "mlb",
+      "matchup": "Athletics @ Seattle Mariners",
+      "pickLabel": "Cal Raleigh Over 0.5",
+      "odds": -137,
+      "stakeAmount": 31,
+      "potentialPayout": 53.63,
+      "estimatedWinPct": 0.74,
+      "impliedWinPct": 0.578,
+      "evEdge": 0.162,
+      "tier": "elite",
+      "scores": {
+        "composite": 89
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Cal Raleigh",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "mlb-823091-prop-dominiccanzone-batter_hits-2026-09-06",
+      "date": "2026-09-06",
+      "sport": "mlb",
+      "matchup": "Athletics @ Seattle Mariners",
+      "pickLabel": "Dominic Canzone Over 0.5",
+      "odds": -205,
+      "stakeAmount": 31,
+      "potentialPayout": 46.12,
+      "estimatedWinPct": 0.8,
+      "impliedWinPct": 0.672,
+      "evEdge": 0.128,
+      "tier": "elite",
+      "scores": {
+        "composite": 90
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "batter_hits",
+      "playerName": "Dominic Canzone",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-06",
+      "date": "2026-09-06",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Bryan Woo Under 6.5 Strikeouts",
+          "odds": -117,
+          "sport": "mlb",
+          "matchup": "Athletics @ Seattle Mariners",
+          "date": "2026-09-06",
+          "sportsbook": "DraftKings",
+          "propType": "pitcher_strikeouts",
+          "playerName": "Bryan Woo",
+          "line": 6.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Athletics ML",
+          "odds": 167,
+          "sport": "mlb",
+          "matchup": "Athletics @ Seattle Mariners",
+          "date": "2026-09-06",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 395,
+      "stakeAmount": 7.5,
+      "potentialPayout": 37.13,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
