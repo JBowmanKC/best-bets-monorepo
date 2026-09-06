@@ -1,27 +1,27 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 558.93,
+  "currentBankroll": 506.76,
   "totalBets": 60,
-  "wins": 23,
-  "losses": 32,
+  "wins": 24,
+  "losses": 35,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 2017.5,
-  "totalProfit": 58.93,
-  "roi": 0.0314,
+  "totalProfit": 6.76,
+  "roi": 0.0034,
   "peakBankroll": 815.43,
   "lowestBankroll": 424.25,
   "calibration": {
-    "eliteWinRate": 0.5588,
+    "eliteWinRate": 0.5405,
     "strongWinRate": 0.5,
     "valueWinRate": null,
-    "mlbRoi": -0.0107,
+    "mlbRoi": -0.0359,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-05T16:52:20.531Z",
-    "totalResultsTracked": 56
+    "lastCalibrated": "2026-09-06T17:09:26.168Z",
+    "totalResultsTracked": 60
   },
   "bets": [
     {
@@ -1926,10 +1926,10 @@
         "composite": 89
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 23.83,
+      "bankrollAfter": 582.76,
+      "resolvedAt": "2026-09-06T17:09:26.106Z",
       "propType": "batter_hits",
       "playerName": "Lawrence Butler",
       "line": 0.5,
@@ -1952,10 +1952,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -35.5,
+      "bankrollAfter": 547.26,
+      "resolvedAt": "2026-09-06T17:09:26.127Z",
       "propType": "batter_hits",
       "playerName": "Ozzie Albies",
       "line": 0.5,
@@ -1978,10 +1978,10 @@
         "composite": 85
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -35.5,
+      "bankrollAfter": 511.76,
+      "resolvedAt": "2026-09-06T17:09:26.146Z",
       "propType": "batter_hits",
       "playerName": "Jonah Heim",
       "line": 0.5,
@@ -2002,7 +2002,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Jeffrey Springs",
           "line": 4.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Athletics ML",
@@ -2010,7 +2011,8 @@
           "sport": "mlb",
           "matchup": "Athletics @ Seattle Mariners",
           "date": "2026-09-06",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Atlanta Braves ML",
@@ -2018,7 +2020,8 @@
           "sport": "mlb",
           "matchup": "Atlanta Braves @ Philadelphia Phillies",
           "date": "2026-09-05",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Zack Wheeler Under 6.5 Strikeouts",
@@ -2030,17 +2033,18 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Zack Wheeler",
           "line": 6.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2053,
       "stakeAmount": 5,
       "potentialPayout": 107.65,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -5,
+      "bankrollAfter": 506.76,
+      "resolvedAt": "2026-09-06T17:09:26.167Z"
     }
   ]
 }
