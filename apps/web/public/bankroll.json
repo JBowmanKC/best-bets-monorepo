@@ -1,27 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 506.76,
+  "currentBankroll": 506.01,
   "totalBets": 64,
-  "wins": 24,
-  "losses": 35,
+  "wins": 26,
+  "losses": 37,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 2118,
-  "totalProfit": 6.76,
-  "roi": 0.0034,
+  "totalProfit": 6.01,
+  "roi": 0.0029,
   "peakBankroll": 815.43,
   "lowestBankroll": 424.25,
   "calibration": {
-    "eliteWinRate": 0.5405,
+    "eliteWinRate": 0.55,
     "strongWinRate": 0.5,
     "valueWinRate": null,
-    "mlbRoi": -0.0359,
+    "mlbRoi": -0.0306,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-06T17:09:26.168Z",
-    "totalResultsTracked": 60
+    "lastCalibrated": "2026-09-07T18:46:29.728Z",
+    "totalResultsTracked": 64,
+    "ncaafRoi": null
   },
   "bets": [
     {
@@ -2063,10 +2064,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -31,
+      "bankrollAfter": 475.76,
+      "resolvedAt": "2026-09-07T18:46:29.652Z",
       "propType": "batter_hits",
       "playerName": "Lawrence Butler",
       "line": 0.5,
@@ -2089,10 +2090,10 @@
         "composite": 89
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 22.63,
+      "bankrollAfter": 498.39,
+      "resolvedAt": "2026-09-07T18:46:29.671Z",
       "propType": "batter_hits",
       "playerName": "Cal Raleigh",
       "line": 0.5,
@@ -2115,10 +2116,10 @@
         "composite": 90
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 15.12,
+      "bankrollAfter": 513.51,
+      "resolvedAt": "2026-09-07T18:46:29.693Z",
       "propType": "batter_hits",
       "playerName": "Dominic Canzone",
       "line": 0.5,
@@ -2139,7 +2140,8 @@
           "propType": "pitcher_strikeouts",
           "playerName": "Bryan Woo",
           "line": 6.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Athletics ML",
@@ -2147,17 +2149,18 @@
           "sport": "mlb",
           "matchup": "Athletics @ Seattle Mariners",
           "date": "2026-09-06",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 395,
       "stakeAmount": 7.5,
       "potentialPayout": 37.13,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7.5,
+      "bankrollAfter": 506.01,
+      "resolvedAt": "2026-09-07T18:46:29.728Z"
     }
   ]
 }
