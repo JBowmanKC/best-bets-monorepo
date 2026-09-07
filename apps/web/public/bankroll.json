@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 506.01,
-  "totalBets": 64,
+  "totalBets": 65,
   "wins": 26,
   "losses": 37,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 2118,
+  "totalStaked": 2158.5,
   "totalProfit": 6.01,
   "roi": 0.0029,
   "peakBankroll": 815.43,
@@ -2161,6 +2161,28 @@
       "profitLoss": -7.5,
       "bankrollAfter": 506.01,
       "resolvedAt": "2026-09-07T18:46:29.728Z"
+    },
+    {
+      "betId": "ncaaf-401858212-home-2026-09-07",
+      "date": "2026-09-07",
+      "sport": "ncaaf",
+      "matchup": "SMU Mustangs @ Florida State Seminoles",
+      "pickLabel": "Florida State Seminoles ML",
+      "odds": 124,
+      "stakeAmount": 40.5,
+      "potentialPayout": 90.72,
+      "estimatedWinPct": 0.768,
+      "impliedWinPct": 0.446,
+      "evEdge": 0.322,
+      "tier": "strong",
+      "scores": {
+        "composite": 78
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
