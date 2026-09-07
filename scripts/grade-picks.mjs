@@ -29,7 +29,7 @@ const STALE_AFTER_MS = 8 * 60 * 60 * 1000;
 /** How long to keep re-attempting runs that still hold unknown picks. */
 const UNKNOWN_RETRY_MS = 14 * 24 * 60 * 60 * 1000;
 
-const ESPN_PATHS = { nfl: "football/nfl", nhl: "hockey/nhl" };
+const ESPN_PATHS = { nfl: "football/nfl", nhl: "hockey/nhl", ncaaf: "football/college-football" };
 
 // ─── CLI ────────────────────────────────────────────────────────────────────
 function parseArgs(argv) {
@@ -269,7 +269,7 @@ async function gradeRun({ stamp, path }) {
     feedsOk &&= ok;
     for (const [id, g] of byId) finals.set(`mlb:${id}`, g);
   }
-  for (const sport of ["nfl", "nhl"]) {
+  for (const sport of ["nfl", "nhl", "ncaaf"]) {
     if (!sports.has(sport)) continue;
     const { ok, byId } = await fetchEspnFinals(sport, dates);
     feedsOk &&= ok;
