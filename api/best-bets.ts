@@ -4,10 +4,16 @@
 // needs lives in this one file so it can be deployed and read in isolation.
 //
 // Data sources (all free, no key required except OddsAPI):
-//   MLB schedule   — https://statsapi.mlb.com/api/v1/schedule
-//   MLB standings  — https://statsapi.mlb.com/api/v1/standings
-//   NFL/NHL games  — https://site.api.espn.com/apis/site/v2/sports/...
-//   Moneylines     — https://api.the-odds-api.com/v4/sports/.../odds
+//   MLB schedule    — https://statsapi.mlb.com/api/v1/schedule
+//   MLB standings   — https://statsapi.mlb.com/api/v1/standings
+//   NFL/NHL games   — https://site.api.espn.com/apis/site/v2/sports/...
+//   NFL roster      — https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{id}/roster
+//   NFL player logs — https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{id}/gamelog
+//   Moneylines      — https://api.the-odds-api.com/v4/sports/.../odds
+//
+// Sport selection: the `sports` query param decides what's fetched
+// (default "nfl,nhl" — MLB is off by default now that the season's ended
+// its run here; pass sports=mlb explicitly to still fetch it on demand).
 //
 // Environment variables:
 //   ODDS_API_KEY — OddsAPI key (live moneylines). Games still generate
@@ -64,7 +70,7 @@ interface ScheduledGame {
   sport: Sport;
   homeTeam: string;
   awayTeam: string;
-  /** MLB team ids (0 for ESPN-sourced NFL/NHL games, which never need prop roster/stat lookups). */
+  /** MLB or ESPN team id (0 for NHL games, which have no prop roster/stat lookups yet). */
   homeTeamId: number;
   awayTeamId: number;
   startTime: string;
@@ -1229,8 +1235,9 @@ async function fetchEspnGames(sport: "nfl" | "nhl", date: string): Promise<Sport
         sport,
         homeTeam: home?.team?.displayName ?? "Home",
         awayTeam: away?.team?.displayName ?? "Away",
-        homeTeamId: 0,
-        awayTeamId: 0,
+        // ESPN's own numeric team id — used for NFL prop roster/game-log lookups (see fetchNflRosterOffense).
+        homeTeamId: parseInt(home?.team?.id, 10) || 0,
+        awayTeamId: parseInt(away?.team?.id, 10) || 0,
         startTime: e.date,
         venue: comp?.venue?.fullName ?? "",
         homeRecord: parseRecord(home),
@@ -1300,7 +1307,7 @@ async function fetchProbablePitchers(date: string): Promise<Map<string, Probable
   return map;
 }
 
-/** One game's worth of a stat category. Fields not relevant to the fetch (pitching vs hitting) are left undefined. */
+/** One game's worth of a stat category. Fields not relevant to the fetch (pitching/hitting vs NFL) are left undefined. */
 interface GameLogEntry {
   date?: string; // YYYY-MM-DD, used for the fatigue signal in propContextScore
   strikeouts?: number;
@@ -1309,6 +1316,9 @@ interface GameLogEntry {
   totalBases?: number;
   homeRuns?: number;
   atBats?: number;
+  passingYards?: number;
+  rushingYards?: number;
+  receivingYards?: number;
 }
 
 /** True if 3+ of the player's last 5 days include a logged game (fatigue signal for propContextScore). */
@@ -1528,21 +1538,31 @@ interface PropOddsEntry {
 type PropOddsMap = Map<string, PropOddsEntry>; // key: "playerName-propType"
 
 const MLB_PROP_MARKETS = "pitcher_strikeouts,batter_hits,batter_home_runs,batter_total_bases";
+const NFL_PROP_MARKETS = "player_pass_yds,player_rush_yds,player_reception_yds";
+const PROP_MARKETS_BY_SPORT: Partial<Record<Sport, string>> = {
+  mlb: MLB_PROP_MARKETS,
+  nfl: NFL_PROP_MARKETS,
+};
 const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
   pitcher_strikeouts: "pitcher_strikeouts",
   batter_hits: "batter_hits",
   batter_home_runs: "batter_home_runs",
   batter_total_bases: "batter_total_bases",
+  player_pass_yds: "player_pass_yards",
+  player_rush_yds: "player_rush_yards",
+  player_reception_yds: "player_receiving_yards",
 };
 
 /** Same book chosen for moneylines — a parlay leg can't come from a different book than the rest of the slip. */
-async function fetchPropOddsForGame(eventId: string, book: Sportsbook): Promise<PropOddsMap> {
+async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sport): Promise<PropOddsMap> {
   const map: PropOddsMap = new Map();
-  if (!ODDS_API_KEY) return map;
+  const markets = PROP_MARKETS_BY_SPORT[sport];
+  const sportKey = ODDS_SPORT_KEYS[sport];
+  if (!ODDS_API_KEY || !markets || !sportKey) return map;
 
   try {
-    const url = `https://api.the-odds-api.com/v4/sports/baseball_mlb/events/${eventId}/odds`
-      + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${MLB_PROP_MARKETS}&oddsFormat=american&bookmakers=${book}`;
+    const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/events/${eventId}/odds`
+      + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${markets}&oddsFormat=american&bookmakers=${book}`;
     const res = await fetch(url);
     if (!res.ok) {
       console.warn(`OddsAPI props ${eventId} failed: ${res.status}`);
@@ -1593,9 +1613,9 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook): Promise<
 /** Fetches prop markets for up to TOP_GAMES_FOR_PROPS OddsAPI event ids in parallel and merges the results. */
 async function fetchPropOdds(gameIds: string[], sport: Sport, book: Sportsbook | null): Promise<PropOddsMap> {
   const merged: PropOddsMap = new Map();
-  if (sport !== "mlb" || gameIds.length === 0 || !book) return merged;
+  if (!PROP_MARKETS_BY_SPORT[sport] || gameIds.length === 0 || !book) return merged;
 
-  const perGame = await Promise.all(gameIds.slice(0, TOP_GAMES_FOR_PROPS).map(id => fetchPropOddsForGame(id, book)));
+  const perGame = await Promise.all(gameIds.slice(0, TOP_GAMES_FOR_PROPS).map(id => fetchPropOddsForGame(id, book, sport)));
   for (const m of perGame) for (const [k, v] of m) merged.set(k, v);
   return merged;
 }
@@ -1639,7 +1659,10 @@ function statValueForPropType(entry: GameLogEntry, propType: PropType): number {
     case "batter_hits": return entry.hits ?? 0;
     case "batter_total_bases": return entry.totalBases ?? 0;
     case "batter_home_runs": return entry.homeRuns ?? 0;
-    default: return 0; // NFL/NHL prop types have no game-log fetcher yet
+    case "player_pass_yards": return entry.passingYards ?? 0;
+    case "player_rush_yards": return entry.rushingYards ?? 0;
+    case "player_receiving_yards": return entry.receivingYards ?? 0;
+    default: return 0; // NHL prop types have no game-log fetcher yet
   }
 }
 
@@ -1653,13 +1676,16 @@ function hitRateFor(entries: GameLogEntry[], propType: PropType, line: number, s
   return hits / entries.length;
 }
 
-function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number }, propType: PropType): number {
+function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number }, propType: PropType): number {
   switch (propType) {
     case "pitcher_strikeouts": return recentAvg.strikeouts ?? 0;
     case "pitcher_outs": return recentAvg.outs ?? 0;
     case "batter_hits": return recentAvg.hits ?? 0;
     case "batter_total_bases": return recentAvg.totalBases ?? 0;
     case "batter_home_runs": return recentAvg.homeRuns ?? 0;
+    case "player_pass_yards": return recentAvg.passingYards ?? 0;
+    case "player_rush_yards": return recentAvg.rushingYards ?? 0;
+    case "player_receiving_yards": return recentAvg.receivingYards ?? 0;
     default: return 0;
   }
 }
@@ -1750,7 +1776,7 @@ interface PropGameContext {
 
 function scoreProp(
   candidate: PropCandidateInput,
-  log: { last10: GameLogEntry[]; last20: GameLogEntry[]; recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number } },
+  log: { last10: GameLogEntry[]; last20: GameLogEntry[]; recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number } },
   oddsEntry: PropOddsEntry,
   matchupScore: number,
   game: PropGameContext,
@@ -1962,7 +1988,7 @@ async function buildPropsForGame(
  * the prop slate) — see the try/catch in the main handler for the same
  * guarantee at the top level.
  */
-async function buildPropPicks(
+async function buildMlbPropPicks(
   moneylinePicks: BetPick[],
   rawGames: RawGame[],
   mlbOddsEntries: OddsApiEntry[],
@@ -2006,6 +2032,247 @@ async function buildPropPicks(
   return perGame.flat().sort((a, b) => b.scores.composite - a.scores.composite);
 }
 
+// ─── NFL prop data (ESPN's free hidden APIs — roster + per-athlete game log, no key required) ──
+//
+// NFL has no "probable starter" feed like MLB's, and no reliable free depth-
+// chart endpoint either (see research notes in the PR — roster order is
+// alphabetical, not depth order). So this pipeline is odds-first instead of
+// roster-first: it only ever scores a player OddsAPI is actually offering a
+// line for (books already imply who the plausible starters are), then
+// resolves that player's name to an ESPN athlete id via the team roster
+// purely to pull their game log.
+interface NflRosterPlayer {
+  id: number;
+  fullName: string;
+  position: string;
+}
+
+/** Active offense-group skill players (QB/RB/WR/TE) — the only positions the three wired-up prop markets cover. */
+async function fetchNflRosterOffense(teamId: number): Promise<NflRosterPlayer[]> {
+  try {
+    const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamId}/roster`);
+    const offense = (data.athletes ?? []).find((g: any) => g.position === "offense");
+    const items: any[] = offense?.items ?? [];
+
+    return items
+      .filter((p: any) => ["QB", "RB", "WR", "TE"].includes(p.position?.abbreviation) && p.status?.type === "active")
+      .map((p: any) => ({ id: parseInt(p.id, 10), fullName: p.fullName ?? "Unknown", position: p.position.abbreviation }))
+      .filter((p: NflRosterPlayer) => Number.isFinite(p.id));
+  } catch (e) {
+    console.warn(`fetchNflRosterOffense(${teamId}) failed:`, e);
+    return [];
+  }
+}
+
+/**
+ * One season's regular-season game log for an NFL athlete, most-recent-game
+ * first (ESPN already returns it in that order). `names` maps each `stats`
+ * array by index to a stat key — only the three this pipeline scores
+ * (passing/rushing/receiving yards) are pulled out; everything else in the
+ * row is ignored.
+ */
+async function fetchNflSeasonGameLog(playerId: number, season: number): Promise<GameLogEntry[]> {
+  try {
+    const data = await fetchJson(
+      `https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${playerId}/gamelog?season=${season}`
+    );
+    const names: string[] = data.names ?? [];
+    const regularSeason = (data.seasonTypes ?? []).find((st: any) => /Regular Season/i.test(st.displayName ?? ""));
+    const events: any[] = (regularSeason?.categories ?? []).flatMap((c: any) => c.events ?? []);
+
+    return events.map((ev: any) => {
+      const meta = data.events?.[ev.eventId];
+      const entry: GameLogEntry = { date: meta?.gameDate ? String(meta.gameDate).slice(0, 10) : undefined };
+      names.forEach((name: string, i: number) => {
+        if (name !== "passingYards" && name !== "rushingYards" && name !== "receivingYards") return;
+        const val = Number(ev.stats?.[i]);
+        (entry as any)[name] = Number.isFinite(val) ? val : 0;
+      });
+      return entry;
+    });
+  } catch (e) {
+    console.warn(`fetchNflSeasonGameLog(${playerId}, ${season}) failed:`, e);
+    return [];
+  }
+}
+
+interface NflGameLogResult {
+  last10: GameLogEntry[];
+  last20: GameLogEntry[];
+  recentAvg: { passingYards: number; rushingYards: number; receivingYards: number };
+}
+
+/**
+ * Week 1 of a new season has zero current-season games to score from — this
+ * falls back to the prior season's log whenever the current one comes back
+ * empty, so opening-week props still have real history behind them.
+ */
+async function fetchNflPlayerGameLog(playerId: number, season: number): Promise<NflGameLogResult> {
+  let events = await fetchNflSeasonGameLog(playerId, season);
+  if (events.length === 0) events = await fetchNflSeasonGameLog(playerId, season - 1);
+
+  const last20 = events.slice(0, 20);
+  const last10 = events.slice(0, 10);
+  const avg = (key: "passingYards" | "rushingYards" | "receivingYards") =>
+    last10.length > 0 ? last10.reduce((a, b) => a + (b[key] ?? 0), 0) / last10.length : 0;
+
+  return {
+    last10, last20,
+    recentAvg: { passingYards: avg("passingYards"), rushingYards: avg("rushingYards"), receivingYards: avg("receivingYards") },
+  };
+}
+
+/**
+ * No free per-team "yards allowed" split was found on ESPN's hidden API (its
+ * team-statistics endpoint only exposes each team's own offense, not what
+ * opponents did against them), so matchup quality for NFL props falls back
+ * to the opponent's season win% — a weaker opponent scores as an easier
+ * matchup. At 0-0 (e.g. every Week 1) this is neutral by construction.
+ */
+function matchupScoreForNflProp(oppRecord: TeamRecord): number {
+  const oppWinPct = oppRecord.wins + oppRecord.losses > 0 ? oppRecord.winPct : 0.5;
+  return Math.min(90, Math.max(20, Math.round(90 - oppWinPct * 70)));
+}
+
+/** All (player, propType) candidates OddsAPI actually offered a line for in one NFL game, scored against that player's game log. */
+async function buildNflPropsForGame(
+  game: RawGame,
+  propOddsMap: PropOddsMap,
+  bankrollState: BankrollState,
+  season: number
+): Promise<PropPick[]> {
+  const gameCtx: PropGameContext = {
+    gameId: game.id, sport: game.sport,
+    matchup: `${game.awayTeam} @ ${game.homeTeam}`, startTime: game.startTime,
+  };
+
+  // Group the odds map's flat "player-propType" keys back by player, so each
+  // player's game log is only fetched once even if books offered them
+  // multiple prop markets (e.g. a receiving-back with both rush and rec yards).
+  const propTypesByPlayer = new Map<string, PropType[]>();
+  for (const key of propOddsMap.keys()) {
+    const propType = (["player_pass_yards", "player_rush_yards", "player_receiving_yards"] as const)
+      .find(t => key.endsWith(`-${t}`));
+    if (!propType) continue;
+    const playerName = key.slice(0, key.length - propType.length - 1);
+    const list = propTypesByPlayer.get(playerName) ?? [];
+    list.push(propType);
+    propTypesByPlayer.set(playerName, list);
+  }
+  if (propTypesByPlayer.size === 0) return [];
+
+  const [homeRoster, awayRoster] = await Promise.all([
+    fetchNflRosterOffense(game.homeTeamId),
+    fetchNflRosterOffense(game.awayTeamId),
+  ]);
+  const rosterByName = new Map<string, { player: NflRosterPlayer; isHome: boolean }>();
+  for (const player of homeRoster) rosterByName.set(normalizeTeamName(player.fullName), { player, isHome: true });
+  for (const player of awayRoster) rosterByName.set(normalizeTeamName(player.fullName), { player, isHome: false });
+
+  const props: PropPick[] = [];
+  await Promise.all([...propTypesByPlayer.entries()].map(async ([playerName, propTypes]) => {
+    const match = rosterByName.get(normalizeTeamName(playerName));
+    if (!match) return; // OddsAPI's player name didn't resolve to either roster — skip rather than guess
+
+    const { player, isHome } = match;
+    const log = await fetchNflPlayerGameLog(player.id, season);
+    if (log.last10.length === 0) return;
+
+    const oppRecord = isHome ? game.awayRecord : game.homeRecord;
+    const matchupScore = matchupScoreForNflProp(oppRecord);
+    const team = isHome ? game.homeTeam : game.awayTeam;
+    const opponent = isHome ? game.awayTeam : game.homeTeam;
+
+    for (const propType of propTypes) {
+      const oddsEntry = propOddsMap.get(`${playerName}-${propType}`);
+      if (!oddsEntry) continue;
+      const pick = scoreProp(
+        {
+          playerId: player.id, playerName: player.fullName, team, opponent, isHome,
+          // Reuses the pitcher/batter void-risk split: a starting QB is about
+          // as reliably announced in advance as a probable starter is.
+          isPitcher: player.position === "QB",
+          propType, fatigued: false,
+        },
+        log, oddsEntry, matchupScore, gameCtx, bankrollState
+      );
+      if (pick) props.push(pick);
+    }
+  }));
+
+  return props;
+}
+
+/**
+ * Scores props for the top TOP_GAMES_FOR_PROPS NFL games by moneyline
+ * composite score. Every prop-fetch failure is caught per-game, same
+ * guarantee as buildMlbPropPicks.
+ */
+async function buildNflPropPicks(
+  moneylinePicks: BetPick[],
+  rawGames: RawGame[],
+  nflOddsEntries: OddsApiEntry[],
+  bankrollState: BankrollState,
+  date: string,
+  book: Sportsbook | null
+): Promise<PropPick[]> {
+  const topGameIds = moneylinePicks
+    .filter(p => p.sport === "nfl")
+    .slice()
+    .sort((a, b) => b.scores.composite - a.scores.composite)
+    .slice(0, TOP_GAMES_FOR_PROPS)
+    .map(p => p.id.replace(/-(home|away)$/, ""));
+
+  const topGames = rawGames.filter(g => g.sport === "nfl" && topGameIds.includes(g.id));
+  if (topGames.length === 0) return [];
+
+  const eventIdByGameId = new Map<string, string>();
+  for (const game of topGames) {
+    const match = nflOddsEntries.find(
+      o => normalizeTeamName(o.homeTeam) === normalizeTeamName(game.homeTeam) &&
+           normalizeTeamName(o.awayTeam) === normalizeTeamName(game.awayTeam)
+    );
+    if (match) eventIdByGameId.set(game.id, match.id);
+  }
+
+  const season = parseInt(date.slice(0, 4), 10);
+
+  const perGame = await Promise.all(topGames.map(async game => {
+    const eventId = eventIdByGameId.get(game.id);
+    if (!eventId || !book) return [];
+    try {
+      const propOddsMap = await fetchPropOddsForGame(eventId, book, "nfl");
+      return await buildNflPropsForGame(game, propOddsMap, bankrollState, season);
+    } catch (e) {
+      console.warn(`NFL prop scoring failed for game ${game.id}:`, e);
+      return [];
+    }
+  }));
+
+  return perGame.flat().sort((a, b) => b.scores.composite - a.scores.composite);
+}
+
+const MAX_PROP_PICKS = 10;
+
+/** Merges the per-sport prop pipelines and caps the combined pool — Full Analysis only needs the top 10 overall. */
+async function buildPropPicks(
+  moneylinePicks: BetPick[],
+  rawGames: RawGame[],
+  oddsBySport: Record<string, OddsApiEntry[]>,
+  bankrollState: BankrollState,
+  date: string,
+  book: Sportsbook | null
+): Promise<PropPick[]> {
+  const [mlbProps, nflProps] = await Promise.all([
+    buildMlbPropPicks(moneylinePicks, rawGames, oddsBySport.mlb ?? [], bankrollState, date, book),
+    buildNflPropPicks(moneylinePicks, rawGames, oddsBySport.nfl ?? [], bankrollState, date, book),
+  ]);
+
+  return [...mlbProps, ...nflProps]
+    .sort((a, b) => b.scores.composite - a.scores.composite)
+    .slice(0, MAX_PROP_PICKS);
+}
+
 // ─── Main handler ────────────────────────────────────────────────────────────
 module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -2016,7 +2283,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
 
   try {
     const date = (req.query.date as string) || new Date().toISOString().split("T")[0];
-    const sportsParam = (req.query.sports as string) || "mlb,nfl,nhl";
+    const sportsParam = (req.query.sports as string) || "nfl,nhl";
     const sports = sportsParam.split(",").map(s => s.trim()).filter(Boolean) as Sport[];
 
     const results: SportResult[] = await Promise.all(
@@ -2047,7 +2314,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     // moneyline picks that already succeeded above.
     let propPicks: PropPick[] = [];
     try {
-      propPicks = await buildPropPicks(picks, rawGames, oddsBySport.mlb ?? [], bankrollState, date, chosenBook);
+      propPicks = await buildPropPicks(picks, rawGames, oddsBySport, bankrollState, date, chosenBook);
     } catch (e) {
       console.warn("Prop pipeline failed entirely, continuing with moneyline picks only:", e);
     }
