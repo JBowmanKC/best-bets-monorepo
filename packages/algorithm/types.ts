@@ -64,7 +64,7 @@ export interface Pick {
   sportsbook: string;
 }
 
-// ─── Prop bets (MLB only today — see api/best-bets.ts) ──────────────────────
+// ─── Prop bets (MLB + NFL today — see api/best-bets.ts) ─────────────────────
 
 export type PropType =
   | "pitcher_strikeouts"
