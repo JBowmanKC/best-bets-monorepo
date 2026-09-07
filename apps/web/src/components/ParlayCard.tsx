@@ -15,6 +15,7 @@ const SPORT_COLOR: Record<string, string> = {
   mlb:    "#60a5fa",
   nfl:    "#c084fc",
   nhl:    "#38bdf8",
+  ncaaf:  "#fb923c",
   soccer: "#10b981",
 };
 

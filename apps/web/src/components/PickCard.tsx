@@ -10,6 +10,7 @@ const SPORT_PILL: Record<string, { bg: string; color: string; label: string }> =
   mlb:    { bg: "#0f2d4a", color: "#60a5fa", label: "MLB"  },
   nfl:    { bg: "#26143e", color: "#c084fc", label: "NFL"  },
   nhl:    { bg: "#0a2640", color: "#38bdf8", label: "NHL"  },
+  ncaaf:  { bg: "#3a1f0a", color: "#fb923c", label: "NCAAF" },
   soccer: { bg: "#0a2a1a", color: "#10b981", label: "⚽ WC" },
 };
 

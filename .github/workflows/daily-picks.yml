@@ -41,7 +41,7 @@ jobs:
           echo "time=$TIME" >> "$GITHUB_OUTPUT"
           echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
 
-          URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=nfl,nhl"
+          URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=nfl,nhl,ncaaf"
           echo "Fetching $URL"
 
           HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" "$URL")

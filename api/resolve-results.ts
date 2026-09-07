@@ -16,8 +16,8 @@
 // committing it. See .github/workflows/resolve-results.yml.
 //
 // Data sources (same free feeds api/best-bets.ts uses, no key required):
-//   MLB schedule/scores — https://statsapi.mlb.com/api/v1/schedule
-//   NFL/NHL scoreboard  — https://site.api.espn.com/apis/site/v2/sports/...
+//   MLB schedule/scores   — https://statsapi.mlb.com/api/v1/schedule
+//   NFL/NHL/NCAAF scores  — https://site.api.espn.com/apis/site/v2/sports/...
 // ─────────────────────────────────────────────────────────────────────────
 
 // Note: this file has no top-level import/export (module.exports is a plain
@@ -27,7 +27,7 @@
 // of both would collide as a duplicate; the couple of names this file
 // happens to share with best-bets.ts (team-name/JSON-fetch helpers) are
 // prefixed accordingly to avoid that.
-type RrSport = "mlb" | "nfl" | "nhl";
+type RrSport = "mlb" | "nfl" | "nhl" | "ncaaf";
 type RrTier = "elite" | "strong" | "value";
 type BetResult = "pending" | "win" | "loss" | "push" | "void";
 
@@ -125,6 +125,7 @@ interface Calibration {
   mlbRoi: number | null;
   nflRoi: number | null;
   nhlRoi: number | null;
+  ncaafRoi: number | null;
   wpScoreMultiplier: number;
   evScoreMultiplier: number;
   lastCalibrated: string | null;
@@ -183,6 +184,7 @@ function defaultBankroll(): Bankroll {
       mlbRoi: null,
       nflRoi: null,
       nhlRoi: null,
+      ncaafRoi: null,
       wpScoreMultiplier: 1.0,
       evScoreMultiplier: 1.0,
       lastCalibrated: null,
@@ -266,8 +268,8 @@ async function fetchMlbFinals(date: string): Promise<FinalGame[]> {
   });
 }
 
-async function fetchEspnFinals(sport: "nfl" | "nhl", date: string): Promise<FinalGame[]> {
-  const path = sport === "nfl" ? "football/nfl" : "hockey/nhl";
+async function fetchEspnFinals(sport: "nfl" | "nhl" | "ncaaf", date: string): Promise<FinalGame[]> {
+  const path = sport === "nfl" ? "football/nfl" : sport === "nhl" ? "hockey/nhl" : "football/college-football";
   const dateParam = date.replace(/-/g, "");
   const data = await rrFetchJson(`https://site.api.espn.com/apis/site/v2/sports/${path}/scoreboard?dates=${dateParam}`);
   const events: any[] = data.events ?? [];
@@ -620,6 +622,7 @@ function runCalibration(bankroll: Bankroll): void {
   bankroll.calibration.mlbRoi = sportRoi(bets, "mlb");
   bankroll.calibration.nflRoi = sportRoi(bets, "nfl");
   bankroll.calibration.nhlRoi = sportRoi(bets, "nhl");
+  bankroll.calibration.ncaafRoi = sportRoi(bets, "ncaaf");
 
   const elitePredicted = tierPredictedWinRate(bets, "elite");
   if (eliteActual !== null && elitePredicted !== null) {

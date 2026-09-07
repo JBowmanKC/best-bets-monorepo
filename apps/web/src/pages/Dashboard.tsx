@@ -9,7 +9,7 @@ import { ParlayCard }   from "../components/ParlayCard";
 import { RankedTable }  from "../components/RankedTable";
 import { SectionTitle } from "../components/SectionTitle";
 
-const SPORTS = ["mlb", "nfl", "nhl"] as const;
+const SPORTS = ["mlb", "nfl", "nhl", "ncaaf"] as const;
 
 function isPropPick(x: Pick | PropPick): x is PropPick {
   return "playerName" in x;

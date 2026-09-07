@@ -4,7 +4,7 @@ import type { BankrollBet, BankrollCalibration, BetResult, Tier } from "@best-be
 import { SectionTitle } from "../components/SectionTitle";
 import { useBankroll } from "../hooks/useBankroll";
 
-type SportFilter = "mlb" | "nfl" | "nhl";
+type SportFilter = "mlb" | "nfl" | "nhl" | "ncaaf";
 type Filter = "all" | "pending" | "win" | "loss" | SportFilter;
 
 const TIER_META: Record<Tier, { label: string; color: string }> = {
@@ -29,6 +29,7 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: "mlb",     label: "⚾ MLB" },
   { key: "nfl",     label: "🏈 NFL" },
   { key: "nhl",     label: "🏒 NHL" },
+  { key: "ncaaf",   label: "🏈 NCAAF" },
 ];
 
 // ─── Formatting ───────────────────────────────────────────────────────────────
@@ -358,6 +359,10 @@ function CalibrationPanel({ calibration, bets }: { calibration: BankrollCalibrat
               <tr>
                 <td style={cellStyle}>🏒 NHL</td>
                 <td style={{ ...cellStyle, color: plColor(calibration.nhlRoi ?? 0), fontWeight: 700 }}>{fmtPct(calibration.nhlRoi)}</td>
+              </tr>
+              <tr>
+                <td style={cellStyle}>🏈 NCAAF</td>
+                <td style={{ ...cellStyle, color: plColor(calibration.ncaafRoi ?? 0), fontWeight: 700 }}>{fmtPct(calibration.ncaafRoi)}</td>
               </tr>
             </tbody>
           </table>

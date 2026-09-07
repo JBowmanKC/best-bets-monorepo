@@ -1,6 +1,6 @@
 // ─── Core data types ───────────────────────────────────────────────────────
 
-export type Sport = "mlb" | "nfl" | "nhl" | "soccer";
+export type Sport = "mlb" | "nfl" | "nhl" | "ncaaf" | "soccer";
 export type Tier = "elite" | "strong" | "value";
 
 export interface TeamRecord {
@@ -386,6 +386,7 @@ export interface BankrollCalibration {
   mlbRoi: number | null;
   nflRoi: number | null;
   nhlRoi: number | null;
+  ncaafRoi: number | null;
   /** Applied to the raw win-probability score before the composite is computed. */
   wpScoreMultiplier: number;
   /** Applied to the raw expected-value score before the composite is computed. */

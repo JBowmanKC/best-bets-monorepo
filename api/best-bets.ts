@@ -7,13 +7,15 @@
 //   MLB schedule    — https://statsapi.mlb.com/api/v1/schedule
 //   MLB standings   — https://statsapi.mlb.com/api/v1/standings
 //   NFL/NHL games   — https://site.api.espn.com/apis/site/v2/sports/...
+//   NCAAF games     — https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard (filtered to SEC/Big Ten/ACC via groups=)
 //   NFL roster      — https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{id}/roster
 //   NFL player logs — https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{id}/gamelog
 //   Moneylines      — https://api.the-odds-api.com/v4/sports/.../odds
 //
 // Sport selection: the `sports` query param decides what's fetched
-// (default "nfl,nhl" — MLB is off by default now that the season's ended
-// its run here; pass sports=mlb explicitly to still fetch it on demand).
+// (default "nfl,nhl,ncaaf" — MLB is off by default now that the season's
+// ended its run here; pass sports=mlb explicitly to still fetch it on
+// demand). NCAAF is scoped to SEC/Big Ten/ACC only — see fetchNcaafGames.
 //
 // Environment variables:
 //   ODDS_API_KEY — OddsAPI key (live moneylines). Games still generate
@@ -22,7 +24,7 @@
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 
-type Sport = "mlb" | "nfl" | "nhl";
+type Sport = "mlb" | "nfl" | "nhl" | "ncaaf";
 type Tier = "elite" | "strong" | "value";
 
 interface ApiRequest {
@@ -292,12 +294,14 @@ const SPORT_LABELS: Record<Sport, string> = {
   mlb: "⚾ MLB",
   nfl: "🏈 NFL",
   nhl: "🏒 NHL",
+  ncaaf: "🏈 NCAAF",
 };
 
 const ODDS_SPORT_KEYS: Record<Sport, string> = {
   mlb: "baseball_mlb",
   nfl: "americanfootball_nfl",
   nhl: "icehockey_nhl",
+  ncaaf: "americanfootball_ncaaf",
 };
 
 // ─── Sportsbook selection ────────────────────────────────────────────────────
@@ -1260,6 +1264,89 @@ async function fetchEspnGames(sport: "nfl" | "nhl", date: string): Promise<Sport
   } catch (e) {
     console.warn(`${sport.toUpperCase()} schedule fetch failed:`, e);
     return { games: [], status: { sport, label, active: false, note: `${sport.toUpperCase()} schedule feed unreachable.` } };
+  }
+}
+
+// ─── College football (ESPN, filtered to SEC/Big Ten/ACC) ──────────────────
+//
+// ESPN's college football scoreboard covers every FBS game — hundreds of
+// teams across dozens of conferences — so a plain date fetch (like NFL/NHL
+// use) would flood the pool with games nobody asked for. Its `groups=`
+// param filters server-side to one conference's games (any game with at
+// least one participant from that conference — a marquee team's game
+// against a smaller program still counts), so this fetches SEC/Big Ten/ACC
+// separately and merges, deduping by event id for cross-conference games
+// that show up in two of the three fetches (e.g. an SEC-vs-ACC matchup).
+const NCAAF_CONFERENCE_GROUPS: Record<string, string> = { SEC: "8", "Big Ten": "5", ACC: "1" };
+
+async function fetchNcaafGames(date: string): Promise<SportResult> {
+  const label = SPORT_LABELS.ncaaf;
+  const dateParam = date.replace(/-/g, "");
+
+  try {
+    const perConference = await Promise.all(
+      Object.values(NCAAF_CONFERENCE_GROUPS).map(groupId =>
+        fetchJson(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=${dateParam}&groups=${groupId}`)
+      )
+    );
+
+    const eventsById = new Map<string, any>();
+    for (const data of perConference) {
+      for (const e of (data.events ?? []) as any[]) eventsById.set(String(e.id), e);
+    }
+
+    const upcoming = [...eventsById.values()].filter((e: any) => e.status?.type?.state === "pre");
+
+    if (upcoming.length === 0) {
+      return {
+        games: [],
+        status: { sport: "ncaaf", label, active: false, note: "No upcoming SEC/Big Ten/ACC games today (usually a non-Saturday)." },
+      };
+    }
+
+    const parseRecord = (c: any): TeamRecord => {
+      const summary = c?.records?.find((r: any) => r.type === "total")?.summary ?? c?.records?.[0]?.summary ?? "";
+      const match = /^(\d+)-(\d+)/.exec(summary);
+      const wins = match ? parseInt(match[1], 10) : 0;
+      const losses = match ? parseInt(match[2], 10) : 0;
+      return { wins, losses, winPct: wins + losses > 0 ? wins / (wins + losses) : 0.5 };
+    };
+
+    const games: ScheduledGame[] = upcoming.map((e: any) => {
+      const comp = e.competitions?.[0];
+      const competitors: any[] = comp?.competitors ?? [];
+      const home = competitors.find(c => c.homeAway === "home");
+      const away = competitors.find(c => c.homeAway === "away");
+
+      return {
+        id: String(e.id),
+        sport: "ncaaf",
+        homeTeam: home?.team?.displayName ?? "Home",
+        awayTeam: away?.team?.displayName ?? "Away",
+        homeTeamId: parseInt(home?.team?.id, 10) || 0,
+        awayTeamId: parseInt(away?.team?.id, 10) || 0,
+        startTime: e.date,
+        venue: comp?.venue?.fullName ?? "",
+        homeRecord: parseRecord(home),
+        awayRecord: parseRecord(away),
+        // Same as NFL/NHL: ESPN's scoreboard doesn't expose per-team game
+        // logs, so recent form is left empty and momentum falls back to the
+        // series-advantage half of its formula.
+        homeRecentForm: [],
+        awayRecentForm: [],
+        homeSeriesWins: 0,
+        awaySeriesWins: 0,
+        notes: "",
+      };
+    });
+
+    return {
+      games,
+      status: { sport: "ncaaf", label, active: true, note: `${games.length} game${games.length === 1 ? "" : "s"} scheduled today (SEC/Big Ten/ACC)` },
+    };
+  } catch (e) {
+    console.warn("NCAAF schedule fetch failed:", e);
+    return { games: [], status: { sport: "ncaaf", label, active: false, note: "NCAAF schedule feed unreachable." } };
   }
 }
 
@@ -2283,13 +2370,14 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
 
   try {
     const date = (req.query.date as string) || new Date().toISOString().split("T")[0];
-    const sportsParam = (req.query.sports as string) || "nfl,nhl";
+    const sportsParam = (req.query.sports as string) || "nfl,nhl,ncaaf";
     const sports = sportsParam.split(",").map(s => s.trim()).filter(Boolean) as Sport[];
 
     const results: SportResult[] = await Promise.all(
       sports.map(sport => {
         if (sport === "mlb") return fetchMlbGames(date);
         if (sport === "nfl" || sport === "nhl") return fetchEspnGames(sport, date);
+        if (sport === "ncaaf") return fetchNcaafGames(date);
         return Promise.resolve<SportResult>({
           games: [],
           status: { sport, label: String(sport).toUpperCase(), active: false, note: "Sport not supported by this endpoint." },
