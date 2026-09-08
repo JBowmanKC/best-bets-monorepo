@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 506.01,
+  "currentBankroll": 465.51,
   "totalBets": 65,
   "wins": 26,
-  "losses": 37,
+  "losses": 38,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 2158.5,
-  "totalProfit": 6.01,
-  "roi": 0.0029,
+  "totalProfit": -34.49,
+  "roi": -0.0162,
   "peakBankroll": 815.43,
   "lowestBankroll": 424.25,
   "calibration": {
     "eliteWinRate": 0.55,
-    "strongWinRate": 0.5,
+    "strongWinRate": 0.4286,
     "valueWinRate": null,
     "mlbRoi": -0.0306,
     "nflRoi": null,
     "nhlRoi": null,
     "wpScoreMultiplier": 0.9,
-    "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-07T18:46:29.728Z",
-    "totalResultsTracked": 64,
-    "ncaafRoi": null
+    "evScoreMultiplier": 0.92,
+    "lastCalibrated": "2026-09-08T17:57:35.556Z",
+    "totalResultsTracked": 65,
+    "ncaafRoi": -1
   },
   "bets": [
     {
@@ -2179,10 +2179,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -40.5,
+      "bankrollAfter": 465.51,
+      "resolvedAt": "2026-09-08T17:57:35.555Z"
     }
   ]
 }
