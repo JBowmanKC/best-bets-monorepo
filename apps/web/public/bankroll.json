@@ -78,20 +78,20 @@
       "recommendedSide": "over"
     },
     {
-      "betId": "nfl-401872657-prop-tylerhigbee-player_receiving_yards-2026-09-10",
+      "betId": "nfl-401872657-prop-georgekittle-player_receiving_yards-2026-09-10",
       "date": "2026-09-10",
       "sport": "nfl",
       "matchup": "San Francisco 49ers @ Los Angeles Rams",
-      "pickLabel": "Tyler Higbee Over 15.5",
-      "odds": -113,
+      "pickLabel": "George Kittle Over 33.5",
+      "odds": -110,
       "stakeAmount": 30,
-      "potentialPayout": 56.55,
-      "estimatedWinPct": 0.7,
-      "impliedWinPct": 0.531,
-      "evEdge": 0.169,
-      "tier": "elite",
+      "potentialPayout": 57.27,
+      "estimatedWinPct": 0.675,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.151,
+      "tier": "strong",
       "scores": {
-        "composite": 80
+        "composite": 77
       },
       "sportsbook": "DraftKings",
       "result": "pending",
@@ -99,8 +99,8 @@
       "bankrollAfter": null,
       "resolvedAt": null,
       "propType": "player_receiving_yards",
-      "playerName": "Tyler Higbee",
-      "line": 15.5,
+      "playerName": "George Kittle",
+      "line": 33.5,
       "recommendedSide": "over"
     },
     {
