@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 0,
+  "totalBets": 4,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 0,
+  "totalStaked": 99.5,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -19,10 +19,136 @@
     "nflRoi": null,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 1.0,
-    "evScoreMultiplier": 1.0,
+    "wpScoreMultiplier": 1,
+    "evScoreMultiplier": 1,
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
-  "bets": []
+  "bets": [
+    {
+      "betId": "nfl-401872657-prop-kyrenwilliams-player_rush_yards-2026-09-10",
+      "date": "2026-09-10",
+      "sport": "nfl",
+      "matchup": "San Francisco 49ers @ Los Angeles Rams",
+      "pickLabel": "Kyren Williams Over 55.5",
+      "odds": -110,
+      "stakeAmount": 30,
+      "potentialPayout": 57.27,
+      "estimatedWinPct": 0.869,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.346,
+      "tier": "elite",
+      "scores": {
+        "composite": 87
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Kyren Williams",
+      "line": 55.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872657-prop-colbyparkinson-player_receiving_yards-2026-09-10",
+      "date": "2026-09-10",
+      "sport": "nfl",
+      "matchup": "San Francisco 49ers @ Los Angeles Rams",
+      "pickLabel": "Colby Parkinson Over 16.5",
+      "odds": -115,
+      "stakeAmount": 30,
+      "potentialPayout": 56.09,
+      "estimatedWinPct": 0.747,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.212,
+      "tier": "elite",
+      "scores": {
+        "composite": 83
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Colby Parkinson",
+      "line": 16.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872657-prop-tylerhigbee-player_receiving_yards-2026-09-10",
+      "date": "2026-09-10",
+      "sport": "nfl",
+      "matchup": "San Francisco 49ers @ Los Angeles Rams",
+      "pickLabel": "Tyler Higbee Over 15.5",
+      "odds": -113,
+      "stakeAmount": 30,
+      "potentialPayout": 56.55,
+      "estimatedWinPct": 0.7,
+      "impliedWinPct": 0.531,
+      "evEdge": 0.169,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Tyler Higbee",
+      "line": 15.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-10",
+      "date": "2026-09-10",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Brock Purdy Under 18.5 Rushing Yards",
+          "odds": -109,
+          "sport": "nfl",
+          "matchup": "San Francisco 49ers @ Los Angeles Rams",
+          "date": "2026-09-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Brock Purdy",
+          "line": 18.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Matthew Stafford Over 264.5 Passing Yards",
+          "odds": -111,
+          "sport": "nfl",
+          "matchup": "San Francisco 49ers @ Los Angeles Rams",
+          "date": "2026-09-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Matthew Stafford",
+          "line": 264.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "San Francisco 49ers ML",
+          "odds": 160,
+          "sport": "nfl",
+          "matchup": "San Francisco 49ers @ Los Angeles Rams",
+          "date": "2026-09-11",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 848,
+      "stakeAmount": 9.5,
+      "potentialPayout": 90.06,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    }
+  ]
 }
