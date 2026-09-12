@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 5,
+  "totalBets": 7,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 129.5,
+  "totalStaked": 184,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -175,6 +175,67 @@
       "playerName": "Tyler Higbee",
       "line": 16.5,
       "recommendedSide": "over"
+    },
+    {
+      "betId": "ncaaf-401858216-home-2026-09-12",
+      "date": "2026-09-12",
+      "sport": "ncaaf",
+      "matchup": "California Golden Bears @ Syracuse Orange",
+      "pickLabel": "Syracuse Orange ML",
+      "odds": -192,
+      "stakeAmount": 40,
+      "potentialPayout": 60.83,
+      "estimatedWinPct": 0.82,
+      "impliedWinPct": 0.658,
+      "evEdge": 0.162,
+      "tier": "elite",
+      "scores": {
+        "composite": 81
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-09-12",
+      "date": "2026-09-12",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "UCF Knights ML",
+          "odds": 230,
+          "sport": "ncaaf",
+          "matchup": "UCF Knights @ Pittsburgh Panthers",
+          "date": "2026-09-12",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Syracuse Orange ML",
+          "odds": -192,
+          "sport": "ncaaf",
+          "matchup": "California Golden Bears @ Syracuse Orange",
+          "date": "2026-09-12",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Duke Blue Devils ML",
+          "odds": 190,
+          "sport": "ncaaf",
+          "matchup": "Duke Blue Devils @ Illinois Fighting Illini",
+          "date": "2026-09-12",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1355,
+      "stakeAmount": 14.5,
+      "potentialPayout": 210.98,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
