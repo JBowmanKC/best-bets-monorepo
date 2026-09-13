@@ -891,14 +891,25 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
     payout = calcParlayPayout(legs.map(l => l.odds));
   }
 
+  // Ids removed for pushing the payout too high this pass never get
+  // reconsidered as a "replacement" — without this, a removed leg goes back
+  // into usedIds.delete()'s pool immediately, and if the next-best
+  // replacement is itself long enough to blow the ceiling right back open,
+  // the loop can swap the same two legs back and forth forever (found live
+  // on 2026-09-13's first full NFL Sunday slate, where the eligible pool
+  // finally had enough long shots to hit this). Tracking `rejected`
+  // separately from `usedIds` makes the candidate pool strictly shrink each
+  // iteration, which guarantees this terminates.
+  const rejected = new Set<string>();
   while (payout > 3000 && legs.length > 0) {
     let longestShotIdx = 0;
     for (let i = 1; i < legs.length; i++) {
       if (legs[i].odds > legs[longestShotIdx].odds) longestShotIdx = i;
     }
     const removed = legs[longestShotIdx];
+    rejected.add(removed.id);
     const replacement = combined.find(c =>
-      !usedIds.has(c.id) && c.id !== removed.id &&
+      !usedIds.has(c.id) && !rejected.has(c.id) &&
       (!isPropPick(c) || propCount - (isPropPick(removed) ? 1 : 0) < 2)
     );
 
