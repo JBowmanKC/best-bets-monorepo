@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 445.5,
-  "totalBets": 7,
+  "totalBets": 11,
   "wins": 0,
   "losses": 2,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 184,
+  "totalStaked": 273,
   "totalProfit": -54.5,
   "roi": -1,
   "peakBankroll": 500,
@@ -239,6 +239,127 @@
       "profitLoss": -14.5,
       "bankrollAfter": 445.5,
       "resolvedAt": "2026-09-13T17:28:05.413Z"
+    },
+    {
+      "betId": "nfl-401872930-prop-theojohnson-player_receiving_yards-2026-09-13",
+      "date": "2026-09-13",
+      "sport": "nfl",
+      "matchup": "Dallas Cowboys @ New York Giants",
+      "pickLabel": "Theo Johnson Over 16.5",
+      "odds": -111,
+      "stakeAmount": 26.5,
+      "potentialPayout": 50.37,
+      "estimatedWinPct": 0.86,
+      "impliedWinPct": 0.526,
+      "evEdge": 0.334,
+      "tier": "elite",
+      "scores": {
+        "composite": 87
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Theo Johnson",
+      "line": 16.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872926-prop-jacobybrissett-player_pass_yards-2026-09-13",
+      "date": "2026-09-13",
+      "sport": "nfl",
+      "matchup": "Arizona Cardinals @ Los Angeles Chargers",
+      "pickLabel": "Jacoby Brissett Over 220.5",
+      "odds": -111,
+      "stakeAmount": 26.5,
+      "potentialPayout": 50.37,
+      "estimatedWinPct": 0.766,
+      "impliedWinPct": 0.526,
+      "evEdge": 0.24,
+      "tier": "elite",
+      "scores": {
+        "composite": 84
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_pass_yards",
+      "playerName": "Jacoby Brissett",
+      "line": 220.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872926-prop-treymcbride-player_receiving_yards-2026-09-13",
+      "date": "2026-09-13",
+      "sport": "nfl",
+      "matchup": "Arizona Cardinals @ Los Angeles Chargers",
+      "pickLabel": "Trey McBride Over 56.5",
+      "odds": -111,
+      "stakeAmount": 26.5,
+      "potentialPayout": 50.37,
+      "estimatedWinPct": 0.762,
+      "impliedWinPct": 0.526,
+      "evEdge": 0.236,
+      "tier": "elite",
+      "scores": {
+        "composite": 83
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Trey McBride",
+      "line": 56.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-13",
+      "date": "2026-09-13",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Jacoby Brissett Over 220.5 Passing Yards",
+          "odds": -111,
+          "sport": "nfl",
+          "matchup": "Arizona Cardinals @ Los Angeles Chargers",
+          "date": "2026-09-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Jacoby Brissett",
+          "line": 220.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Washington Commanders ML",
+          "odds": 215,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ Philadelphia Eagles",
+          "date": "2026-09-13",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "New York Giants ML",
+          "odds": 140,
+          "sport": "nfl",
+          "matchup": "Dallas Cowboys @ New York Giants",
+          "date": "2026-09-14",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1337,
+      "stakeAmount": 9.5,
+      "potentialPayout": 136.51,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
