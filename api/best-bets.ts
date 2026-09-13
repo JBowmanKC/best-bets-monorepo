@@ -273,6 +273,8 @@ const PROP_TYPE_LABELS: Record<PropType, string> = {
 };
 
 const TOP_GAMES_FOR_PROPS = 5;
+/** Hard cap on the prop pipeline so a slow upstream (ESPN under game-day load) can't blow past Vercel's 60s function limit and lose the moneyline picks too. */
+const PROP_PIPELINE_TIMEOUT_MS = 35_000;
 
 // ─── Algorithm config (weights/thresholds must not change) ─────────────────
 const FACTOR_WEIGHTS = {
@@ -2399,10 +2401,19 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
     const picks = scoreAllGames(rawGames, bankrollState);
 
     // Prop bets are best-effort: any failure here must never take down the
-    // moneyline picks that already succeeded above.
+    // moneyline picks that already succeeded above. They're also time-boxed —
+    // on a full game-day slate the NFL prop fan-out (roster + game-log calls
+    // per player across TOP_GAMES_FOR_PROPS games) can occasionally run long
+    // if ESPN's hidden API is slow under real game-day traffic, and this
+    // whole function gets hard-killed at Vercel's 60s limit with nothing
+    // returned at all. Capping props at PROP_PIPELINE_TIMEOUT_MS guarantees
+    // moneyline picks still ship even when props can't finish in time.
     let propPicks: PropPick[] = [];
     try {
-      propPicks = await buildPropPicks(picks, rawGames, oddsBySport, bankrollState, date, chosenBook);
+      propPicks = await Promise.race([
+        buildPropPicks(picks, rawGames, oddsBySport, bankrollState, date, chosenBook),
+        new Promise<PropPick[]>(resolve => setTimeout(() => resolve([]), PROP_PIPELINE_TIMEOUT_MS)),
+      ]);
     } catch (e) {
       console.warn("Prop pipeline failed entirely, continuing with moneyline picks only:", e);
     }
