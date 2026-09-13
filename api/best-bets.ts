@@ -24,6 +24,19 @@
 
 const ODDS_API_KEY = process.env.ODDS_API_KEY;
 
+/**
+ * Every outbound fetch (ESPN, MLB Stats API, OddsAPI, Anthropic) is capped at
+ * this long. Discovered the hard way on 2026-09-13: with no per-request
+ * timeout, a single slow upstream response — ESPN's hidden APIs under real
+ * NFL Sunday game-time load, in this case — can hang long enough to blow
+ * past Vercel's 60s function limit and take the whole response (including
+ * the moneyline picks that had nothing to do with the slow call) down with
+ * it. Every call site already treats a thrown/rejected fetch as "this
+ * sub-feature degrades gracefully" (try/catch → empty result), so turning a
+ * hang into a fast timeout is a strict improvement, never a new failure mode.
+ */
+const FETCH_TIMEOUT_MS = 8_000;
+
 type Sport = "mlb" | "nfl" | "nhl" | "ncaaf";
 type Tier = "elite" | "strong" | "value";
 
@@ -476,6 +489,7 @@ async function callHaikuExplanation(prompt: string, fallback: string): Promise<s
         max_tokens: 180,
         messages: [{ role: "user", content: prompt }],
       }),
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
 
     if (!res.ok) return fallback;
@@ -1089,7 +1103,7 @@ function normalizeTeamName(name: string): string {
 }
 
 async function fetchJson(url: string): Promise<any> {
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.json();
 }
@@ -1574,7 +1588,7 @@ async function fetchOddsForSport(sport: Sport): Promise<OddsApiEntry[]> {
 
   try {
     const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${ODDS_API_KEY}&regions=us&markets=h2h&oddsFormat=american&bookmakers=${SPORTSBOOKS.join(",")}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     if (!res.ok) {
       console.warn(`OddsAPI ${sport} failed: ${res.status}`);
       return [];
@@ -1652,7 +1666,7 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sp
   try {
     const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/events/${eventId}/odds`
       + `?apiKey=${ODDS_API_KEY}&regions=us&markets=${markets}&oddsFormat=american&bookmakers=${book}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     if (!res.ok) {
       console.warn(`OddsAPI props ${eventId} failed: ${res.status}`);
       return map;
