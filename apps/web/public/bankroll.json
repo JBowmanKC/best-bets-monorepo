@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 500,
+  "currentBankroll": 445.5,
   "totalBets": 7,
   "wins": 0,
-  "losses": 0,
+  "losses": 2,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 184,
-  "totalProfit": 0,
-  "roi": 0,
+  "totalProfit": -54.5,
+  "roi": -1,
   "peakBankroll": 500,
-  "lowestBankroll": 500,
+  "lowestBankroll": 445.5,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 0
+    "totalResultsTracked": 2
   },
   "bets": [
     {
@@ -193,10 +193,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -40,
+      "bankrollAfter": 460,
+      "resolvedAt": "2026-09-13T17:28:05.412Z"
     },
     {
       "betId": "parlay-high-2026-09-12",
@@ -209,7 +209,8 @@
           "sport": "ncaaf",
           "matchup": "UCF Knights @ Pittsburgh Panthers",
           "date": "2026-09-12",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Syracuse Orange ML",
@@ -217,7 +218,8 @@
           "sport": "ncaaf",
           "matchup": "California Golden Bears @ Syracuse Orange",
           "date": "2026-09-12",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Duke Blue Devils ML",
@@ -225,17 +227,18 @@
           "sport": "ncaaf",
           "matchup": "Duke Blue Devils @ Illinois Fighting Illini",
           "date": "2026-09-12",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 1355,
       "stakeAmount": 14.5,
       "potentialPayout": 210.98,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -14.5,
+      "bankrollAfter": 445.5,
+      "resolvedAt": "2026-09-13T17:28:05.413Z"
     }
   ]
 }
