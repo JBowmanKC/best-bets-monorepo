@@ -84,7 +84,8 @@ jobs:
               label = b.get("pickLabel")
               if not label:
                   side = "Over" if b.get("recommendedSide") == "over" else "Under"
-                  label = f"{b.get('playerName', '?')} {side} {b.get('line', '?')} {b.get('propType', '')}".strip()
+                  line = f"Alt {b.get('line', '?')}" if b.get("isAlternateLine") else b.get("line", "?")
+                  label = f"{b.get('playerName', '?')} {side} {line} {b.get('propType', '')}".strip()
               print(f"  - {label} ({b.get('odds', '?')}) stake: ${b.get('stakeAmount', 0):.2f}")
 
           print(f"Total staked: ${s.get('totalStaked', 0):.2f}")
