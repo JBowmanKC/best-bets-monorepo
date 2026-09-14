@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 445.5,
+  "currentBankroll": 327.74,
   "totalBets": 11,
-  "wins": 0,
-  "losses": 2,
+  "wins": 2,
+  "losses": 9,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 273,
-  "totalProfit": -54.5,
-  "roi": -1,
+  "totalProfit": -172.26,
+  "roi": -0.631,
   "peakBankroll": 500,
-  "lowestBankroll": 445.5,
+  "lowestBankroll": 289.5,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 2
+    "totalResultsTracked": 11
   },
   "bets": [
     {
@@ -42,10 +42,10 @@
         "composite": 87
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30,
+      "bankrollAfter": 470,
+      "resolvedAt": "2026-09-14T18:18:18.626Z",
       "propType": "player_rush_yards",
       "playerName": "Kyren Williams",
       "line": 55.5,
@@ -68,10 +68,10 @@
         "composite": 83
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30,
+      "bankrollAfter": 440,
+      "resolvedAt": "2026-09-14T18:18:18.650Z",
       "propType": "player_receiving_yards",
       "playerName": "Colby Parkinson",
       "line": 16.5,
@@ -94,10 +94,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30,
+      "bankrollAfter": 410,
+      "resolvedAt": "2026-09-14T18:18:18.678Z",
       "propType": "player_receiving_yards",
       "playerName": "George Kittle",
       "line": 33.5,
@@ -118,7 +118,8 @@
           "propType": "player_rush_yards",
           "playerName": "Brock Purdy",
           "line": 18.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Stafford Over 264.5 Passing Yards",
@@ -130,7 +131,8 @@
           "propType": "player_pass_yards",
           "playerName": "Matthew Stafford",
           "line": 264.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "San Francisco 49ers ML",
@@ -138,17 +140,18 @@
           "sport": "nfl",
           "matchup": "San Francisco 49ers @ Los Angeles Rams",
           "date": "2026-09-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 848,
       "stakeAmount": 9.5,
       "potentialPayout": 90.06,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9.5,
+      "bankrollAfter": 400.5,
+      "resolvedAt": "2026-09-14T18:18:18.765Z"
     },
     {
       "betId": "nfl-401872657-prop-tylerhigbee-player_receiving_yards-2026-09-10",
@@ -167,10 +170,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -30,
+      "bankrollAfter": 370.5,
+      "resolvedAt": "2026-09-14T18:18:18.790Z",
       "propType": "player_receiving_yards",
       "playerName": "Tyler Higbee",
       "line": 16.5,
@@ -195,7 +198,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -40,
-      "bankrollAfter": 460,
+      "bankrollAfter": 330.5,
       "resolvedAt": "2026-09-13T17:28:05.412Z"
     },
     {
@@ -237,7 +240,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -14.5,
-      "bankrollAfter": 445.5,
+      "bankrollAfter": 316,
       "resolvedAt": "2026-09-13T17:28:05.413Z"
     },
     {
@@ -257,10 +260,10 @@
         "composite": 87
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -26.5,
+      "bankrollAfter": 289.5,
+      "resolvedAt": "2026-09-14T18:18:18.855Z",
       "propType": "player_receiving_yards",
       "playerName": "Theo Johnson",
       "line": 16.5,
@@ -283,10 +286,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 23.87,
+      "bankrollAfter": 313.37,
+      "resolvedAt": "2026-09-14T18:18:18.879Z",
       "propType": "player_pass_yards",
       "playerName": "Jacoby Brissett",
       "line": 220.5,
@@ -309,10 +312,10 @@
         "composite": 83
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 23.87,
+      "bankrollAfter": 337.24,
+      "resolvedAt": "2026-09-14T18:18:18.904Z",
       "propType": "player_receiving_yards",
       "playerName": "Trey McBride",
       "line": 56.5,
@@ -333,7 +336,8 @@
           "propType": "player_pass_yards",
           "playerName": "Jacoby Brissett",
           "line": 220.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Washington Commanders ML",
@@ -341,7 +345,8 @@
           "sport": "nfl",
           "matchup": "Washington Commanders @ Philadelphia Eagles",
           "date": "2026-09-13",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "New York Giants ML",
@@ -349,17 +354,18 @@
           "sport": "nfl",
           "matchup": "Dallas Cowboys @ New York Giants",
           "date": "2026-09-14",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 1337,
       "stakeAmount": 9.5,
       "potentialPayout": 136.51,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9.5,
+      "bankrollAfter": 327.74,
+      "resolvedAt": "2026-09-14T18:18:18.943Z"
     }
   ]
 }
