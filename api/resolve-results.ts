@@ -157,6 +157,8 @@ interface FinalGame {
   state: "scheduled" | "final" | "no-action";
   /** MLB gamePk — set only by fetchMlbFinals, needed to fetch the boxscore for prop resolution. */
   gamePk?: string;
+  /** ESPN event id — set only by fetchEspnFinals, needed to fetch the boxscore for NFL prop resolution. */
+  eventId?: string;
 }
 
 const CALIBRATION_THRESHOLD = 20;
@@ -195,8 +197,11 @@ function defaultBankroll(): Bankroll {
 }
 
 // ─── Fetch helpers ───────────────────────────────────────────────────────────
+/** Same reasoning as api/best-bets.ts's FETCH_TIMEOUT_MS — an unbounded fetch can hang long enough to blow this function's own timeout. */
+const RR_FETCH_TIMEOUT_MS = 8_000;
+
 async function rrFetchJson(url: string): Promise<any> {
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(RR_FETCH_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.json();
 }
@@ -224,7 +229,7 @@ async function fetchBankrollFile(req: ApiRequest): Promise<Bankroll> {
   }
 
   const url = `https://${host}/bankroll.json`;
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(RR_FETCH_TIMEOUT_MS) });
 
   if (res.status === 404) {
     console.warn(`bankroll.json not found at ${url} — starting from an empty ledger (first run).`);
@@ -294,6 +299,7 @@ async function fetchEspnFinals(sport: "nfl" | "nhl" | "ncaaf", date: string): Pr
       homeScore: num(home?.score),
       awayScore: num(away?.score),
       state,
+      eventId: e.id !== undefined && e.id !== null ? String(e.id) : undefined,
     };
   });
 }
@@ -369,19 +375,115 @@ function readBoxscoreStatValue(player: any, propType: string): number {
   }
 }
 
+/**
+ * NFL boxscore for prop grading (ESPN's summary endpoint — same free hidden
+ * API api/best-bets.ts uses for rosters/game-logs). Flattened across both
+ * teams into one list of stat categories ("passing"/"rushing"/"receiving"),
+ * since a prop can be on either team's player and callers only care about
+ * finding one player by name.
+ */
+interface EspnBoxscoreCategory {
+  name: string;
+  labels: string[];
+  athletes: { athlete?: { displayName?: string }; stats?: string[] }[];
+}
+
+async function fetchNflBoxscore(eventId: string): Promise<EspnBoxscoreCategory[] | null> {
+  try {
+    const data = await rrFetchJson(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+    const teams: any[] = data.boxscore?.players ?? [];
+    return teams.flatMap((t: any) => (t.statistics ?? []) as EspnBoxscoreCategory[]);
+  } catch (e) {
+    console.warn(`fetchNflBoxscore(${eventId}) failed:`, e);
+    return null;
+  }
+}
+
+/** True if `playerName` appears in any stat category at all — i.e. they were active in this final game. */
+function playerInNflBoxscore(categories: EspnBoxscoreCategory[], playerName: string): boolean {
+  return categories.some(c =>
+    (c.athletes ?? []).some(a => rrNormalizeTeamName(a.athlete?.displayName ?? "") === rrNormalizeTeamName(playerName))
+  );
+}
+
+const NFL_PROP_CATEGORY: Record<string, string> = {
+  player_pass_yards: "passing",
+  player_rush_yards: "rushing",
+  player_receiving_yards: "receiving",
+};
+
+/**
+ * Reads a player's yards stat for `propType` off the "YDS" column of the
+ * matching category (passing/rushing/receiving). Returns 0 (not null) when
+ * the player is in the game but simply didn't appear in that category — e.g.
+ * a receiving-yards prop on a WR with zero catches — since the game is final
+ * and that's a real result, same reasoning as MLB's `?? 0`. Returns null only
+ * when the category/column itself couldn't be found (unrecognized propType,
+ * or ESPN changed the boxscore shape) — that's "can't resolve," not "zero."
+ */
+function readNflBoxscoreStatValue(categories: EspnBoxscoreCategory[], playerName: string, propType: string): number | null {
+  const categoryName = NFL_PROP_CATEGORY[propType];
+  if (!categoryName) return null;
+
+  const category = categories.find(c => c.name === categoryName);
+  if (!category) return 0; // team never ran this category at all (e.g. zero rush attempts as a team) — real zero
+
+  const ydsIndex = category.labels?.findIndex(l => String(l).toUpperCase() === "YDS") ?? -1;
+  if (ydsIndex === -1) return null;
+
+  const athlete = (category.athletes ?? []).find(
+    a => rrNormalizeTeamName(a.athlete?.displayName ?? "") === rrNormalizeTeamName(playerName)
+  );
+  if (!athlete) return 0; // played, but not in this specific category — real zero
+
+  const value = Number(athlete.stats?.[ydsIndex]);
+  return Number.isFinite(value) ? value : 0;
+}
+
+type PropResolution = { status: "pending" } | { status: "void" } | { status: "value"; value: number };
+
+/**
+ * Sport-dispatching prop-stat lookup shared by resolvePropBet and
+ * resolveParlayLeg, so both grade NFL props the same way MLB props always
+ * have. NHL/NCAAF have no prop pipeline in api/best-bets.ts yet (no prop
+ * ever gets written to the ledger for them) — if one ever shows up, this
+ * stays pending rather than guessing at a boxscore shape that doesn't exist.
+ */
+async function resolvePropStatValue(
+  sport: RrSport | undefined, game: FinalGame, propType: string, playerName: string
+): Promise<PropResolution> {
+  if (sport === "mlb") {
+    if (!game.gamePk) return { status: "pending" };
+    const boxscore = await fetchMlbBoxscore(game.gamePk);
+    if (!boxscore) return { status: "pending" };
+    const player = findBoxscorePlayer(boxscore, playerName);
+    if (!player) return { status: "void" }; // scratched/not on the active roster — no action
+    return { status: "value", value: readBoxscoreStatValue(player, propType) };
+  }
+
+  if (sport === "nfl") {
+    if (!game.eventId) return { status: "pending" };
+    const categories = await fetchNflBoxscore(game.eventId);
+    if (!categories) return { status: "pending" };
+    if (!playerInNflBoxscore(categories, playerName)) return { status: "void" };
+    const value = readNflBoxscoreStatValue(categories, playerName, propType);
+    return value === null ? { status: "pending" } : { status: "value", value };
+  }
+
+  return { status: "pending" };
+}
+
 /** Returns null when the bet should stay pending (game not final / boxscore not posted). */
 async function resolvePropBet(bet: BankrollBet, game: FinalGame): Promise<Outcome | null> {
   if (game.state === "no-action") return { result: "void", profitLoss: 0 };
-  if (game.state !== "final" || !game.gamePk) return null;
+  if (game.state !== "final") return null;
   if (bet.line === undefined || bet.line === null || !bet.recommendedSide || !bet.propType) return null;
 
-  const boxscore = await fetchMlbBoxscore(game.gamePk);
-  if (!boxscore) return null; // couldn't fetch — stays pending, retried next run
+  const resolution = await resolvePropStatValue(bet.sport, game, bet.propType, bet.playerName ?? "");
+  if (resolution.status === "pending") return null; // couldn't fetch/resolve yet — stays pending, retried next run
+  if (resolution.status === "void") return { result: "void", profitLoss: 0 }; // scratched/not active — no action
 
-  const player = findBoxscorePlayer(boxscore, bet.playerName ?? "");
-  if (!player) return { result: "void", profitLoss: 0 }; // scratched/not on the active roster — no action
-
-  const statValue = readBoxscoreStatValue(player, bet.propType);
+  const statValue = resolution.value;
   if (statValue === bet.line) return { result: "push", profitLoss: 0 };
 
   const won = bet.recommendedSide === "over" ? statValue > bet.line : statValue < bet.line;
@@ -443,16 +545,14 @@ async function resolveParlayLeg(
 
   if (leg.propType) {
     if (game.state === "no-action") return "void";
-    if (game.state !== "final" || !game.gamePk) return null;
+    if (game.state !== "final") return null;
     if (leg.line === undefined || leg.line === null || !leg.recommendedSide) return null;
 
-    const boxscore = await fetchMlbBoxscore(game.gamePk);
-    if (!boxscore) return null;
+    const resolution = await resolvePropStatValue(leg.sport, game, leg.propType, leg.playerName ?? "");
+    if (resolution.status === "pending") return null;
+    if (resolution.status === "void") return "void"; // scratched/not active — no action, same as a voided leg
 
-    const player = findBoxscorePlayer(boxscore, leg.playerName ?? "");
-    if (!player) return "void"; // scratched/not on the active roster — no action, same as a voided leg
-
-    const statValue = readBoxscoreStatValue(player, leg.propType);
+    const statValue = resolution.value;
     if (statValue === leg.line) return "void"; // a push leg is dropped, same as a voided one
 
     return (leg.recommendedSide === "over" ? statValue > leg.line : statValue < leg.line) ? "win" : "loss";
