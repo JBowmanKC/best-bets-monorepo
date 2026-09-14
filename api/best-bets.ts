@@ -269,6 +269,8 @@ interface PropPick {
   potentialPayout: number;
   voidRisk: VoidRisk;
   isPositiveEV: boolean;
+  /** True when this line came from an "alternate" market (a different point total than the book's main line) — see pickPropPick for when this gets chosen over the main line. */
+  isAlternateLine: boolean;
   /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
   sportsbook: string;
 }
@@ -676,7 +678,8 @@ interface ParlayCandidate {
 
 function propLegLabel(p: PropPick): string {
   const side = p.recommendedSide === "over" ? "Over" : "Under";
-  return `${p.playerName} ${side} ${p.line} ${PROP_TYPE_LABELS[p.propType]}`;
+  const line = p.isAlternateLine ? `Alt ${p.line}` : `${p.line}`;
+  return `${p.playerName} ${side} ${line} ${PROP_TYPE_LABELS[p.propType]}`;
 }
 
 function pickCandidates(picks: BetPick[]): ParlayCandidate[] {
@@ -1646,13 +1649,18 @@ interface PropOddsEntry {
   line: number;
   overOdds: number;
   underOdds: number;
-  /** The chosen book for a real quote, or "estimated" — see resolvePropOdds's fallback branch. */
+  /** The chosen book for a real quote, or "estimated" — see resolvePropOddsCandidates's fallback branch. */
   sportsbook: Sportsbook | "estimated";
+  /** From an OddsAPI "_alternate" market — a different point total than the book's main line. See pickPropPick. */
+  isAlternate: boolean;
 }
-type PropOddsMap = Map<string, PropOddsEntry>; // key: "playerName-propType"
+/** key: "playerName-propType" → every line OddsAPI quoted for that player/prop, main line and alternates together. */
+type PropOddsMap = Map<string, PropOddsEntry[]>;
 
-const MLB_PROP_MARKETS = "pitcher_strikeouts,batter_hits,batter_home_runs,batter_total_bases";
-const NFL_PROP_MARKETS = "player_pass_yds,player_rush_yds,player_reception_yds";
+const MLB_PROP_MARKETS = "pitcher_strikeouts,batter_hits,batter_home_runs,batter_total_bases,"
+  + "pitcher_strikeouts_alternate,batter_hits_alternate,batter_home_runs_alternate,batter_total_bases_alternate";
+const NFL_PROP_MARKETS = "player_pass_yds,player_rush_yds,player_reception_yds,"
+  + "player_pass_yds_alternate,player_rush_yds_alternate,player_reception_yds_alternate";
 const PROP_MARKETS_BY_SPORT: Partial<Record<Sport, string>> = {
   mlb: MLB_PROP_MARKETS,
   nfl: NFL_PROP_MARKETS,
@@ -1665,6 +1673,13 @@ const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
   player_pass_yds: "player_pass_yards",
   player_rush_yds: "player_rush_yards",
   player_reception_yds: "player_receiving_yards",
+  pitcher_strikeouts_alternate: "pitcher_strikeouts",
+  batter_hits_alternate: "batter_hits",
+  batter_home_runs_alternate: "batter_home_runs",
+  batter_total_bases_alternate: "batter_total_bases",
+  player_pass_yds_alternate: "player_pass_yards",
+  player_rush_yds_alternate: "player_rush_yards",
+  player_reception_yds_alternate: "player_receiving_yards",
 };
 
 /** Same book chosen for moneylines — a parlay leg can't come from a different book than the rest of the slip. */
@@ -1685,13 +1700,16 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sp
     const data: any = await res.json();
 
     // Pair each player+propType+line's over and under quote from this one book.
-    const buckets = new Map<string, { line: number; propType: PropType; player: string; overOdds?: number; underOdds?: number }>();
+    // Bucketing by line (not just player+propType) is what lets the main line
+    // and every alternate line coexist instead of overwriting each other.
+    const buckets = new Map<string, { line: number; propType: PropType; player: string; isAlternate: boolean; overOdds?: number; underOdds?: number }>();
 
     for (const bm of data.bookmakers ?? []) {
       if (bm.key !== book) continue; // the query already scopes to one book — defensive only
       for (const market of bm.markets ?? []) {
         const propType = ODDS_API_MARKET_TO_PROP[market.key as string];
         if (!propType) continue;
+        const isAlternate = String(market.key).endsWith("_alternate");
 
         for (const outcome of market.outcomes ?? []) {
           const player = outcome.description ?? outcome.name;
@@ -1700,7 +1718,7 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sp
           if (!player || (side !== "over" && side !== "under") || Number.isNaN(line)) continue;
 
           const key = `${player}-${propType}-${line}`;
-          if (!buckets.has(key)) buckets.set(key, { line, propType, player });
+          if (!buckets.has(key)) buckets.set(key, { line, propType, player, isAlternate });
           const bucket = buckets.get(key)!;
           if (side === "over") bucket.overOdds = outcome.price;
           else bucket.underOdds = outcome.price;
@@ -1710,12 +1728,17 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sp
 
     for (const bucket of buckets.values()) {
       if (bucket.overOdds === undefined && bucket.underOdds === undefined) continue;
-      map.set(`${bucket.player}-${bucket.propType}`, {
+      const key = `${bucket.player}-${bucket.propType}`;
+      const entry: PropOddsEntry = {
         line: bucket.line,
         overOdds: bucket.overOdds ?? -110,
         underOdds: bucket.underOdds ?? -110,
         sportsbook: book,
-      });
+        isAlternate: bucket.isAlternate,
+      };
+      const list = map.get(key);
+      if (list) list.push(entry);
+      else map.set(key, [entry]);
     }
   } catch (e) {
     console.warn(`OddsAPI props fetch threw for ${eventId}:`, e);
@@ -1960,7 +1983,7 @@ function scoreProp(
   const recentAverage = recentAverageForPropType(log.recentAvg, propType);
 
   return {
-    id: `${game.gameId}-prop-${normalizeTeamName(candidate.playerName)}-${propType}`,
+    id: `${game.gameId}-prop-${normalizeTeamName(candidate.playerName)}-${propType}${oddsEntry.isAlternate ? `-alt${line}` : ""}`,
     sport: game.sport,
     playerName: candidate.playerName,
     team: candidate.team,
@@ -1990,30 +2013,62 @@ function scoreProp(
     potentialPayout,
     voidRisk,
     isPositiveEV: true,
+    isAlternateLine: oddsEntry.isAlternate,
     sportsbook: sportsbookLabel(oddsEntry.sportsbook),
   };
 }
 
+/**
+ * Odds worse (more negative) than this are "too risky" for a single prop
+ * bet — laying a lot of money to win a little. -200 means risking $200 to
+ * win $100, i.e. needing to be right more than 2 times in 3 just to break
+ * even on the juice alone.
+ */
+const PROP_RISK_ODDS_THRESHOLD = -200;
+
+/**
+ * Picks one PropPick to actually bet from every (main line + alternate
+ * lines) candidate scored for a player+propType. The main line wins by
+ * default; it only gets passed over when its own odds are too risky, in
+ * which case the safest positive-EV alternate line takes its place instead
+ * of skipping the player entirely. If every alternate is just as risky, the
+ * main line is kept rather than betting nothing.
+ */
+function pickPropPick(candidates: PropPick[]): PropPick | null {
+  if (candidates.length === 0) return null;
+
+  const main = candidates.find(c => !c.isAlternateLine);
+  if (!main || main.odds >= PROP_RISK_ODDS_THRESHOLD) {
+    return main ?? [...candidates].sort((a, b) => b.scores.composite - a.scores.composite)[0];
+  }
+
+  const saferAlts = candidates
+    .filter(c => c.isAlternateLine && c.odds >= PROP_RISK_ODDS_THRESHOLD)
+    .sort((a, b) => b.scores.composite - a.scores.composite);
+
+  return saferAlts[0] ?? main;
+}
+
 // ─── Prop orchestration (top TOP_GAMES_FOR_PROPS MLB games only) ───────────
-/** Real OddsAPI line/odds if available, else the recent-average estimate described in Step 3. */
-function resolvePropOdds(
+/** Real OddsAPI line(s) (main + any alternates) if available, else a single recent-average estimate described in Step 3. */
+function resolvePropOddsCandidates(
   map: PropOddsMap, playerName: string, propType: PropType,
   recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number },
   statKey: "strikeouts" | "outs" | "hits" | "totalBases" | "homeRuns"
-): PropOddsEntry {
+): PropOddsEntry[] {
   const real = map.get(`${playerName}-${propType}`);
-  if (real) return real;
+  if (real && real.length > 0) return real;
 
   const avg = recentAvg[statKey] ?? 0;
   if (propType === "pitcher_strikeouts") {
-    return { line: Math.round(avg * 10) / 10 - 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated" };
+    return [{ line: Math.round(avg * 10) / 10 - 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated", isAlternate: false }];
   }
   if (propType === "batter_hits") {
-    return { line: avg >= 1.2 ? 1.5 : 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated" };
+    return [{ line: avg >= 1.2 ? 1.5 : 0.5, overOdds: -115, underOdds: -105, sportsbook: "estimated", isAlternate: false }];
   }
   // No explicit fallback formula given for total_bases/home_runs/outs — extrapolate
   // the same "recent average rounded to the nearest half, minus half" convention.
-  return { line: Math.max(0.5, Math.round(avg * 2) / 2 - 0.5), overOdds: -115, underOdds: -105, sportsbook: "estimated" };
+  return [{ line: Math.max(0.5, Math.round(avg * 2) / 2 - 0.5), overOdds: -115, underOdds: -105, sportsbook: "estimated", isAlternate: false }];
 }
 
 async function buildPropsForGame(
@@ -2048,11 +2103,13 @@ async function buildPropsForGame(
 
     for (const propType of ["pitcher_strikeouts", "pitcher_outs"] as const) {
       const statKey = propType === "pitcher_strikeouts" ? "strikeouts" : "outs";
-      const oddsEntry = resolvePropOdds(propOddsMap, pitcher.name, propType, log.recentAvg, statKey);
-      const pick = scoreProp(
-        { playerId: pitcher.id, playerName: pitcher.name, team, opponent, isHome, isPitcher: true, propType, fatigued },
-        log, oddsEntry, matchupScore, gameCtx, bankrollState
-      );
+      const candidates = resolvePropOddsCandidates(propOddsMap, pitcher.name, propType, log.recentAvg, statKey)
+        .map(oddsEntry => scoreProp(
+          { playerId: pitcher.id, playerName: pitcher.name, team, opponent, isHome, isPitcher: true, propType, fatigued },
+          log, oddsEntry, matchupScore, gameCtx, bankrollState
+        ))
+        .filter((p): p is PropPick => p !== null);
+      const pick = pickPropPick(candidates);
       if (pick) props.push(pick);
     }
   }));
@@ -2083,11 +2140,13 @@ async function buildPropsForGame(
 
     for (const propType of ["batter_hits", "batter_total_bases", "batter_home_runs"] as const) {
       const statKey = propType === "batter_hits" ? "hits" : propType === "batter_total_bases" ? "totalBases" : "homeRuns";
-      const oddsEntry = resolvePropOdds(propOddsMap, batter.fullName, propType, log.recentAvg, statKey);
-      const pick = scoreProp(
-        { playerId: batter.id, playerName: batter.fullName, team, opponent, isHome, isPitcher: false, propType, fatigued },
-        log, oddsEntry, matchupScore, gameCtx, bankrollState
-      );
+      const candidates = resolvePropOddsCandidates(propOddsMap, batter.fullName, propType, log.recentAvg, statKey)
+        .map(oddsEntry => scoreProp(
+          { playerId: batter.id, playerName: batter.fullName, team, opponent, isHome, isPitcher: false, propType, fatigued },
+          log, oddsEntry, matchupScore, gameCtx, bankrollState
+        ))
+        .filter((p): p is PropPick => p !== null);
+      const pick = pickPropPick(candidates);
       if (pick) props.push(pick);
     }
   }));
@@ -2298,18 +2357,21 @@ async function buildNflPropsForGame(
     const opponent = isHome ? game.awayTeam : game.homeTeam;
 
     for (const propType of propTypes) {
-      const oddsEntry = propOddsMap.get(`${playerName}-${propType}`);
-      if (!oddsEntry) continue;
-      const pick = scoreProp(
-        {
-          playerId: player.id, playerName: player.fullName, team, opponent, isHome,
-          // Reuses the pitcher/batter void-risk split: a starting QB is about
-          // as reliably announced in advance as a probable starter is.
-          isPitcher: player.position === "QB",
-          propType, fatigued: false,
-        },
-        log, oddsEntry, matchupScore, gameCtx, bankrollState
-      );
+      const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
+      if (!oddsEntries || oddsEntries.length === 0) continue;
+      const candidates = oddsEntries
+        .map(oddsEntry => scoreProp(
+          {
+            playerId: player.id, playerName: player.fullName, team, opponent, isHome,
+            // Reuses the pitcher/batter void-risk split: a starting QB is about
+            // as reliably announced in advance as a probable starter is.
+            isPitcher: player.position === "QB",
+            propType, fatigued: false,
+          },
+          log, oddsEntry, matchupScore, gameCtx, bankrollState
+        ))
+        .filter((p): p is PropPick => p !== null);
+      const pick = pickPropPick(candidates);
       if (pick) props.push(pick);
     }
   }));
