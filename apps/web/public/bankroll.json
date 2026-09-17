@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 327.74,
-  "totalBets": 11,
+  "totalBets": 15,
   "wins": 2,
   "losses": 9,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 273,
+  "totalStaked": 338.5,
   "totalProfit": -172.26,
   "roi": -0.631,
   "peakBankroll": 500,
@@ -366,6 +366,131 @@
       "profitLoss": -9.5,
       "bankrollAfter": 327.74,
       "resolvedAt": "2026-09-14T18:18:18.943Z"
+    },
+    {
+      "betId": "nfl-401872932-prop-jaredgoff-player_rush_yards-2026-09-17",
+      "date": "2026-09-17",
+      "sport": "nfl",
+      "matchup": "Detroit Lions @ Buffalo Bills",
+      "pickLabel": "Jared Goff Over 0.5",
+      "odds": 129,
+      "stakeAmount": 17.5,
+      "potentialPayout": 40.08,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.437,
+      "evEdge": 0.553,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Jared Goff",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872932-prop-joshuapalmer-player_receiving_yards-2026-09-17",
+      "date": "2026-09-17",
+      "sport": "nfl",
+      "matchup": "Detroit Lions @ Buffalo Bills",
+      "pickLabel": "Joshua Palmer Over 13.5",
+      "odds": -109,
+      "stakeAmount": 17.5,
+      "potentialPayout": 33.56,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.522,
+      "evEdge": 0.468,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Joshua Palmer",
+      "line": 13.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872932-prop-djmoore-player_receiving_yards-2026-09-17",
+      "date": "2026-09-17",
+      "sport": "nfl",
+      "matchup": "Detroit Lions @ Buffalo Bills",
+      "pickLabel": "DJ Moore Over 63.5",
+      "odds": -110,
+      "stakeAmount": 17.5,
+      "potentialPayout": 33.41,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.466,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "DJ Moore",
+      "line": 63.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-17",
+      "date": "2026-09-17",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Jared Goff Over 0.5 Rushing Yards",
+          "odds": 129,
+          "sport": "nfl",
+          "matchup": "Detroit Lions @ Buffalo Bills",
+          "date": "2026-09-18",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Jared Goff",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Josh Allen Under 33.5 Rushing Yards",
+          "odds": -109,
+          "sport": "nfl",
+          "matchup": "Detroit Lions @ Buffalo Bills",
+          "date": "2026-09-18",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Josh Allen",
+          "line": 33.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Detroit Lions ML",
+          "odds": 205,
+          "sport": "nfl",
+          "matchup": "Detroit Lions @ Buffalo Bills",
+          "date": "2026-09-18",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1239,
+      "stakeAmount": 13,
+      "potentialPayout": 174.07,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
