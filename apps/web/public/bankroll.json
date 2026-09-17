@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 327.74,
-  "totalBets": 15,
+  "totalBets": 16,
   "wins": 2,
   "losses": 9,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 338.5,
+  "totalStaked": 356,
   "totalProfit": -172.26,
   "roi": -0.631,
   "peakBankroll": 500,
@@ -491,6 +491,32 @@
       "profitLoss": null,
       "bankrollAfter": null,
       "resolvedAt": null
+    },
+    {
+      "betId": "nfl-401872932-prop-khalilshakir-player_receiving_yards-2026-09-17",
+      "date": "2026-09-17",
+      "sport": "nfl",
+      "matchup": "Detroit Lions @ Buffalo Bills",
+      "pickLabel": "Khalil Shakir Over 43.5",
+      "odds": -111,
+      "stakeAmount": 17.5,
+      "potentialPayout": 33.27,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.526,
+      "evEdge": 0.464,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Khalil Shakir",
+      "line": 43.5,
+      "recommendedSide": "over"
     }
   ]
 }
