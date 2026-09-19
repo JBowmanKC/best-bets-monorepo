@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 284.82,
-  "totalBets": 16,
+  "totalBets": 18,
   "wins": 3,
   "losses": 13,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 356,
+  "totalStaked": 384,
   "totalProfit": -215.18,
   "roi": -0.6044,
   "peakBankroll": 500,
@@ -520,6 +520,75 @@
       "playerName": "Khalil Shakir",
       "line": 43.5,
       "recommendedSide": "over"
+    },
+    {
+      "betId": "ncaaf-401858230-away-2026-09-19",
+      "date": "2026-09-19",
+      "sport": "ncaaf",
+      "matchup": "SMU Mustangs @ Louisville Cardinals",
+      "pickLabel": "SMU Mustangs ML",
+      "odds": 114,
+      "stakeAmount": 23,
+      "potentialPayout": 49.22,
+      "estimatedWinPct": 0.82,
+      "impliedWinPct": 0.467,
+      "evEdge": 0.353,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-09-19",
+      "date": "2026-09-19",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "SMU Mustangs ML",
+          "odds": 114,
+          "sport": "ncaaf",
+          "matchup": "SMU Mustangs @ Louisville Cardinals",
+          "date": "2026-09-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Ole Miss Rebels ML",
+          "odds": 124,
+          "sport": "ncaaf",
+          "matchup": "LSU Tigers @ Ole Miss Rebels",
+          "date": "2026-09-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Maryland Terrapins ML",
+          "odds": 120,
+          "sport": "ncaaf",
+          "matchup": "Virginia Tech Hokies @ Maryland Terrapins",
+          "date": "2026-09-19",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Auburn Tigers ML",
+          "odds": 110,
+          "sport": "ncaaf",
+          "matchup": "Florida Gators @ Auburn Tigers",
+          "date": "2026-09-19",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 2115,
+      "stakeAmount": 5,
+      "potentialPayout": 110.75,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
