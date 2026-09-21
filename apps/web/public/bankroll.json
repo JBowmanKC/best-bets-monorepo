@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 244.42,
-  "totalBets": 23,
+  "totalBets": 27,
   "wins": 4,
   "losses": 19,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 436,
+  "totalStaked": 484.5,
   "totalProfit": -255.58,
   "roi": -0.5862,
   "peakBankroll": 500,
@@ -768,6 +768,139 @@
       "profitLoss": -8,
       "bankrollAfter": 244.42,
       "resolvedAt": "2026-09-21T19:35:40.215Z"
+    },
+    {
+      "betId": "nfl-401872947-prop-camskattebo-player_rush_yards-2026-09-21",
+      "date": "2026-09-21",
+      "sport": "nfl",
+      "matchup": "New York Giants @ Los Angeles Rams",
+      "pickLabel": "Cam Skattebo Over 52.5",
+      "odds": -110,
+      "stakeAmount": 13,
+      "potentialPayout": 24.82,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.466,
+      "tier": "elite",
+      "scores": {
+        "composite": 93
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Cam Skattebo",
+      "line": 52.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872947-prop-theojohnson-player_receiving_yards-2026-09-21",
+      "date": "2026-09-21",
+      "sport": "nfl",
+      "matchup": "New York Giants @ Los Angeles Rams",
+      "pickLabel": "Theo Johnson Over 8.5",
+      "odds": -110,
+      "stakeAmount": 13,
+      "potentialPayout": 24.82,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.466,
+      "tier": "elite",
+      "scores": {
+        "composite": 93
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Theo Johnson",
+      "line": 8.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872947-prop-isaiahlikely-player_receiving_yards-2026-09-21",
+      "date": "2026-09-21",
+      "sport": "nfl",
+      "matchup": "New York Giants @ Los Angeles Rams",
+      "pickLabel": "Isaiah Likely Over 44.5",
+      "odds": -110,
+      "stakeAmount": 13,
+      "potentialPayout": 24.82,
+      "estimatedWinPct": 0.99,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.466,
+      "tier": "elite",
+      "scores": {
+        "composite": 93
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Isaiah Likely",
+      "line": 44.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-21",
+      "date": "2026-09-21",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "New York Giants ML",
+          "odds": 240,
+          "sport": "nfl",
+          "matchup": "New York Giants @ Los Angeles Rams",
+          "date": "2026-09-22",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Jaxson Dart Over 212.5 Passing Yards",
+          "odds": -112,
+          "sport": "nfl",
+          "matchup": "New York Giants @ Los Angeles Rams",
+          "date": "2026-09-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Jaxson Dart",
+          "line": 212.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Jaxson Dart Over 34.5 Rushing Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "New York Giants @ Los Angeles Rams",
+          "date": "2026-09-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Jaxson Dart",
+          "line": 34.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Dallas Stars ML",
+          "odds": -205,
+          "sport": "nhl",
+          "matchup": "St. Louis Blues @ Dallas Stars",
+          "date": "2026-09-22",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1705,
+      "stakeAmount": 9.5,
+      "potentialPayout": 171.48,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
