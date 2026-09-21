@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 256.82,
+  "currentBankroll": 244.42,
   "totalBets": 23,
-  "wins": 3,
-  "losses": 15,
+  "wins": 4,
+  "losses": 19,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 436,
-  "totalProfit": -243.18,
-  "roi": -0.6333,
+  "totalProfit": -255.58,
+  "roi": -0.5862,
   "peakBankroll": 500,
-  "lowestBankroll": 256.82,
+  "lowestBankroll": 234.82,
   "calibration": {
-    "eliteWinRate": null,
-    "strongWinRate": null,
+    "eliteWinRate": 0.2308,
+    "strongWinRate": 0.3333,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": null,
+    "nflRoi": -0.4036,
     "nhlRoi": null,
-    "ncaafRoi": null,
-    "wpScoreMultiplier": 1,
+    "ncaafRoi": -1,
+    "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": null,
-    "totalResultsTracked": 18
+    "lastCalibrated": "2026-09-21T19:35:40.216Z",
+    "totalResultsTracked": 23
   },
   "bets": [
     {
@@ -611,10 +611,10 @@
         "composite": 94
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 245.82,
+      "resolvedAt": "2026-09-21T19:35:39.953Z",
       "propType": "player_receiving_yards",
       "playerName": "Javonte Williams",
       "line": 13.5,
@@ -637,10 +637,10 @@
         "composite": 94
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 234.82,
+      "resolvedAt": "2026-09-21T19:35:39.987Z",
       "propType": "player_pass_yards",
       "playerName": "Trevor Lawrence",
       "line": 223.5,
@@ -663,10 +663,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 28.6,
+      "bankrollAfter": 263.42,
+      "resolvedAt": "2026-09-21T19:35:39.987Z"
     },
     {
       "betId": "parlay-safe-2026-09-20",
@@ -679,7 +679,8 @@
           "sport": "nfl",
           "matchup": "Jacksonville Jaguars @ Denver Broncos",
           "date": "2026-09-20",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Seattle Kraken ML",
@@ -687,17 +688,18 @@
           "sport": "nhl",
           "matchup": "Seattle Kraken @ Calgary Flames",
           "date": "2026-09-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 337,
       "stakeAmount": 11,
       "potentialPayout": 48.07,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 252.42,
+      "resolvedAt": "2026-09-21T19:35:40.124Z"
     },
     {
       "betId": "parlay-high-2026-09-20",
@@ -714,7 +716,8 @@
           "propType": "player_rush_yards",
           "playerName": "Trevor Lawrence",
           "line": 16.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Jayden Daniels Under 223.5 Passing Yards",
@@ -726,7 +729,8 @@
           "propType": "player_pass_yards",
           "playerName": "Jayden Daniels",
           "line": 223.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Jacksonville Jaguars ML",
@@ -734,7 +738,8 @@
           "sport": "nfl",
           "matchup": "Jacksonville Jaguars @ Denver Broncos",
           "date": "2026-09-20",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Seattle Kraken ML",
@@ -742,7 +747,8 @@
           "sport": "nhl",
           "matchup": "Seattle Kraken @ Calgary Flames",
           "date": "2026-09-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Kansas City Chiefs ML",
@@ -750,17 +756,18 @@
           "sport": "nfl",
           "matchup": "Indianapolis Colts @ Kansas City Chiefs",
           "date": "2026-09-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2105,
       "stakeAmount": 8,
       "potentialPayout": 176.4,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -8,
+      "bankrollAfter": 244.42,
+      "resolvedAt": "2026-09-21T19:35:40.215Z"
     }
   ]
 }
