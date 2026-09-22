@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 244.42,
+  "currentBankroll": 195.92,
   "totalBets": 27,
   "wins": 4,
-  "losses": 19,
+  "losses": 23,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 484.5,
-  "totalProfit": -255.58,
-  "roi": -0.5862,
+  "totalProfit": -304.08,
+  "roi": -0.6276,
   "peakBankroll": 500,
-  "lowestBankroll": 234.82,
+  "lowestBankroll": 195.92,
   "calibration": {
-    "eliteWinRate": 0.2308,
+    "eliteWinRate": 0.1875,
     "strongWinRate": 0.3333,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": -0.4036,
+    "nflRoi": -0.4717,
     "nhlRoi": null,
     "ncaafRoi": -1,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-09-21T19:35:40.216Z",
-    "totalResultsTracked": 23
+    "lastCalibrated": "2026-09-22T18:09:53.639Z",
+    "totalResultsTracked": 27
   },
   "bets": [
     {
@@ -786,10 +786,10 @@
         "composite": 93
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -13,
+      "bankrollAfter": 231.42,
+      "resolvedAt": "2026-09-22T18:09:53.386Z",
       "propType": "player_rush_yards",
       "playerName": "Cam Skattebo",
       "line": 52.5,
@@ -812,10 +812,10 @@
         "composite": 93
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -13,
+      "bankrollAfter": 218.42,
+      "resolvedAt": "2026-09-22T18:09:53.412Z",
       "propType": "player_receiving_yards",
       "playerName": "Theo Johnson",
       "line": 8.5,
@@ -838,10 +838,10 @@
         "composite": 93
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -13,
+      "bankrollAfter": 205.42,
+      "resolvedAt": "2026-09-22T18:09:53.439Z",
       "propType": "player_receiving_yards",
       "playerName": "Isaiah Likely",
       "line": 44.5,
@@ -858,7 +858,8 @@
           "sport": "nfl",
           "matchup": "New York Giants @ Los Angeles Rams",
           "date": "2026-09-22",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaxson Dart Over 212.5 Passing Yards",
@@ -870,7 +871,8 @@
           "propType": "player_pass_yards",
           "playerName": "Jaxson Dart",
           "line": 212.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaxson Dart Over 34.5 Rushing Yards",
@@ -882,7 +884,8 @@
           "propType": "player_rush_yards",
           "playerName": "Jaxson Dart",
           "line": 34.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Dallas Stars ML",
@@ -890,17 +893,18 @@
           "sport": "nhl",
           "matchup": "St. Louis Blues @ Dallas Stars",
           "date": "2026-09-22",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 1705,
       "stakeAmount": 9.5,
       "potentialPayout": 171.48,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9.5,
+      "bankrollAfter": 195.92,
+      "resolvedAt": "2026-09-22T18:09:53.639Z"
     }
   ]
 }
