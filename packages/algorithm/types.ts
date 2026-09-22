@@ -115,6 +115,8 @@ export interface PropPick {
   potentialPayout: number;
   voidRisk: VoidRisk;
   isPositiveEV: boolean;
+  /** True when this line came from an "alternate" market (a different point total than the book's main line) — see pickPropPick in api/best-bets.ts for when this gets chosen over the main line. */
+  isAlternateLine: boolean;
   /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
   sportsbook: string;
 }

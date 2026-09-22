@@ -45,6 +45,7 @@ export function PropCard({ prop, rank }: Props) {
   const risk   = VOID_RISK_BADGE[prop.voidRisk];
   const sideLabel = prop.recommendedSide === "over" ? "Over" : "Under";
   const propLabel = PROP_TYPE_LABELS[prop.propType] ?? prop.propType;
+  const lineLabel = prop.isAlternateLine ? `Alt ${prop.line}` : `${prop.line}`;
 
   const localTime = new Date(prop.startTime).toLocaleTimeString([], {
     hour: "numeric", minute: "2-digit",
@@ -79,6 +80,13 @@ export function PropCard({ prop, rank }: Props) {
             fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase",
             letterSpacing: "1.5px", padding: "3px 8px", borderRadius: 5,
           }}>PROP</span>
+          {prop.isAlternateLine && (
+            <span style={{
+              background: "#2a1a06", color: "#fb923c",
+              fontSize: "0.6rem", fontWeight: 800, textTransform: "uppercase",
+              letterSpacing: "1.5px", padding: "3px 8px", borderRadius: 5,
+            }}>ALT</span>
+          )}
           <span style={{ color: "#4a6080", fontSize: "0.68rem" }}>#{rank}</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -110,7 +118,7 @@ export function PropCard({ prop, rank }: Props) {
         marginBottom: 10,
       }}>
         <span style={{ fontSize: "0.88rem", fontWeight: 800 }}>
-          {sideLabel} {prop.line} {propLabel}
+          {sideLabel} {lineLabel} {propLabel}
         </span>
         <span style={{ fontSize: "1rem", fontWeight: 900, color: "#f59e0b" }}>
           {isPlus ? `+${prop.odds}` : prop.odds}
