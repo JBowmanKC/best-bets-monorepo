@@ -26,10 +26,7 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: "pending", label: "Pending" },
   { key: "win",     label: "Won" },
   { key: "loss",    label: "Lost" },
-  { key: "mlb",     label: "⚾ MLB" },
   { key: "nfl",     label: "🏈 NFL" },
-  { key: "nhl",     label: "🏒 NHL" },
-  { key: "ncaaf",   label: "🏈 NCAAF" },
 ];
 
 // ─── Formatting ───────────────────────────────────────────────────────────────

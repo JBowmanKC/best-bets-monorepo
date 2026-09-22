@@ -13,9 +13,9 @@
 //   Moneylines      — https://api.the-odds-api.com/v4/sports/.../odds
 //
 // Sport selection: the `sports` query param decides what's fetched
-// (default "nfl,nhl,ncaaf" — MLB is off by default now that the season's
-// ended its run here; pass sports=mlb explicitly to still fetch it on
-// demand). NCAAF is scoped to SEC/Big Ten/ACC only — see fetchNcaafGames.
+// (default "nfl" — NFL-only for now; pass sports=mlb,nhl,ncaaf explicitly to
+// still fetch those on demand). NCAAF is scoped to SEC/Big Ten/ACC only —
+// see fetchNcaafGames.
 //
 // Environment variables:
 //   ODDS_API_KEY — OddsAPI key (live moneylines). Games still generate
@@ -1857,14 +1857,14 @@ function propContextScore(opts: { isHome: boolean; isPitcher: boolean; fatigued:
 
 function buildPropRationale(
   playerName: string, propType: PropType, line: number, side: PropSide,
-  hitRateLast10: number, recentAverage: number, opponent: string, matchupScore: number,
+  hitRateLast10: number, sampleSize: number, recentAverage: number, opponent: string, matchupScore: number,
   estimatedHitPct: number, impliedHitPct: number, evEdge: number
 ): string {
   const label = PROP_TYPE_LABELS[propType];
   const matchupContext = matchupScore >= 65 ? "favorable" : matchupScore <= 35 ? "tough" : "neutral";
 
   return [
-    `${playerName} has cleared ${line} ${label.toLowerCase()} in ${Math.round(hitRateLast10 * 10)} of their last 10 games (avg: ${recentAverage.toFixed(1)}).`,
+    `${playerName} has cleared ${line} ${label.toLowerCase()} in ${Math.round(hitRateLast10 * sampleSize)} of their last ${sampleSize} game${sampleSize === 1 ? "" : "s"} (avg: ${recentAverage.toFixed(1)}).`,
     `Matchup vs ${opponent}: ${matchupContext}.`,
     `Estimated ${side} probability ${Math.round(estimatedHitPct * 100)}% vs implied ${Math.round(impliedHitPct * 100)}% — +${Math.round(evEdge * 100)}% EV edge.`,
   ].join(" ");
@@ -1903,7 +1903,14 @@ function scoreProp(
   const hitRateOver20 = hitRateFor(log.last20, propType, line, "over");
   const weightedOverRate = hitRateOver10 * 0.6 + hitRateOver20 * 0.4;
 
-  const estimatedOverPct = Math.min(Math.max(weightedOverRate, 0.01), 0.99);
+  // A 1-2 game sample is either a 100% or 0% "hit rate" by construction —
+  // pure noise, not a signal. Shrink the estimate toward a coin flip in
+  // proportion to how thin the sample is, so it takes a real double-digit
+  // sample (not a shortened or just-started season) to reach full confidence.
+  const sampleConfidence = Math.min(log.last10.length, 10) / 10;
+  const shrunkOverRate = 0.5 + (weightedOverRate - 0.5) * sampleConfidence;
+
+  const estimatedOverPct = Math.min(Math.max(shrunkOverRate, 0.01), 0.99);
   const estimatedUnderPct = 1 - estimatedOverPct;
   const impliedOverPct = oddsToImpliedProb(oddsEntry.overOdds);
   const impliedUnderPct = oddsToImpliedProb(oddsEntry.underOdds);
@@ -1983,7 +1990,7 @@ function scoreProp(
     startTime: game.startTime,
     rationale: buildPropRationale(
       candidate.playerName, propType, line, side,
-      hitRateOver10, recentAverage, candidate.opponent, matchupScore,
+      hitRateOver10, log.last10.length, recentAverage, candidate.opponent, matchupScore,
       estimatedHitPct, impliedHitPct, evEdge
     ),
     stakeAmount,
@@ -2217,13 +2224,22 @@ interface NflGameLogResult {
 }
 
 /**
- * Week 1 of a new season has zero current-season games to score from — this
- * falls back to the prior season's log whenever the current one comes back
- * empty, so opening-week props still have real history behind them.
+ * Early in a new season there are only 1-2 current-season games to score
+ * from — nowhere near enough to trust a hit rate (a single game is either a
+ * 100% or 0% "hit rate", which scoreProp's clamp then reads as near-certain).
+ * Pad the current season's games out with the tail of the prior season
+ * (already most-recent-first, so concatenating keeps recency order) until
+ * there's a real sample to work with, rather than only falling back when
+ * the current season is completely empty.
  */
+const NFL_MIN_GAMELOG_SAMPLE = 10;
+
 async function fetchNflPlayerGameLog(playerId: number, season: number): Promise<NflGameLogResult> {
   let events = await fetchNflSeasonGameLog(playerId, season);
-  if (events.length === 0) events = await fetchNflSeasonGameLog(playerId, season - 1);
+  if (events.length < NFL_MIN_GAMELOG_SAMPLE) {
+    const prior = await fetchNflSeasonGameLog(playerId, season - 1);
+    events = events.concat(prior.slice(0, NFL_MIN_GAMELOG_SAMPLE - events.length));
+  }
 
   const last20 = events.slice(0, 20);
   const last10 = events.slice(0, 10);
@@ -2397,7 +2413,7 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
 
   try {
     const date = (req.query.date as string) || new Date().toISOString().split("T")[0];
-    const sportsParam = (req.query.sports as string) || "nfl,nhl,ncaaf";
+    const sportsParam = (req.query.sports as string) || "nfl";
     const sports = sportsParam.split(",").map(s => s.trim()).filter(Boolean) as Sport[];
 
     const results: SportResult[] = await Promise.all(

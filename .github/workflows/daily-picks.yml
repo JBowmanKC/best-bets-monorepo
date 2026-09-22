@@ -29,8 +29,28 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Check whether today's bets are already committed
+        id: guard
+        run: |
+          set -euo pipefail
+          DATE=$(date -u +%F)
+          # A manual dispatch can race the delayed daily schedule (both firing
+          # for the same UTC date) — each hits the odds API separately and can
+          # get a different snapshot (odds/rosters shift between calls), but
+          # append-bankroll-bets.mjs only dedupes parlays by date, so the
+          # second run's parlay would be silently dropped, leaving stale legs
+          # in the ledger that no longer match picks.json. Once today's bets
+          # are committed, skip re-fetching entirely rather than risk that.
+          if [ -f apps/web/public/bankroll.json ] && jq -e --arg d "$DATE" '.bets | any(.date == $d)' apps/web/public/bankroll.json > /dev/null; then
+            echo "Bets for $DATE are already committed to the bankroll ledger — skipping this run (likely a manual dispatch racing the delayed schedule)."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Fetch picks from deployed endpoint
         id: fetch
+        if: steps.guard.outputs.skip != 'true'
         run: |
           set -euo pipefail
 
@@ -41,7 +61,7 @@ jobs:
           echo "time=$TIME" >> "$GITHUB_OUTPUT"
           echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
 
-          URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=nfl,nhl,ncaaf"
+          URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=nfl"
           echo "Fetching $URL"
 
           HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" "$URL")
@@ -64,9 +84,11 @@ jobs:
           mv response.json apps/web/public/picks.json
 
       - name: Track today's picks in the bankroll ledger
+        if: steps.guard.outputs.skip != 'true'
         run: node scripts/append-bankroll-bets.mjs apps/web/public/picks.json
 
       - name: Log daily bet summary
+        if: steps.guard.outputs.skip != 'true'
         run: |
           cat > log_summary.py <<'PYEOF'
           import json
@@ -95,6 +117,7 @@ jobs:
           rm -f log_summary.py
 
       - name: Commit and push picks
+        if: steps.guard.outputs.skip != 'true'
         run: |
           set -euo pipefail
 
