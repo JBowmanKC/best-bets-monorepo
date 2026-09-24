@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 0,
+  "totalBets": 2,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 0,
+  "totalStaked": 70,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -24,5 +24,75 @@
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
-  "bets": []
+  "bets": [
+    {
+      "betId": "nfl-401872948-home-2026-09-24",
+      "date": "2026-09-24",
+      "sport": "nfl",
+      "matchup": "Atlanta Falcons @ Green Bay Packers",
+      "pickLabel": "Green Bay Packers ML",
+      "odds": -245,
+      "stakeAmount": 40,
+      "potentialPayout": 56.33,
+      "estimatedWinPct": 0.82,
+      "impliedWinPct": 0.71,
+      "evEdge": 0.11,
+      "tier": "strong",
+      "scores": {
+        "composite": 75
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-09-24",
+      "date": "2026-09-24",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Jordan Love Under Alt 279.5 Passing Yards",
+          "odds": -110,
+          "sport": "nfl",
+          "matchup": "Atlanta Falcons @ Green Bay Packers",
+          "date": "2026-09-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Jordan Love",
+          "line": 279.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Jordan Love Under 7.5 Rushing Yards",
+          "odds": -105,
+          "sport": "nfl",
+          "matchup": "Atlanta Falcons @ Green Bay Packers",
+          "date": "2026-09-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Jordan Love",
+          "line": 7.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Green Bay Packers ML",
+          "odds": -245,
+          "sport": "nfl",
+          "matchup": "Atlanta Falcons @ Green Bay Packers",
+          "date": "2026-09-25",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 425,
+      "stakeAmount": 30,
+      "potentialPayout": 157.5,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    }
+  ]
 }
