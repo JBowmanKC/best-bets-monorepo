@@ -88,6 +88,9 @@ interface ScheduledGame {
   /** MLB or ESPN team id (0 for NHL games, which have no prop roster/stat lookups yet). */
   homeTeamId: number;
   awayTeamId: number;
+  /** NFL-only: ESPN's team abbreviation, used to key into nflverse's defense-allowed-yards stats (see fetchNflDefenseStats). Empty for other sports. */
+  homeTeamAbbr: string;
+  awayTeamAbbr: string;
   startTime: string;
   venue: string;
   homeRecord: TeamRecord;
@@ -1205,6 +1208,8 @@ async function fetchMlbGames(date: string): Promise<SportResult> {
         awayTeam: away?.team?.name ?? "Away",
         homeTeamId: home?.team?.id ?? 0,
         awayTeamId: away?.team?.id ?? 0,
+        homeTeamAbbr: "",
+        awayTeamAbbr: "",
         startTime: g.gameDate,
         venue: g.venue?.name ?? "",
         homeRecord: {
@@ -1272,6 +1277,8 @@ async function fetchEspnGames(sport: "nfl" | "nhl", date: string): Promise<Sport
         // ESPN's own numeric team id — used for NFL prop roster/game-log lookups (see fetchNflRosterOffense).
         homeTeamId: parseInt(home?.team?.id, 10) || 0,
         awayTeamId: parseInt(away?.team?.id, 10) || 0,
+        homeTeamAbbr: home?.team?.abbreviation ?? "",
+        awayTeamAbbr: away?.team?.abbreviation ?? "",
         startTime: e.date,
         venue: comp?.venue?.fullName ?? "",
         homeRecord: parseRecord(home),
@@ -1355,6 +1362,8 @@ async function fetchNcaafGames(date: string): Promise<SportResult> {
         awayTeam: away?.team?.displayName ?? "Away",
         homeTeamId: parseInt(home?.team?.id, 10) || 0,
         awayTeamId: parseInt(away?.team?.id, 10) || 0,
+        homeTeamAbbr: "",
+        awayTeamAbbr: "",
         startTime: e.date,
         venue: comp?.venue?.fullName ?? "",
         homeRecord: parseRecord(home),
@@ -2311,16 +2320,109 @@ async function fetchNflPlayerGameLog(playerId: number, season: number): Promise<
   };
 }
 
+/** ESPN's team abbreviation, translated to nflverse's team code — the two disagree only on the Rams and Commanders. */
+function toNflverseAbbr(espnAbbr: string): string {
+  if (espnAbbr === "LAR") return "LA";
+  if (espnAbbr === "WSH") return "WAS";
+  return espnAbbr;
+}
+
+interface NflDefenseAllowed {
+  passYardsAllowed: number;
+  rushYardsAllowed: number;
+  recYardsAllowed: number;
+  gamesPlayed: number;
+}
+
 /**
- * No free per-team "yards allowed" split was found on ESPN's hidden API (its
- * team-statistics endpoint only exposes each team's own offense, not what
- * opponents did against them), so matchup quality for NFL props falls back
- * to the opponent's season win% — a weaker opponent scores as an easier
- * matchup. At 0-0 (e.g. every Week 1) this is neutral by construction.
+ * Per-team yards allowed so far this season, averaged per game, from
+ * nflverse's weekly team-stats release — an open, freely-licensed dataset
+ * built from play-by-play data (https://github.com/nflverse/nflverse-data,
+ * no auth or ToS restriction on programmatic access, unlike consumer sites
+ * such as Linemate). Each row is one team's own offensive output in one
+ * game; "yards allowed by team X's defense" is every other team's output in
+ * games where X was the opponent, which is why this keys off the
+ * `opponent_team` column rather than `team`. Small file (a few hundred KB
+ * at most), so no local caching beyond one fetch per request.
  */
-function matchupScoreForNflProp(oppRecord: TeamRecord): number {
-  const oppWinPct = oppRecord.wins + oppRecord.losses > 0 ? oppRecord.winPct : 0.5;
-  return Math.min(90, Math.max(20, Math.round(90 - oppWinPct * 70)));
+async function fetchNflDefenseStats(season: number): Promise<Map<string, NflDefenseAllowed>> {
+  const map = new Map<string, NflDefenseAllowed>();
+  try {
+    const res = await fetch(
+      `https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_${season}.csv`,
+      { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) }
+    );
+    if (!res.ok) return map;
+    const text = await res.text();
+    const [headerLine, ...rows] = text.trim().split("\n");
+    const headers = headerLine.split(",");
+    const oppIdx = headers.indexOf("opponent_team");
+    const passIdx = headers.indexOf("passing_yards");
+    const rushIdx = headers.indexOf("rushing_yards");
+    const recIdx = headers.indexOf("receiving_yards");
+    if (oppIdx === -1 || passIdx === -1 || rushIdx === -1 || recIdx === -1) return map;
+
+    for (const row of rows) {
+      if (!row) continue;
+      const cols = row.split(",");
+      const opp = cols[oppIdx];
+      if (!opp) continue;
+      const entry = map.get(opp) ?? { passYardsAllowed: 0, rushYardsAllowed: 0, recYardsAllowed: 0, gamesPlayed: 0 };
+      entry.passYardsAllowed += Number(cols[passIdx]) || 0;
+      entry.rushYardsAllowed += Number(cols[rushIdx]) || 0;
+      entry.recYardsAllowed += Number(cols[recIdx]) || 0;
+      entry.gamesPlayed += 1;
+      map.set(opp, entry);
+    }
+    for (const entry of map.values()) {
+      entry.passYardsAllowed /= entry.gamesPlayed;
+      entry.rushYardsAllowed /= entry.gamesPlayed;
+      entry.recYardsAllowed /= entry.gamesPlayed;
+    }
+  } catch (e) {
+    console.warn(`fetchNflDefenseStats(${season}) failed:`, e);
+  }
+  return map;
+}
+
+/** League-wide average of each per-game allowed-yards category, for normalizing one team's number against the field. */
+function leagueAvgAllowed(defenseStats: Map<string, NflDefenseAllowed>): NflDefenseAllowed | null {
+  const teams = [...defenseStats.values()];
+  if (teams.length === 0) return null;
+  const avg = (key: "passYardsAllowed" | "rushYardsAllowed" | "recYardsAllowed") =>
+    teams.reduce((a, b) => a + b[key], 0) / teams.length;
+  return {
+    passYardsAllowed: avg("passYardsAllowed"),
+    rushYardsAllowed: avg("rushYardsAllowed"),
+    recYardsAllowed: avg("recYardsAllowed"),
+    gamesPlayed: teams.reduce((a, b) => a + b.gamesPlayed, 0) / teams.length,
+  };
+}
+
+/**
+ * Matchup quality from real per-game yards-allowed data for the prop's own
+ * category (pass/rush/receiving) rather than a single blended proxy — a
+ * defense can be stout against the run and soft against the pass, and the
+ * old opponent-win% heuristic couldn't tell the difference. A defense
+ * allowing more than the league average in this category is an easier
+ * matchup (higher score); less is tougher. Falls back to a neutral 50 when
+ * there's no data yet (Week 1, an unmapped team, or the fetch failed) rather
+ * than guessing.
+ */
+function matchupScoreForNflProp(
+  propType: PropType, oppAllowed: NflDefenseAllowed | undefined, leagueAvg: NflDefenseAllowed | null
+): number {
+  if (!oppAllowed || !leagueAvg || oppAllowed.gamesPlayed === 0) return 50;
+
+  const key = propType === "player_pass_yards" ? "passYardsAllowed"
+    : propType === "player_rush_yards" ? "rushYardsAllowed"
+    : "recYardsAllowed";
+
+  const allowed = oppAllowed[key];
+  const avg = leagueAvg[key];
+  if (avg <= 0) return 50;
+
+  return Math.min(90, Math.max(20, Math.round(50 + (allowed / avg - 1) * 100)));
 }
 
 /** All (player, propType) candidates OddsAPI actually offered a line for in one NFL game, scored against that player's game log. */
@@ -2328,7 +2430,9 @@ async function buildNflPropsForGame(
   game: RawGame,
   propOddsMap: PropOddsMap,
   bankrollState: BankrollState,
-  season: number
+  season: number,
+  defenseStats: Map<string, NflDefenseAllowed>,
+  leagueAvg: NflDefenseAllowed | null
 ): Promise<PropPick[]> {
   const gameCtx: PropGameContext = {
     gameId: game.id, sport: game.sport,
@@ -2367,14 +2471,15 @@ async function buildNflPropsForGame(
     const log = await fetchNflPlayerGameLog(player.id, season);
     if (log.last10.length === 0) return;
 
-    const oppRecord = isHome ? game.awayRecord : game.homeRecord;
-    const matchupScore = matchupScoreForNflProp(oppRecord);
     const team = isHome ? game.homeTeam : game.awayTeam;
     const opponent = isHome ? game.awayTeam : game.homeTeam;
+    const oppAbbr = toNflverseAbbr(isHome ? game.awayTeamAbbr : game.homeTeamAbbr);
+    const oppAllowed = defenseStats.get(oppAbbr);
 
     for (const propType of propTypes) {
       const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
       if (!oddsEntries || oddsEntries.length === 0) continue;
+      const matchupScore = matchupScoreForNflProp(propType, oppAllowed, leagueAvg);
       const candidates = oddsEntries
         .map(oddsEntry => scoreProp(
           {
@@ -2428,13 +2533,15 @@ async function buildNflPropPicks(
   }
 
   const season = parseInt(date.slice(0, 4), 10);
+  const defenseStats = await fetchNflDefenseStats(season);
+  const leagueAvg = leagueAvgAllowed(defenseStats);
 
   const perGame = await Promise.all(topGames.map(async game => {
     const eventId = eventIdByGameId.get(game.id);
     if (!eventId || !book) return [];
     try {
       const propOddsMap = await fetchPropOddsForGame(eventId, book, "nfl");
-      return await buildNflPropsForGame(game, propOddsMap, bankrollState, season);
+      return await buildNflPropsForGame(game, propOddsMap, bankrollState, season, defenseStats, leagueAvg);
     } catch (e) {
       console.warn(`NFL prop scoring failed for game ${game.id}:`, e);
       return [];
