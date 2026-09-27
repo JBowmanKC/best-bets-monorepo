@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 430,
-  "totalBets": 2,
+  "totalBets": 7,
   "wins": 0,
   "losses": 2,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 70,
+  "totalStaked": 156.5,
   "totalProfit": -70,
   "roi": -1,
   "peakBankroll": 500,
@@ -96,6 +96,170 @@
       "profitLoss": -30,
       "bankrollAfter": 430,
       "resolvedAt": "2026-09-25T18:44:35.223Z"
+    },
+    {
+      "betId": "nfl-401872959-prop-jauanjennings-player_receiving_yards-2026-09-27",
+      "date": "2026-09-27",
+      "sport": "nfl",
+      "matchup": "Minnesota Vikings @ Tampa Bay Buccaneers",
+      "pickLabel": "Jauan Jennings Over 14.5",
+      "odds": -109,
+      "stakeAmount": 18.5,
+      "potentialPayout": 35.47,
+      "estimatedWinPct": 0.9,
+      "impliedWinPct": 0.522,
+      "evEdge": 0.378,
+      "tier": "elite",
+      "scores": {
+        "composite": 87
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Jauan Jennings",
+      "line": 14.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872962-prop-kyrenwilliams-player_rush_yards-2026-09-27",
+      "date": "2026-09-27",
+      "sport": "nfl",
+      "matchup": "Los Angeles Rams @ Denver Broncos",
+      "pickLabel": "Kyren Williams Over 53.5",
+      "odds": -110,
+      "stakeAmount": 18.5,
+      "potentialPayout": 35.32,
+      "estimatedWinPct": 0.8,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.276,
+      "tier": "elite",
+      "scores": {
+        "composite": 93
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Kyren Williams",
+      "line": 53.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872959-prop-kennygainwell-player_receiving_yards-2026-09-27",
+      "date": "2026-09-27",
+      "sport": "nfl",
+      "matchup": "Minnesota Vikings @ Tampa Bay Buccaneers",
+      "pickLabel": "Kenny Gainwell Over 9.5",
+      "odds": -115,
+      "stakeAmount": 18.5,
+      "potentialPayout": 34.59,
+      "estimatedWinPct": 0.8,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.265,
+      "tier": "elite",
+      "scores": {
+        "composite": 91
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Kenny Gainwell",
+      "line": 9.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-09-27",
+      "date": "2026-09-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Lamar Jackson Under 40.5 Rushing Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "Baltimore Ravens @ Dallas Cowboys",
+          "date": "2026-09-27",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Lamar Jackson",
+          "line": 40.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Minnesota Vikings ML",
+          "odds": -112,
+          "sport": "nfl",
+          "matchup": "Minnesota Vikings @ Tampa Bay Buccaneers",
+          "date": "2026-09-27",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Brock Purdy Under Alt 29.5 Rushing Yards",
+          "odds": -110,
+          "sport": "nfl",
+          "matchup": "Arizona Cardinals @ San Francisco 49ers",
+          "date": "2026-09-27",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Brock Purdy",
+          "line": 29.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Denver Broncos ML",
+          "odds": 110,
+          "sport": "nfl",
+          "matchup": "Los Angeles Rams @ Denver Broncos",
+          "date": "2026-09-28",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1330,
+      "stakeAmount": 12.5,
+      "potentialPayout": 178.75,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-09-27",
+      "date": "2026-09-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Minnesota Vikings ML",
+          "odds": -112,
+          "sport": "nfl",
+          "matchup": "Minnesota Vikings @ Tampa Bay Buccaneers",
+          "date": "2026-09-27",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "San Francisco 49ers ML",
+          "odds": -395,
+          "sport": "nfl",
+          "matchup": "Arizona Cardinals @ San Francisco 49ers",
+          "date": "2026-09-27",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 137,
+      "stakeAmount": 18.5,
+      "potentialPayout": 43.85,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
