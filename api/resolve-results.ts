@@ -414,30 +414,43 @@ const NFL_PROP_CATEGORY: Record<string, string> = {
 
 /**
  * Reads a player's yards stat for `propType` off the "YDS" column of the
- * matching category (passing/rushing/receiving). Returns 0 (not null) when
- * the player is in the game but simply didn't appear in that category — e.g.
- * a receiving-yards prop on a WR with zero catches — since the game is final
- * and that's a real result, same reasoning as MLB's `?? 0`. Returns null only
- * when the category/column itself couldn't be found (unrecognized propType,
- * or ESPN changed the boxscore shape) — that's "can't resolve," not "zero."
+ * matching category (passing/rushing/receiving). `categories` is both teams'
+ * stat categories flattened into one list, so each category name (e.g.
+ * "receiving") appears twice — once per team — and this checks every match
+ * for the player rather than just the first, otherwise a player on whichever
+ * team happens to come second in ESPN's response is never found and silently
+ * scored as zero regardless of what they actually did.
+ *
+ * Returns 0 (not null) when the player is in the game but simply didn't
+ * appear in either team's version of that category — e.g. a receiving-yards
+ * prop on a WR with zero catches — since the game is final and that's a real
+ * result, same reasoning as MLB's `?? 0`. Returns null only when the
+ * category/column itself couldn't be found at all (unrecognized propType, or
+ * ESPN changed the boxscore shape) — that's "can't resolve," not "zero."
  */
 function readNflBoxscoreStatValue(categories: EspnBoxscoreCategory[], playerName: string, propType: string): number | null {
   const categoryName = NFL_PROP_CATEGORY[propType];
   if (!categoryName) return null;
 
-  const category = categories.find(c => c.name === categoryName);
-  if (!category) return 0; // team never ran this category at all (e.g. zero rush attempts as a team) — real zero
+  const matchingCategories = categories.filter(c => c.name === categoryName);
+  if (matchingCategories.length === 0) return 0; // neither team ran this category at all (e.g. zero rush attempts) — real zero
 
-  const ydsIndex = category.labels?.findIndex(l => String(l).toUpperCase() === "YDS") ?? -1;
-  if (ydsIndex === -1) return null;
+  let sawYdsColumn = false;
+  for (const category of matchingCategories) {
+    const ydsIndex = category.labels?.findIndex(l => String(l).toUpperCase() === "YDS") ?? -1;
+    if (ydsIndex === -1) continue;
+    sawYdsColumn = true;
 
-  const athlete = (category.athletes ?? []).find(
-    a => rrNormalizeTeamName(a.athlete?.displayName ?? "") === rrNormalizeTeamName(playerName)
-  );
-  if (!athlete) return 0; // played, but not in this specific category — real zero
+    const athlete = (category.athletes ?? []).find(
+      a => rrNormalizeTeamName(a.athlete?.displayName ?? "") === rrNormalizeTeamName(playerName)
+    );
+    if (athlete) {
+      const value = Number(athlete.stats?.[ydsIndex]);
+      return Number.isFinite(value) ? value : 0;
+    }
+  }
 
-  const value = Number(athlete.stats?.[ydsIndex]);
-  return Number.isFinite(value) ? value : 0;
+  return sawYdsColumn ? 0 : null; // played, but not in either team's category — real zero; unless the YDS column itself was never found
 }
 
 type PropResolution = { status: "pending" } | { status: "void" } | { status: "value"; value: number };
