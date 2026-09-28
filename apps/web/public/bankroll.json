@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 422.67,
+  "currentBankroll": 457.26,
   "totalBets": 11,
-  "wins": 2,
-  "losses": 5,
+  "wins": 3,
+  "losses": 4,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 243,
-  "totalProfit": -77.33,
-  "roi": -0.4941,
+  "totalProfit": -42.74,
+  "roi": -0.2731,
   "peakBankroll": 500,
-  "lowestBankroll": 397.32,
+  "lowestBankroll": 411.5,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -166,9 +166,9 @@
         "composite": 91
       },
       "sportsbook": "DraftKings",
-      "result": "loss",
-      "profitLoss": -18.5,
-      "bankrollAfter": 409.82,
+      "result": "win",
+      "profitLoss": 16.09,
+      "bankrollAfter": 444.41,
       "resolvedAt": "2026-09-28T18:21:35.740Z",
       "propType": "player_receiving_yards",
       "playerName": "Kenny Gainwell",
@@ -213,7 +213,7 @@
           "playerName": "Brock Purdy",
           "line": 29.5,
           "recommendedSide": "under",
-          "result": "win"
+          "result": "loss"
         },
         {
           "pickLabel": "Denver Broncos ML",
@@ -231,7 +231,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -12.5,
-      "bankrollAfter": 397.32,
+      "bankrollAfter": 431.91,
       "resolvedAt": "2026-09-28T18:21:35.862Z"
     },
     {
@@ -264,7 +264,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 25.35,
-      "bankrollAfter": 422.67,
+      "bankrollAfter": 457.26,
       "resolvedAt": "2026-09-28T18:21:35.862Z"
     },
     {
