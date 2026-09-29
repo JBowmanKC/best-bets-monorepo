@@ -1,14 +1,14 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 457.26,
+  "currentBankroll": 414.3,
   "totalBets": 11,
-  "wins": 3,
-  "losses": 4,
+  "wins": 4,
+  "losses": 7,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 243,
-  "totalProfit": -42.74,
-  "roi": -0.2731,
+  "totalProfit": -85.7,
+  "roi": -0.3527,
   "peakBankroll": 500,
   "lowestBankroll": 411.5,
   "calibration": {
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 7
+    "totalResultsTracked": 11
   },
   "bets": [
     {
@@ -284,10 +284,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20.54,
+      "bankrollAfter": 477.8,
+      "resolvedAt": "2026-09-29T19:29:59.648Z",
       "propType": "player_receiving_yards",
       "playerName": "Rome Odunze",
       "line": 25.5,
@@ -310,10 +310,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -23,
+      "bankrollAfter": 454.8,
+      "resolvedAt": "2026-09-29T19:29:59.677Z",
       "propType": "player_receiving_yards",
       "playerName": "Cole Kmet",
       "line": 8.5,
@@ -336,10 +336,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -23,
+      "bankrollAfter": 431.8,
+      "resolvedAt": "2026-09-29T19:29:59.738Z",
       "propType": "player_rush_yards",
       "playerName": "Jalen Hurts",
       "line": 25.5,
@@ -360,7 +360,8 @@
           "propType": "player_rush_yards",
           "playerName": "Jalen Hurts",
           "line": 25.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Philadelphia Eagles ML",
@@ -368,17 +369,18 @@
           "sport": "nfl",
           "matchup": "Philadelphia Eagles @ Chicago Bears",
           "date": "2026-09-29",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 183,
       "stakeAmount": 17.5,
       "potentialPayout": 49.53,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17.5,
+      "bankrollAfter": 414.3,
+      "resolvedAt": "2026-09-29T19:29:59.896Z"
     }
   ]
 }
