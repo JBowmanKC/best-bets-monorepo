@@ -1935,12 +1935,27 @@ function scoreProp(
   const hitRateOver20 = hitRateFor(log.last20, propType, line, "over");
   const weightedOverRate = hitRateOver10 * 0.6 + hitRateOver20 * 0.4;
 
+  // The trailing hit-rate is an average against whichever opponents the
+  // player already faced — it says nothing about *this* week's specific
+  // matchup. matchupScore (0-100, 50 = neutral) already measures how this
+  // week's opponent compares to a league-average defense in this exact stat
+  // category (see matchupScoreForNflProp/matchupScoreForPitcherStrikeouts/
+  // matchupScoreForBatterProps); nudge the trailing rate toward what that
+  // matchup alone would suggest before blending with the market below, so a
+  // strong recent stretch against a bottom-ranked defense is discounted
+  // against a legitimately tough one this week, and vice versa. Kept modest
+  // (±15 points at the scoring functions' own 20-90 clamp) since matchup
+  // quality is a real but secondary signal, not a substitute for market
+  // pricing.
+  const matchupAdjustment = (matchupScore - 50) / 200;
+  const matchupAdjustedRate = Math.min(Math.max(weightedOverRate + matchupAdjustment, 0), 1);
+
   const impliedOverPct = oddsToImpliedProb(oddsEntry.overOdds);
   const impliedUnderPct = oddsToImpliedProb(oddsEntry.underOdds);
 
-  // A player's trailing hit-rate against *today's* line is a weak, noisy
-  // signal on its own — a 1-2 game sample is either a 100% or 0% "hit rate"
-  // by construction, and even a full 10-game sample is just one player's
+  // The (matchup-adjusted) trailing hit-rate is still a weak, noisy signal
+  // on its own — a 1-2 game sample is either a 100% or 0% "hit rate" by
+  // construction, and even a full 10-game sample is just one player's
   // game-to-game variance, not a market-grade estimate. The book's own price
   // already reflects the same recent form (that's how lines get set), so it
   // is a far better starting point than a naive coin flip. The trailing rate
@@ -1956,7 +1971,7 @@ function scoreProp(
   const signalWeight = MAX_SIGNAL_WEIGHT * sampleConfidence;
 
   const estimatedOverPct = Math.min(Math.max(
-    impliedOverPct + (weightedOverRate - impliedOverPct) * signalWeight, 0.01
+    impliedOverPct + (matchupAdjustedRate - impliedOverPct) * signalWeight, 0.01
   ), 0.99);
   const estimatedUnderPct = 1 - estimatedOverPct;
 
