@@ -1935,17 +1935,30 @@ function scoreProp(
   const hitRateOver20 = hitRateFor(log.last20, propType, line, "over");
   const weightedOverRate = hitRateOver10 * 0.6 + hitRateOver20 * 0.4;
 
-  // A 1-2 game sample is either a 100% or 0% "hit rate" by construction —
-  // pure noise, not a signal. Shrink the estimate toward a coin flip in
-  // proportion to how thin the sample is, so it takes a real double-digit
-  // sample (not a shortened or just-started season) to reach full confidence.
-  const sampleConfidence = Math.min(log.last10.length, 10) / 10;
-  const shrunkOverRate = 0.5 + (weightedOverRate - 0.5) * sampleConfidence;
-
-  const estimatedOverPct = Math.min(Math.max(shrunkOverRate, 0.01), 0.99);
-  const estimatedUnderPct = 1 - estimatedOverPct;
   const impliedOverPct = oddsToImpliedProb(oddsEntry.overOdds);
   const impliedUnderPct = oddsToImpliedProb(oddsEntry.underOdds);
+
+  // A player's trailing hit-rate against *today's* line is a weak, noisy
+  // signal on its own — a 1-2 game sample is either a 100% or 0% "hit rate"
+  // by construction, and even a full 10-game sample is just one player's
+  // game-to-game variance, not a market-grade estimate. The book's own price
+  // already reflects the same recent form (that's how lines get set), so it
+  // is a far better starting point than a naive coin flip. The trailing rate
+  // is only allowed to pull the estimate part-way from that market price —
+  // capped at MAX_SIGNAL_WEIGHT even with a full sample — so a real edge
+  // shows up as a few points over the market, not a 30-50 point mismatch
+  // (a 3-week audit found every prior pick claiming exactly that kind of
+  // implausible edge, and the ones with the *most* claimed edge performed
+  // worst — a sign the raw hit-rate signal was swamping the market price
+  // instead of merely nudging it).
+  const MAX_SIGNAL_WEIGHT = 0.35;
+  const sampleConfidence = Math.min(log.last10.length, 10) / 10;
+  const signalWeight = MAX_SIGNAL_WEIGHT * sampleConfidence;
+
+  const estimatedOverPct = Math.min(Math.max(
+    impliedOverPct + (weightedOverRate - impliedOverPct) * signalWeight, 0.01
+  ), 0.99);
+  const estimatedUnderPct = 1 - estimatedOverPct;
 
   const evEdgeOver = estimatedOverPct - impliedOverPct;
   const evEdgeUnder = estimatedUnderPct - impliedUnderPct;
