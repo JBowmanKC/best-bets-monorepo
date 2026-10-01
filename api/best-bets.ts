@@ -1955,7 +1955,17 @@ function scoreProp(
 
   const hitRateOver10 = hitRateFor(log.last10, propType, line, "over");
   const hitRateOver20 = hitRateFor(log.last20, propType, line, "over");
-  const weightedOverRate = hitRateOver10 * 0.6 + hitRateOver20 * 0.4;
+  // A flat 10/20-game blend dilutes a genuine recent role change (a bigger
+  // workload from an injury elsewhere on the offense, a new starting job,
+  // etc.) by averaging it against games from before the change happened —
+  // exactly what happened with a Browns RB who'd clearly taken on a bigger
+  // role the last few weeks while his 10-game average still looked modest.
+  // Giving the most recent games extra say (they're already included in
+  // hitRateOver10 too, so this just up-weights them further) surfaces that
+  // kind of shift without needing to trace it to a specific cause.
+  const RECENT_FORM_GAMES = 3;
+  const hitRateRecent = hitRateFor(log.last10.slice(0, RECENT_FORM_GAMES), propType, line, "over");
+  const weightedOverRate = hitRateRecent * 0.35 + hitRateOver10 * 0.4 + hitRateOver20 * 0.25;
 
   // The trailing hit-rate is an average against whichever opponents the
   // player already faced — it says nothing about *this* week's specific
@@ -2469,17 +2479,36 @@ function nflDefenseAllowedKey(propType: PropType): keyof NflDefenseAllowed | nul
   return null;
 }
 
+/**
+ * Each qualifying defensive starter out in the relevant position group (see
+ * PASS_DEFENSE_POSITIONS/RUN_DEFENSE_POSITIONS) nudges the matchup score —
+ * season-long allowed-yards stats won't reflect an injury from this week
+ * yet, so this is the only way an in-week change registers at all. Capped
+ * low relative to the real allowed-yards signal, since there's no
+ * starter/snap-share data behind these counts (see fetchNflGameInjuries).
+ */
+function nflDefenseInjuryBump(propType: PropType, oppInjuries: NflDefensiveInjuryCounts | undefined): number {
+  if (!oppInjuries) return 0;
+  const hits = propType === "player_rush_yards" ? oppInjuries.runDefenseHits : oppInjuries.passDefenseHits;
+  return Math.min(hits * 4, 12);
+}
+
 function matchupScoreForNflProp(
-  propType: PropType, oppAllowed: NflDefenseAllowed | undefined, leagueAvg: NflDefenseAllowed | null
+  propType: PropType, oppAllowed: NflDefenseAllowed | undefined, leagueAvg: NflDefenseAllowed | null,
+  oppInjuries: NflDefensiveInjuryCounts | undefined
 ): number {
   const key = nflDefenseAllowedKey(propType);
-  if (!key || !oppAllowed || !leagueAvg || oppAllowed.gamesPlayed === 0) return 50;
+  const injuryBump = key ? nflDefenseInjuryBump(propType, oppInjuries) : 0;
+
+  if (!key || !oppAllowed || !leagueAvg || oppAllowed.gamesPlayed === 0) {
+    return Math.min(90, Math.max(20, 50 + injuryBump));
+  }
 
   const allowed = oppAllowed[key];
   const avg = leagueAvg[key];
-  if (avg <= 0) return 50;
+  if (avg <= 0) return Math.min(90, Math.max(20, 50 + injuryBump));
 
-  return Math.min(90, Math.max(20, Math.round(50 + (allowed / avg - 1) * 100)));
+  return Math.min(90, Math.max(20, Math.round(50 + (allowed / avg - 1) * 100) + injuryBump));
 }
 
 const NFL_DEFENSE_CATEGORY_LABEL: Partial<Record<PropType, string>> = {
@@ -2525,32 +2554,66 @@ function nflDefenseRankContext(
 
 const NFL_DISQUALIFYING_INJURY_STATUSES = new Set(["out", "doubtful", "injured reserve", "ir", "suspended", "pup", "physically unable to perform"]);
 
+/** Secondary vs. front-seven positions — a rough but workable split for which allowed-yards category an injured defender affects. */
+const PASS_DEFENSE_POSITIONS = new Set(["CB", "S", "FS", "SS", "DB"]);
+const RUN_DEFENSE_POSITIONS = new Set(["DT", "DE", "NT", "LB", "ILB", "OLB", "MLB", "EDGE"]);
+
+interface NflDefensiveInjuryCounts {
+  passDefenseHits: number;
+  runDefenseHits: number;
+}
+
+interface NflGameInjuries {
+  /** Normalized names of players listed Out/Doubtful/IR/suspended — liable to not play at all. */
+  concerningByName: Set<string>;
+  /** Counts of those same disqualifying-status players by position group, keyed by team display name (matches game.homeTeam/awayTeam). */
+  byTeam: Map<string, NflDefensiveInjuryCounts>;
+}
+
 /**
  * This week's official injury report for both teams in a game, from the
  * same ESPN game-summary endpoint resolve-results.ts uses for box scores —
  * already scoped to the current week's designations, not full-season
- * history, so no date filtering is needed. Returns the normalized names of
- * players listed Out/Doubtful/IR/suspended, who are liable to not play at
- * all — scoreProp uses this to drop the prop rather than waste a best-bet
- * slot on one likely to just void. "Questionable" is deliberately left
- * alone: those players suit up the large majority of the time in the NFL,
- * and excluding them outright would cut real volume for little benefit.
+ * history, so no date filtering is needed.
+ *
+ * `concerningByName`: players liable to not play at all — scoreProp uses
+ * this to drop their own prop rather than waste a best-bet slot on one
+ * likely to just void. "Questionable" is deliberately left out of this set:
+ * those players suit up the large majority of the time in the NFL, and
+ * excluding them outright would cut real volume for little benefit.
+ *
+ * `byTeam`: the same disqualifying-status players, grouped by team and
+ * position group — matchupScoreForNflProp uses this to nudge a defense's
+ * matchup score beyond what its season-long allowed-yards average shows,
+ * since that average won't reflect an injury from this week yet. There's no
+ * "starter" flag in this feed, so a backup getting dinged counts the same as
+ * a starter — an approximation, not a precise snap-share model.
  */
-async function fetchNflGameInjuries(eventId: string): Promise<Set<string>> {
-  const concerning = new Set<string>();
+async function fetchNflGameInjuries(eventId: string): Promise<NflGameInjuries> {
+  const concerningByName = new Set<string>();
+  const byTeam = new Map<string, NflDefensiveInjuryCounts>();
   try {
     const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
     for (const teamEntry of data.injuries ?? []) {
+      const teamName: string | undefined = teamEntry.team?.displayName;
       for (const inj of teamEntry.injuries ?? []) {
         const status = String(inj.status ?? "").toLowerCase().trim();
         const name = inj.athlete?.displayName;
-        if (name && NFL_DISQUALIFYING_INJURY_STATUSES.has(status)) concerning.add(normalizeTeamName(name));
+        if (!name || !NFL_DISQUALIFYING_INJURY_STATUSES.has(status)) continue;
+        concerningByName.add(normalizeTeamName(name));
+
+        const position = inj.athlete?.position?.abbreviation;
+        if (!teamName || !position) continue;
+        const counts = byTeam.get(teamName) ?? { passDefenseHits: 0, runDefenseHits: 0 };
+        if (PASS_DEFENSE_POSITIONS.has(position)) counts.passDefenseHits += 1;
+        if (RUN_DEFENSE_POSITIONS.has(position)) counts.runDefenseHits += 1;
+        byTeam.set(teamName, counts);
       }
     }
   } catch (e) {
     console.warn(`fetchNflGameInjuries(${eventId}) failed:`, e);
   }
-  return concerning;
+  return { concerningByName, byTeam };
 }
 
 /** All (player, propType) candidates OddsAPI actually offered a line for in one NFL game, scored against that player's game log. */
@@ -2582,7 +2645,7 @@ async function buildNflPropsForGame(
   }
   if (propTypesByPlayer.size === 0) return [];
 
-  const [homeRoster, awayRoster, injuredPlayers] = await Promise.all([
+  const [homeRoster, awayRoster, injuries] = await Promise.all([
     fetchNflRosterOffense(game.homeTeamId),
     fetchNflRosterOffense(game.awayTeamId),
     fetchNflGameInjuries(game.id),
@@ -2608,7 +2671,7 @@ async function buildNflPropsForGame(
     for (const propType of propTypes) {
       const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
       if (!oddsEntries || oddsEntries.length === 0) continue;
-      const matchupScore = matchupScoreForNflProp(propType, oppAllowed, leagueAvg);
+      const matchupScore = matchupScoreForNflProp(propType, oppAllowed, leagueAvg, injuries.byTeam.get(opponent));
       const opponentRankContext = nflDefenseRankContext(propType, oppAbbr, defenseStats);
       const candidates = oddsEntries
         .map(oddsEntry => scoreProp(
@@ -2618,7 +2681,7 @@ async function buildNflPropsForGame(
             // as reliably announced in advance as a probable starter is.
             isPitcher: player.position === "QB",
             propType, fatigued: false,
-            injuryConcern: injuredPlayers.has(normalizeTeamName(player.fullName)),
+            injuryConcern: injuries.concerningByName.has(normalizeTeamName(player.fullName)),
           },
           log, oddsEntry, matchupScore, gameCtx, bankrollState, opponentRankContext
         ))
