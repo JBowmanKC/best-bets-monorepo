@@ -892,25 +892,22 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
 
   const targetLegs = combined.length >= 5 ? 5 : Math.min(4, combined.length);
 
-  const legs: (BetPick | PropPick)[] = [];
-  const usedIds = new Set<string>();
-  let propCount = 0;
-  for (const c of combined) {
-    if (legs.length >= targetLegs) break;
-    if (isPropPick(c) && propCount >= 2) continue;
-    legs.push(c);
-    usedIds.add(c.id);
-    if (isPropPick(c)) propCount += 1;
-  }
+  // Picks the best legs by edge regardless of type — a moneyline isn't
+  // entitled to a slot just because it's a moneyline. A thin slate (e.g. one
+  // game) can easily have its best 3-4 edges all be props and nothing worth
+  // including on the moneyline side at all, and forcing one in anyway
+  // previously meant swapping out a better prop for a worse moneyline purely
+  // to satisfy an arbitrary "max 2 props" rule.
+  const legs: (BetPick | PropPick)[] = combined.slice(0, targetLegs);
+  const usedIds = new Set<string>(legs.map(l => l.id));
 
   // Payout target +400 to +3000 — top up if short, trim the longest shot if it runs past +3000.
   let payout = calcParlayPayout(legs.map(l => l.odds));
   while (payout < 400 && legs.length < combined.length) {
-    const next = combined.find(c => !usedIds.has(c.id) && (!isPropPick(c) || propCount < 2));
+    const next = combined.find(c => !usedIds.has(c.id));
     if (!next) break;
     legs.push(next);
     usedIds.add(next.id);
-    if (isPropPick(next)) propCount += 1;
     payout = calcParlayPayout(legs.map(l => l.odds));
   }
 
@@ -931,18 +928,13 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
     }
     const removed = legs[longestShotIdx];
     rejected.add(removed.id);
-    const replacement = combined.find(c =>
-      !usedIds.has(c.id) && !rejected.has(c.id) &&
-      (!isPropPick(c) || propCount - (isPropPick(removed) ? 1 : 0) < 2)
-    );
+    const replacement = combined.find(c => !usedIds.has(c.id) && !rejected.has(c.id));
 
     legs.splice(longestShotIdx, 1);
     usedIds.delete(removed.id);
-    if (isPropPick(removed)) propCount -= 1;
     if (!replacement) break; // nothing safer left — accept the payout as-is
     legs.push(replacement);
     usedIds.add(replacement.id);
-    if (isPropPick(replacement)) propCount += 1;
     payout = calcParlayPayout(legs.map(l => l.odds));
   }
 
