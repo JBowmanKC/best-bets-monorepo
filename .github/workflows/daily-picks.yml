@@ -2,10 +2,15 @@ name: Daily Picks
 
 on:
   schedule:
-    # ~12 PM EDT — single daily run to stay within the OddsAPI free-tier
-    # quota. Offset a few minutes off the hour: GitHub's scheduler is most
-    # congested exactly on the hour and can delay or drop runs there.
-    - cron: "7 16 * * *"
+    # GitHub's scheduler has been landing these 3-5.5 hours late (see the
+    # guard step below for why that's safe to retry for rather than a
+    # problem) — a single 16:07 UTC slot meant picks routinely weren't ready
+    # until early evening. Every 30 minutes from noon to ~6pm EDT gives the
+    # scheduler many chances to actually fire close to on time; the guard
+    # makes every slot after the first a no-op, so this doesn't multiply
+    # OddsAPI usage. Minutes are offset off the hour/half-hour since GitHub's
+    # scheduler is most congested exactly there and can delay or drop runs.
+    - cron: "7,37 16-22 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -29,20 +34,25 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Check whether today's bets are already committed
+      - name: Check whether today's picks are already generated
         id: guard
         run: |
           set -euo pipefail
           DATE=$(date -u +%F)
-          # A manual dispatch can race the delayed daily schedule (both firing
-          # for the same UTC date) — each hits the odds API separately and can
-          # get a different snapshot (odds/rosters shift between calls), but
-          # append-bankroll-bets.mjs only dedupes parlays by date, so the
-          # second run's parlay would be silently dropped, leaving stale legs
-          # in the ledger that no longer match picks.json. Once today's bets
-          # are committed, skip re-fetching entirely rather than risk that.
-          if [ -f apps/web/public/bankroll.json ] && jq -e --arg d "$DATE" '.bets | any(.date == $d)' apps/web/public/bankroll.json > /dev/null; then
-            echo "Bets for $DATE are already committed to the bankroll ledger — skipping this run (likely a manual dispatch racing the delayed schedule)."
+          # There are now many scheduled slots per day (see the schedule
+          # comment above) so that at least one lands close to on time
+          # despite GitHub's delay — this is what keeps all the slots after
+          # the first from each re-hitting the odds API: once picks.json
+          # already reflects today's date, every later *scheduled* slot is a
+          # no-op, win or lose (even a 0-best-bets day still sets the date,
+          # so an off day doesn't get re-fetched 14 times either).
+          #
+          # Scoped to `schedule` only — a manual workflow_dispatch always
+          # runs fresh, since a human triggering it by hand is deliberately
+          # asking for a fresh pull (e.g. retrying after a bug fix deploys
+          # mid-day), not racing the automated schedule.
+          if [ "${{ github.event_name }}" = "schedule" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ]; then
+            echo "picks.json already reflects $DATE — skipping this scheduled run (an earlier slot today already succeeded)."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
