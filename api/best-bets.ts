@@ -876,7 +876,17 @@ function selectSafeParlayLegs(picks: BetPick[], excludeIds: Set<string>): BetPic
 /** 4-5 legs (moneylines + up to 2 low-void-risk props), highest EV edge first, with payout adjustment. */
 function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
   const pickPool = picks.filter(p => p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
-  const propPool = propPicks.filter(p => p.voidRisk === "low" && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
+  // voidRisk is "low" only for a QB prop (see scoreProp) — a holdover from
+  // MLB's pitcher/batter split, where a batter's lineup spot genuinely isn't
+  // locked until close to game time. A starting NFL skill player is just as
+  // reliably known pre-game as the QB, and bestBets itself already accepts
+  // "medium" risk — excluding it here meant this parlay had nothing to work
+  // with on any slate without a qualifying QB prop (e.g. a 1-game Thursday
+  // night with no QB prop clearing the bar, even with plenty of good RB/WR
+  // props available).
+  const propPool = propPicks.filter(p =>
+    (p.voidRisk === "low" || p.voidRisk === "medium") && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
+  );
   const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool].sort((a, b) => b.evEdge - a.evEdge);
   if (combined.length === 0) return [];
 
@@ -1918,6 +1928,8 @@ interface PropCandidateInput {
   isPitcher: boolean;
   propType: PropType;
   fatigued: boolean;
+  /** True if this week's injury report lists the player Out/Doubtful/IR/suspended — see fetchNflGameInjuries. Always false for MLB (no feed wired up for it yet). */
+  injuryConcern: boolean;
 }
 
 interface PropGameContext {
@@ -2014,18 +2026,21 @@ function scoreProp(
   const tier = getTier(factorScores.composite);
   if (!tier) return null;
 
-  // Void risk: pitcher props only reach here once a confirmed probable starter
-  // exists, so they're "low"; batter lineups aren't official this far ahead of
-  // game time, so batter props default to "medium". "high" is reserved for a
-  // future signal (injury-report/lineup-confirmation feed) not available on
-  // the free tier today — no prop currently resolves to it.
-  const voidRisk: VoidRisk = candidate.isPitcher ? "low" : "medium";
+  // Void risk: an injury-report hit overrides everything else — a player
+  // listed Out/Doubtful/IR/suspended this week is liable to not play at all,
+  // which wastes one of the day's limited best-bet slots on a prop likely to
+  // just void rather than win or lose. Otherwise, pitcher props only reach
+  // here once a confirmed probable starter exists, so they're "low"; batter
+  // lineups aren't official this far ahead of game time, so batter props
+  // default to "medium".
+  const voidRisk: VoidRisk = candidate.injuryConcern ? "high" : candidate.isPitcher ? "low" : "medium";
 
   let stakeAmount = kellyStake(bankrollState.currentBankroll, estimatedHitPct, odds);
   if (voidRisk === "medium") stakeAmount = Math.round(stakeAmount * 0.6 * 2) / 2;
-  // voidRisk is never "high" by construction above — the check is defensive,
-  // matching the constraint that a high-void-risk prop is skipped entirely.
-  if ((voidRisk as VoidRisk) === "high" || stakeAmount <= 0) return null;
+  // An injury-flagged player is dropped entirely rather than surfaced as a
+  // visible-but-ineligible prop — there's no betting value in showing a line
+  // for someone who may not take the field.
+  if (voidRisk === "high" || stakeAmount <= 0) return null;
 
   const potentialPayout = Math.round(
     (odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100
@@ -2156,7 +2171,7 @@ async function buildPropsForGame(
       const statKey = propType === "pitcher_strikeouts" ? "strikeouts" : "outs";
       const candidates = resolvePropOddsCandidates(propOddsMap, pitcher.name, propType, log.recentAvg, statKey)
         .map(oddsEntry => scoreProp(
-          { playerId: pitcher.id, playerName: pitcher.name, team, opponent, isHome, isPitcher: true, propType, fatigued },
+          { playerId: pitcher.id, playerName: pitcher.name, team, opponent, isHome, isPitcher: true, propType, fatigued, injuryConcern: false },
           log, oddsEntry, matchupScore, gameCtx, bankrollState
         ))
         .filter((p): p is PropPick => p !== null);
@@ -2193,7 +2208,7 @@ async function buildPropsForGame(
       const statKey = propType === "batter_hits" ? "hits" : propType === "batter_total_bases" ? "totalBases" : "homeRuns";
       const candidates = resolvePropOddsCandidates(propOddsMap, batter.fullName, propType, log.recentAvg, statKey)
         .map(oddsEntry => scoreProp(
-          { playerId: batter.id, playerName: batter.fullName, team, opponent, isHome, isPitcher: false, propType, fatigued },
+          { playerId: batter.id, playerName: batter.fullName, team, opponent, isHome, isPitcher: false, propType, fatigued, injuryConcern: false },
           log, oddsEntry, matchupScore, gameCtx, bankrollState
         ))
         .filter((p): p is PropPick => p !== null);
@@ -2460,6 +2475,36 @@ function matchupScoreForNflProp(
   return Math.min(90, Math.max(20, Math.round(50 + (allowed / avg - 1) * 100)));
 }
 
+const NFL_DISQUALIFYING_INJURY_STATUSES = new Set(["out", "doubtful", "injured reserve", "ir", "suspended", "pup", "physically unable to perform"]);
+
+/**
+ * This week's official injury report for both teams in a game, from the
+ * same ESPN game-summary endpoint resolve-results.ts uses for box scores —
+ * already scoped to the current week's designations, not full-season
+ * history, so no date filtering is needed. Returns the normalized names of
+ * players listed Out/Doubtful/IR/suspended, who are liable to not play at
+ * all — scoreProp uses this to drop the prop rather than waste a best-bet
+ * slot on one likely to just void. "Questionable" is deliberately left
+ * alone: those players suit up the large majority of the time in the NFL,
+ * and excluding them outright would cut real volume for little benefit.
+ */
+async function fetchNflGameInjuries(eventId: string): Promise<Set<string>> {
+  const concerning = new Set<string>();
+  try {
+    const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+    for (const teamEntry of data.injuries ?? []) {
+      for (const inj of teamEntry.injuries ?? []) {
+        const status = String(inj.status ?? "").toLowerCase().trim();
+        const name = inj.athlete?.displayName;
+        if (name && NFL_DISQUALIFYING_INJURY_STATUSES.has(status)) concerning.add(normalizeTeamName(name));
+      }
+    }
+  } catch (e) {
+    console.warn(`fetchNflGameInjuries(${eventId}) failed:`, e);
+  }
+  return concerning;
+}
+
 /** All (player, propType) candidates OddsAPI actually offered a line for in one NFL game, scored against that player's game log. */
 async function buildNflPropsForGame(
   game: RawGame,
@@ -2489,9 +2534,10 @@ async function buildNflPropsForGame(
   }
   if (propTypesByPlayer.size === 0) return [];
 
-  const [homeRoster, awayRoster] = await Promise.all([
+  const [homeRoster, awayRoster, injuredPlayers] = await Promise.all([
     fetchNflRosterOffense(game.homeTeamId),
     fetchNflRosterOffense(game.awayTeamId),
+    fetchNflGameInjuries(game.id),
   ]);
   const rosterByName = new Map<string, { player: NflRosterPlayer; isHome: boolean }>();
   for (const player of homeRoster) rosterByName.set(normalizeTeamName(player.fullName), { player, isHome: true });
@@ -2523,6 +2569,7 @@ async function buildNflPropsForGame(
             // as reliably announced in advance as a probable starter is.
             isPitcher: player.position === "QB",
             propType, fatigued: false,
+            injuryConcern: injuredPlayers.has(normalizeTeamName(player.fullName)),
           },
           log, oddsEntry, matchupScore, gameCtx, bankrollState
         ))
