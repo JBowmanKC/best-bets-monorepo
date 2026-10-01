@@ -1896,17 +1896,26 @@ function propContextScore(opts: { isHome: boolean; isPitcher: boolean; fatigued:
   return Math.min(Math.max(score, 0), 100);
 }
 
+/**
+ * `opponentRankContext` is a pre-built phrase like "has the 5th best run
+ * defense in the league" (see nflDefenseRank) — callers with real league-wide
+ * rank data pass it in; others (MLB, or an NFL team not yet in this season's
+ * table) pass null and get the older generic favorable/tough/neutral read of
+ * matchupScore instead.
+ */
 function buildPropRationale(
   playerName: string, propType: PropType, line: number, side: PropSide,
   hitRateLast10: number, sampleSize: number, recentAverage: number, opponent: string, matchupScore: number,
-  estimatedHitPct: number, impliedHitPct: number, evEdge: number
+  estimatedHitPct: number, impliedHitPct: number, evEdge: number, opponentRankContext: string | null
 ): string {
   const label = PROP_TYPE_LABELS[propType];
-  const matchupContext = matchupScore >= 65 ? "favorable" : matchupScore <= 35 ? "tough" : "neutral";
+  const matchupSentence = opponentRankContext
+    ? `They're up against ${opponent}, who ${opponentRankContext}.`
+    : `Matchup vs ${opponent}: ${matchupScore >= 65 ? "favorable" : matchupScore <= 35 ? "tough" : "neutral"}.`;
 
   return [
     `${playerName} has cleared ${line} ${label.toLowerCase()} in ${Math.round(hitRateLast10 * sampleSize)} of their last ${sampleSize} game${sampleSize === 1 ? "" : "s"} (avg: ${recentAverage.toFixed(1)}).`,
-    `Matchup vs ${opponent}: ${matchupContext}.`,
+    matchupSentence,
     `Estimated ${side} probability ${Math.round(estimatedHitPct * 100)}% vs implied ${Math.round(impliedHitPct * 100)}% — +${Math.round(evEdge * 100)}% EV edge.`,
   ].join(" ");
 }
@@ -1937,7 +1946,9 @@ function scoreProp(
   oddsEntry: PropOddsEntry,
   matchupScore: number,
   game: PropGameContext,
-  bankrollState: BankrollState
+  bankrollState: BankrollState,
+  /** See buildPropRationale — a pre-built "has the Nth best X defense in the league" phrase, NFL-only for now. */
+  opponentRankContext: string | null = null
 ): PropPick | null {
   const { propType, line } = { propType: candidate.propType, line: oddsEntry.line };
   if (log.last10.length === 0) return null; // no game-log history to score from
@@ -2065,7 +2076,7 @@ function scoreProp(
     rationale: buildPropRationale(
       candidate.playerName, propType, line, side,
       hitRateOver10, log.last10.length, recentAverage, candidate.opponent, matchupScore,
-      estimatedHitPct, impliedHitPct, evEdge
+      estimatedHitPct, impliedHitPct, evEdge, opponentRankContext
     ),
     stakeAmount,
     potentialPayout,
@@ -2451,20 +2462,65 @@ function leagueAvgAllowed(defenseStats: Map<string, NflDefenseAllowed>): NflDefe
  * there's no data yet (Week 1, an unmapped team, or the fetch failed) rather
  * than guessing.
  */
+function nflDefenseAllowedKey(propType: PropType): keyof NflDefenseAllowed | null {
+  if (propType === "player_pass_yards") return "passYardsAllowed";
+  if (propType === "player_rush_yards") return "rushYardsAllowed";
+  if (propType === "player_receiving_yards") return "recYardsAllowed";
+  return null;
+}
+
 function matchupScoreForNflProp(
   propType: PropType, oppAllowed: NflDefenseAllowed | undefined, leagueAvg: NflDefenseAllowed | null
 ): number {
-  if (!oppAllowed || !leagueAvg || oppAllowed.gamesPlayed === 0) return 50;
-
-  const key = propType === "player_pass_yards" ? "passYardsAllowed"
-    : propType === "player_rush_yards" ? "rushYardsAllowed"
-    : "recYardsAllowed";
+  const key = nflDefenseAllowedKey(propType);
+  if (!key || !oppAllowed || !leagueAvg || oppAllowed.gamesPlayed === 0) return 50;
 
   const allowed = oppAllowed[key];
   const avg = leagueAvg[key];
   if (avg <= 0) return 50;
 
   return Math.min(90, Math.max(20, Math.round(50 + (allowed / avg - 1) * 100)));
+}
+
+const NFL_DEFENSE_CATEGORY_LABEL: Partial<Record<PropType, string>> = {
+  player_rush_yards: "run defense",
+  player_pass_yards: "pass defense",
+  player_receiving_yards: "pass defense",
+};
+
+function ordinal(n: number): string {
+  const v = n % 100;
+  if (v >= 11 && v <= 13) return `${n}th`;
+  switch (n % 10) {
+    case 1: return `${n}st`;
+    case 2: return `${n}nd`;
+    case 3: return `${n}rd`;
+    default: return `${n}th`;
+  }
+}
+
+/**
+ * "has the 5th best run defense in the league" — a team's rank (1 = fewest
+ * yards allowed, i.e. the stingiest) among every team with at least one game
+ * of data so far this season. Null once there's no rank to report (no
+ * category mapping for this propType, no league data yet, or the team isn't
+ * in the table), in which case buildPropRationale falls back to the older
+ * generic favorable/tough/neutral phrasing.
+ */
+function nflDefenseRankContext(
+  propType: PropType, teamAbbr: string, defenseStats: Map<string, NflDefenseAllowed>
+): string | null {
+  const key = nflDefenseAllowedKey(propType);
+  const categoryLabel = NFL_DEFENSE_CATEGORY_LABEL[propType];
+  if (!key || !categoryLabel) return null;
+
+  const ranked = [...defenseStats.entries()]
+    .filter(([, allowed]) => allowed.gamesPlayed > 0)
+    .sort((a, b) => a[1][key] - b[1][key]);
+  const rank = ranked.findIndex(([abbr]) => abbr === teamAbbr);
+  if (rank === -1) return null;
+
+  return `has the ${ordinal(rank + 1)} best ${categoryLabel} in the league`;
 }
 
 const NFL_DISQUALIFYING_INJURY_STATUSES = new Set(["out", "doubtful", "injured reserve", "ir", "suspended", "pup", "physically unable to perform"]);
@@ -2553,6 +2609,7 @@ async function buildNflPropsForGame(
       const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
       if (!oddsEntries || oddsEntries.length === 0) continue;
       const matchupScore = matchupScoreForNflProp(propType, oppAllowed, leagueAvg);
+      const opponentRankContext = nflDefenseRankContext(propType, oppAbbr, defenseStats);
       const candidates = oddsEntries
         .map(oddsEntry => scoreProp(
           {
@@ -2563,7 +2620,7 @@ async function buildNflPropsForGame(
             propType, fatigued: false,
             injuryConcern: injuredPlayers.has(normalizeTeamName(player.fullName)),
           },
-          log, oddsEntry, matchupScore, gameCtx, bankrollState
+          log, oddsEntry, matchupScore, gameCtx, bankrollState, opponentRankContext
         ))
         .filter((p): p is PropPick => p !== null);
       const pick = pickPropPick(candidates);
