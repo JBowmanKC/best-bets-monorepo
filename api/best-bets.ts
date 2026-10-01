@@ -823,12 +823,19 @@ function toParlayLeg(item: BetPick | PropPick): ParlayLeg {
  */
 function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
   const pickPool = picks.filter(p => p.scores.composite >= 68 && p.odds >= -250 && p.odds <= 300 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
-  const propPool = propPicks.filter(p =>
-    p.scores.composite >= 68 &&
-    (p.voidRisk === "low" || p.voidRisk === "medium") &&
-    p.hitRateLast10 >= 0.6 &&
-    p.sportsbook !== ESTIMATED_SOURCE_LABEL
-  );
+  const propPool = propPicks.filter(p => {
+    // hitRateLast10 is always the *over* rate (see scoreProp) — for an
+    // "under" pick, a low over-rate is exactly what makes it a good under,
+    // so the quality bar has to read the rate in whichever direction was
+    // actually recommended, not always the over side.
+    const hitRateInDirection = p.recommendedSide === "over" ? p.hitRateLast10 : 1 - p.hitRateLast10;
+    return (
+      p.scores.composite >= 68 &&
+      (p.voidRisk === "low" || p.voidRisk === "medium") &&
+      hitRateInDirection >= 0.6 &&
+      p.sportsbook !== ESTIMATED_SOURCE_LABEL
+    );
+  });
 
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
   const pool: (BetPick | PropPick)[] = [...pickPool, ...propPool];
