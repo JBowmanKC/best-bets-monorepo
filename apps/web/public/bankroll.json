@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 414.3,
+  "currentBankroll": 461.3,
   "totalBets": 17,
-  "wins": 4,
-  "losses": 7,
+  "wins": 8,
+  "losses": 9,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 385,
-  "totalProfit": -85.7,
-  "roi": -0.3527,
+  "totalProfit": -38.7,
+  "roi": -0.1005,
   "peakBankroll": 500,
-  "lowestBankroll": 411.5,
+  "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 11
+    "totalResultsTracked": 17
   },
   "bets": [
     {
@@ -399,10 +399,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -27.5,
+      "bankrollAfter": 386.8,
+      "resolvedAt": "2026-10-02T19:24:35.329Z",
       "propType": "player_receiving_yards",
       "playerName": "Quinshon Judkins",
       "line": 39.5,
@@ -425,10 +425,10 @@
         "composite": 86
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 25,
+      "bankrollAfter": 411.8,
+      "resolvedAt": "2026-10-02T19:24:35.361Z",
       "propType": "player_rush_yards",
       "playerName": "Quinshon Judkins",
       "line": 79.5,
@@ -451,10 +451,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 25,
+      "bankrollAfter": 436.8,
+      "resolvedAt": "2026-10-02T19:24:35.394Z",
       "propType": "player_receiving_yards",
       "playerName": "Harold Fannin Jr.",
       "line": 59.5,
@@ -475,7 +475,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Quinshon Judkins",
           "line": 39.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Quinshon Judkins Under Alt 79.5 Rushing Yards",
@@ -487,7 +488,8 @@
           "propType": "player_rush_yards",
           "playerName": "Quinshon Judkins",
           "line": 79.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Harold Fannin Jr. Under Alt 59.5 Receiving Yards",
@@ -499,7 +501,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Harold Fannin Jr.",
           "line": 59.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Roman Wilson Under Alt 39.5 Receiving Yards",
@@ -511,7 +514,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Roman Wilson",
           "line": 39.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaylen Warren Under Alt 39.5 Receiving Yards",
@@ -523,17 +527,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaylen Warren",
           "line": 39.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2436,
       "stakeAmount": 15.5,
       "potentialPayout": 393.08,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -15.5,
+      "bankrollAfter": 421.3,
+      "resolvedAt": "2026-10-02T19:24:35.678Z"
     },
     {
       "betId": "nfl-401872964-prop-raheimsanders-player_receiving_yards-alt39.5-2026-10-01",
@@ -552,10 +557,10 @@
         "composite": 85
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20,
+      "bankrollAfter": 441.3,
+      "resolvedAt": "2026-10-02T19:24:35.709Z",
       "propType": "player_receiving_yards",
       "playerName": "Raheim Sanders",
       "line": 39.5,
@@ -578,10 +583,10 @@
         "composite": 86
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 20,
+      "bankrollAfter": 461.3,
+      "resolvedAt": "2026-10-02T19:24:35.758Z",
       "propType": "player_rush_yards",
       "playerName": "Raheim Sanders",
       "line": 24.5,
