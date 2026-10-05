@@ -51,8 +51,23 @@ jobs:
           # runs fresh, since a human triggering it by hand is deliberately
           # asking for a fresh pull (e.g. retrying after a bug fix deploys
           # mid-day), not racing the automated schedule.
-          if [ "${{ github.event_name }}" = "schedule" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ]; then
-            echo "picks.json already reflects $DATE — skipping this scheduled run (an earlier slot today already succeeded)."
+          #
+          # Two guards against GitHub's delay pushing slots past midnight UTC:
+          # a delayed late-evening slot lands at e.g. 01:14 UTC, which is a new
+          # UTC date with no odds posted yet — it used to stamp picks.json with
+          # that date and 0 picks, and the check below then treated the day as
+          # already done, so every real afternoon slot skipped (Monday night
+          # 10/5 got nothing). So: (1) a scheduled run before 16:00 UTC is
+          # always a spillover from the previous night's slots and does
+          # nothing, and (2) "already generated" only counts a run that
+          # actually happened in the daytime window.
+          HOUR=$(date -u +%H)
+          GENERATED_HOUR=$(jq -r '.generatedAt // "T00" | .[11:13]' apps/web/public/picks.json 2>/dev/null || echo 00)
+          if [ "${{ github.event_name }}" = "schedule" ] && [ $((10#$HOUR)) -lt 16 ]; then
+            echo "Scheduled run at ${HOUR}:xx UTC is a delayed spillover from last night's slots — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "schedule" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ] && [ $((10#$GENERATED_HOUR)) -ge 16 ]; then
+            echo "picks.json already reflects $DATE from a daytime run — skipping this scheduled run (an earlier slot today already succeeded)."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"

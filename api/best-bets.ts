@@ -2707,14 +2707,23 @@ async function buildNflPropPicks(
   date: string,
   book: Sportsbook | null
 ): Promise<PropPick[]> {
-  const topGameIds = moneylinePicks
+  const rankedGameIds = moneylinePicks
     .filter(p => p.sport === "nfl")
     .slice()
     .sort((a, b) => b.scores.composite - a.scores.composite)
-    .slice(0, TOP_GAMES_FOR_PROPS)
     .map(p => p.id.replace(/-(home|away)$/, ""));
 
-  const topGames = rawGames.filter(g => g.sport === "nfl" && topGameIds.includes(g.id));
+  // A game only gets a moneyline pick if its moneyline score clears the
+  // minimum tier — a close, unremarkable game often doesn't, and on a
+  // one-game slate that meant no game was eligible for props at all (a
+  // Monday night with nothing actionable on the moneyline got zero picks of
+  // any kind). Props are a separate market with their own edge test, so a
+  // game with no moneyline pick still gets scored, just after the ones that
+  // do, within the same cap on games checked (OddsAPI cost doesn't grow).
+  const nflGames = rawGames.filter(g => g.sport === "nfl");
+  const ranked = rankedGameIds.map(id => nflGames.find(g => g.id === id)).filter((g): g is RawGame => !!g);
+  const unranked = nflGames.filter(g => !rankedGameIds.includes(g.id));
+  const topGames = [...ranked, ...unranked].slice(0, TOP_GAMES_FOR_PROPS);
   if (topGames.length === 0) return [];
 
   const eventIdByGameId = new Map<string, string>();
