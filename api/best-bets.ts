@@ -1745,12 +1745,18 @@ async function fetchPropOddsForGame(eventId: string, book: Sportsbook, sport: Sp
     }
 
     for (const bucket of buckets.values()) {
-      if (bucket.overOdds === undefined && bucket.underOdds === undefined) continue;
+      // Only lines the book actually priced on BOTH sides are usable. Alternate
+      // ladders usually quote just the over at long odds (e.g. Over 199.5
+      // rushing at +3200); this used to fill the missing side with a made-up
+      // -110, which turned "Under 199.5" into a fictional near-free bet with a
+      // 40-point phantom edge. A one-sided quote has no real opposing price to
+      // anchor against, so it's skipped rather than guessed at.
+      if (bucket.overOdds === undefined || bucket.underOdds === undefined) continue;
       const key = `${bucket.player}-${bucket.propType}`;
       const entry: PropOddsEntry = {
         line: bucket.line,
-        overOdds: bucket.overOdds ?? -110,
-        underOdds: bucket.underOdds ?? -110,
+        overOdds: bucket.overOdds,
+        underOdds: bucket.underOdds,
         sportsbook: book,
         isAlternate: bucket.isAlternate,
       };
