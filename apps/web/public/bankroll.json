@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 461.3,
+  "currentBankroll": 890,
   "totalBets": 23,
-  "wins": 8,
-  "losses": 9,
+  "wins": 12,
+  "losses": 11,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 476.5,
-  "totalProfit": -38.7,
-  "roi": -0.1005,
-  "peakBankroll": 500,
+  "totalProfit": 390,
+  "roi": 0.8185,
+  "peakBankroll": 903,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": null,
-    "strongWinRate": null,
+    "eliteWinRate": 0.6429,
+    "strongWinRate": 0,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": null,
+    "nflRoi": 0.0845,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 1,
+    "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": null,
-    "totalResultsTracked": 17
+    "lastCalibrated": "2026-10-05T15:15:43.358Z",
+    "totalResultsTracked": 23
   },
   "bets": [
     {
@@ -609,10 +609,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -16.5,
+      "bankrollAfter": 444.8,
+      "resolvedAt": "2026-10-05T15:15:43.059Z"
     },
     {
       "betId": "nfl-401872966-home-2026-10-04",
@@ -631,10 +631,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 18.81,
+      "bankrollAfter": 463.61,
+      "resolvedAt": "2026-10-05T15:15:43.059Z"
     },
     {
       "betId": "nfl-401872967-prop-jakeferguson-player_receiving_yards-alt49.5-2026-10-04",
@@ -653,10 +653,10 @@
         "composite": 87
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 15,
+      "bankrollAfter": 478.61,
+      "resolvedAt": "2026-10-05T15:15:43.114Z",
       "propType": "player_receiving_yards",
       "playerName": "Jake Ferguson",
       "line": 49.5,
@@ -673,7 +673,8 @@
           "sport": "nfl",
           "matchup": "New York Jets @ Chicago Bears",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "San Francisco 49ers ML",
@@ -681,7 +682,8 @@
           "sport": "nfl",
           "matchup": "Denver Broncos @ San Francisco 49ers",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Dallas Cowboys ML",
@@ -689,17 +691,18 @@
           "sport": "nfl",
           "matchup": "Dallas Cowboys @ Houston Texans",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 494,
       "stakeAmount": 16.5,
       "potentialPayout": 98.01,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 81.51,
+      "bankrollAfter": 560.12,
+      "resolvedAt": "2026-10-05T15:15:43.115Z"
     },
     {
       "betId": "parlay-high-2026-10-04",
@@ -712,7 +715,8 @@
           "sport": "nfl",
           "matchup": "Arizona Cardinals @ New York Giants",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Jake Ferguson Under Alt 49.5 Receiving Yards",
@@ -724,7 +728,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jake Ferguson",
           "line": 49.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Geno Smith Under Alt 289.5 Passing Yards",
@@ -736,7 +741,8 @@
           "propType": "player_pass_yards",
           "playerName": "Geno Smith",
           "line": 289.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Geno Smith Under Alt 19.5 Rushing Yards",
@@ -748,7 +754,8 @@
           "propType": "player_rush_yards",
           "playerName": "Geno Smith",
           "line": 19.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "David Montgomery Under Alt 69.5 Rushing Yards",
@@ -760,17 +767,18 @@
           "propType": "player_rush_yards",
           "playerName": "David Montgomery",
           "line": 69.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2743,
       "stakeAmount": 12.5,
       "potentialPayout": 355.38,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 342.88,
+      "bankrollAfter": 903,
+      "resolvedAt": "2026-10-05T15:15:43.306Z"
     },
     {
       "betId": "parlay-double-2026-10-04",
@@ -783,7 +791,8 @@
           "sport": "nfl",
           "matchup": "New York Jets @ Chicago Bears",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "San Francisco 49ers ML",
@@ -791,7 +800,8 @@
           "sport": "nfl",
           "matchup": "Denver Broncos @ San Francisco 49ers",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Green Bay Packers ML",
@@ -799,7 +809,8 @@
           "sport": "nfl",
           "matchup": "Green Bay Packers @ Tampa Bay Buccaneers",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Buffalo Bills ML",
@@ -807,7 +818,8 @@
           "sport": "nfl",
           "matchup": "New England Patriots @ Buffalo Bills",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Detroit Lions ML",
@@ -815,7 +827,8 @@
           "sport": "nfl",
           "matchup": "Detroit Lions @ Carolina Panthers",
           "date": "2026-10-05",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Seattle Seahawks ML",
@@ -823,17 +836,18 @@
           "sport": "nfl",
           "matchup": "Los Angeles Chargers @ Seattle Seahawks",
           "date": "2026-10-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 964,
       "stakeAmount": 13,
       "potentialPayout": 138.32,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -13,
+      "bankrollAfter": 890,
+      "resolvedAt": "2026-10-05T15:15:43.357Z"
     }
   ]
 }
