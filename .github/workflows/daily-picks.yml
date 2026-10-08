@@ -2,16 +2,18 @@ name: Daily Picks
 
 on:
   schedule:
-    # GitHub's scheduler has been landing these 3-5.5 hours late (see the
-    # guard step below for why that's safe to retry for rather than a
-    # problem) — a single 16:07 UTC slot meant picks routinely weren't ready
-    # until early evening. Every 30 minutes from noon to ~6pm EDT gives the
-    # scheduler many chances to actually fire close to on time; the guard
-    # makes every slot after the first a no-op, so this doesn't multiply
-    # OddsAPI usage. Minutes are offset off the hour/half-hour since GitHub's
-    # scheduler is most congested exactly there and can delay or drop runs.
+    # Fallback only. GitHub throttles this repo's scheduled runs to 1-3 a day,
+    # always 3.5-5.5 hours late, regardless of how many slots are listed — the
+    # primary trigger is Vercel Cron calling api/trigger-picks (see vercel.json),
+    # which dispatches this workflow with respect_guard. Every path shares the
+    # guard step below, so whichever fires first wins and the rest are no-ops.
     - cron: "7,37 16-22 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      respect_guard:
+        description: "Apply the same already-generated-today dedupe a scheduled run gets (used by the Vercel cron trigger)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -61,12 +63,16 @@ jobs:
           # always a spillover from the previous night's slots and does
           # nothing, and (2) "already generated" only counts a run that
           # actually happened in the daytime window.
+          # A manual dispatch always runs fresh; the Vercel cron trigger passes
+          # respect_guard so it gets the scheduled-run dedupe instead.
+          TREAT_AS_SCHEDULED=false
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.respect_guard }}" = "true" ]; then TREAT_AS_SCHEDULED=true; fi
           HOUR=$(date -u +%H)
           GENERATED_HOUR=$(jq -r '.generatedAt // "T00" | .[11:13]' apps/web/public/picks.json 2>/dev/null || echo 00)
-          if [ "${{ github.event_name }}" = "schedule" ] && [ $((10#$HOUR)) -lt 16 ]; then
+          if [ "$TREAT_AS_SCHEDULED" = "true" ] && [ $((10#$HOUR)) -lt 16 ]; then
             echo "Scheduled run at ${HOUR}:xx UTC is a delayed spillover from last night's slots — skipping."
             echo "skip=true" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event_name }}" = "schedule" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ] && [ $((10#$GENERATED_HOUR)) -ge 16 ]; then
+          elif [ "$TREAT_AS_SCHEDULED" = "true" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ] && [ $((10#$GENERATED_HOUR)) -ge 16 ]; then
             echo "picks.json already reflects $DATE from a daytime run — skipping this scheduled run (an earlier slot today already succeeded)."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else

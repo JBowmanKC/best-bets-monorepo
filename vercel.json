@@ -10,17 +10,42 @@
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "s-maxage=1800, stale-while-revalidate=3600" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" }
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=1800, stale-while-revalidate=3600"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        }
       ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/trigger-picks",
+      "schedule": "30 16 * * *"
+    },
+    {
+      "path": "/api/trigger-picks",
+      "schedule": "30 19 * * *"
     }
   ]
 }
