@@ -159,6 +159,9 @@ interface FinalGame {
   gamePk?: string;
   /** ESPN event id — set only by fetchEspnFinals, needed to fetch the boxscore for NFL prop resolution. */
   eventId?: string;
+  /** ESPN team ids — set only by fetchEspnFinals, needed to look a player up on a game's roster. */
+  homeTeamId?: string;
+  awayTeamId?: string;
 }
 
 const CALIBRATION_THRESHOLD = 20;
@@ -300,6 +303,8 @@ async function fetchEspnFinals(sport: "nfl" | "nhl" | "ncaaf", date: string): Pr
       awayScore: num(away?.score),
       state,
       eventId: e.id !== undefined && e.id !== null ? String(e.id) : undefined,
+      homeTeamId: home?.team?.id !== undefined ? String(home.team.id) : undefined,
+      awayTeamId: away?.team?.id !== undefined ? String(away.team.id) : undefined,
     };
   });
 }
@@ -453,6 +458,51 @@ function readNflBoxscoreStatValue(categories: EspnBoxscoreCategory[], playerName
   return sawYdsColumn ? 0 : null; // played, but not in either team's category — real zero; unless the YDS column itself was never found
 }
 
+/**
+ * A player missing from every box-score stat table is NOT necessarily a
+ * player who didn't play: someone active with zero touches (a backup RB who
+ * only played special teams, a WR with no targets) has no row in any table
+ * either. Voiding those hands a real result to the sportsbook's rule instead
+ * of the stat line — Tyler Goodson's Under 14.5 rushing was voided this way
+ * on 10/8 though he was active for the game (0 carries, an Under that wins).
+ *
+ * The roster endpoint gives the player's id (matched by last name, with a
+ * first-initial form for same-surname teammates), and a player's game log
+ * only contains games he actually appeared in, so its entry for this event
+ * separates "played, no stats" (true) from "inactive/DNP" (false). Null means
+ * the lookup itself failed — the caller should leave the bet pending and
+ * retry rather than void it on a transient error.
+ */
+async function nflPlayedWithoutStats(game: FinalGame, playerName: string): Promise<boolean | null> {
+  if (!game.eventId || !game.homeTeamId || !game.awayTeamId) return null;
+  try {
+    const parts = playerName.trim().split(/s+/);
+    const surnameKey = rrNormalizeTeamName(parts.slice(1).join(""));
+    const initialKey = rrNormalizeTeamName(parts[0].slice(0, 1) + parts.slice(1).join(""));
+    if (!surnameKey) return false;
+
+    const matches: number[] = [];
+    for (const teamId of [game.homeTeamId, game.awayTeamId]) {
+      const roster = await rrFetchJson(
+        `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/${game.eventId}/competitions/${game.eventId}/competitors/${teamId}/roster?lang=en&region=us`
+      );
+      for (const entry of roster.entries ?? []) {
+        const key = rrNormalizeTeamName(entry.displayName ?? "");
+        if (key === surnameKey || key === initialKey) matches.push(Number(entry.playerId));
+      }
+    }
+    if (matches.length !== 1) return false; // not on either roster, or ambiguous — keep the old void behavior
+
+    const now = new Date();
+    const season = now.getUTCMonth() >= 2 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
+    const log = await rrFetchJson(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${matches[0]}/gamelog?season=${season}`);
+    return !!log.events?.[game.eventId];
+  } catch (e) {
+    console.warn(`nflPlayedWithoutStats(${game.eventId}, ${playerName}) failed:`, e);
+    return null;
+  }
+}
+
 type PropResolution = { status: "pending" } | { status: "void" } | { status: "value"; value: number };
 
 /**
@@ -478,7 +528,11 @@ async function resolvePropStatValue(
     if (!game.eventId) return { status: "pending" };
     const categories = await fetchNflBoxscore(game.eventId);
     if (!categories) return { status: "pending" };
-    if (!playerInNflBoxscore(categories, playerName)) return { status: "void" };
+    if (!playerInNflBoxscore(categories, playerName)) {
+      const played = await nflPlayedWithoutStats(game, playerName);
+      if (played === null) return { status: "pending" };
+      return played ? { status: "value", value: 0 } : { status: "void" };
+    }
     const value = readNflBoxscoreStatValue(categories, playerName, propType);
     return value === null ? { status: "pending" } : { status: "value", value };
   }
