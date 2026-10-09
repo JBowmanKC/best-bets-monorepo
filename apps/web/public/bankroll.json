@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1231.94,
+  "currentBankroll": 1363.11,
   "totalBets": 31,
-  "wins": 16,
-  "losses": 11,
+  "wins": 18,
+  "losses": 12,
   "pushes": 0,
-  "voids": 0,
+  "voids": 1,
   "totalStaked": 883.5,
-  "totalProfit": 731.94,
-  "roi": 1.1481,
-  "peakBankroll": 1231.94,
+  "totalProfit": 863.11,
+  "roi": 1.0629,
+  "peakBankroll": 1375.11,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6875,
-    "strongWinRate": 0.5,
+    "eliteWinRate": 0.7059,
+    "strongWinRate": 0.6667,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.3285,
+    "nflRoi": 0.4656,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-08T19:59:52.405Z",
-    "totalResultsTracked": 27
+    "lastCalibrated": "2026-10-09T12:36:43.139Z",
+    "totalResultsTracked": 31
   },
   "bets": [
     {
@@ -1024,10 +1024,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 71.24,
+      "bankrollAfter": 1303.18,
+      "resolvedAt": "2026-10-09T12:36:42.887Z",
       "propType": "player_rush_yards",
       "playerName": "Bucky Irving",
       "line": 52.5,
@@ -1050,10 +1050,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "void",
+      "profitLoss": 0,
+      "bankrollAfter": 1303.18,
+      "resolvedAt": "2026-10-09T12:36:42.912Z",
       "propType": "player_rush_yards",
       "playerName": "Tyler Goodson",
       "line": 14.5,
@@ -1076,10 +1076,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 71.93,
+      "bankrollAfter": 1375.11,
+      "resolvedAt": "2026-10-09T12:36:42.941Z",
       "propType": "player_pass_yards",
       "playerName": "Dak Prescott",
       "line": 267.5,
@@ -1100,7 +1100,8 @@
           "propType": "player_rush_yards",
           "playerName": "Bucky Irving",
           "line": 52.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Tyler Goodson Under 14.5 Rushing Yards",
@@ -1112,7 +1113,8 @@
           "propType": "player_rush_yards",
           "playerName": "Tyler Goodson",
           "line": 14.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "void"
         },
         {
           "pickLabel": "Dak Prescott Over 267.5 Passing Yards",
@@ -1124,7 +1126,8 @@
           "propType": "player_pass_yards",
           "playerName": "Dak Prescott",
           "line": 267.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Kenny Gainwell Over 11.5 Receiving Yards",
@@ -1136,7 +1139,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Kenny Gainwell",
           "line": 11.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "CeeDee Lamb Over 83.5 Receiving Yards",
@@ -1148,17 +1152,18 @@
           "propType": "player_receiving_yards",
           "playerName": "CeeDee Lamb",
           "line": 83.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2204,
       "stakeAmount": 12,
       "potentialPayout": 276.48,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -12,
+      "bankrollAfter": 1363.11,
+      "resolvedAt": "2026-10-09T12:36:43.139Z"
     }
   ]
 }
