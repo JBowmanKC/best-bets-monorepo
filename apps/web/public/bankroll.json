@@ -1,15 +1,15 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1363.11,
+  "currentBankroll": 1424.75,
   "totalBets": 31,
-  "wins": 18,
+  "wins": 19,
   "losses": 12,
   "pushes": 0,
-  "voids": 1,
+  "voids": 0,
   "totalStaked": 883.5,
-  "totalProfit": 863.11,
-  "roi": 1.0629,
-  "peakBankroll": 1375.11,
+  "totalProfit": 924.75,
+  "roi": 1.0467,
+  "peakBankroll": 1436.75,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.7059,
@@ -1050,9 +1050,9 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "void",
-      "profitLoss": 0,
-      "bankrollAfter": 1303.18,
+      "result": "win",
+      "profitLoss": 61.64,
+      "bankrollAfter": 1364.82,
       "resolvedAt": "2026-10-09T12:36:42.912Z",
       "propType": "player_rush_yards",
       "playerName": "Tyler Goodson",
@@ -1078,7 +1078,7 @@
       "sportsbook": "DraftKings",
       "result": "win",
       "profitLoss": 71.93,
-      "bankrollAfter": 1375.11,
+      "bankrollAfter": 1436.75,
       "resolvedAt": "2026-10-09T12:36:42.941Z",
       "propType": "player_pass_yards",
       "playerName": "Dak Prescott",
@@ -1114,7 +1114,7 @@
           "playerName": "Tyler Goodson",
           "line": 14.5,
           "recommendedSide": "under",
-          "result": "void"
+          "result": "win"
         },
         {
           "pickLabel": "Dak Prescott Over 267.5 Passing Yards",
@@ -1162,7 +1162,7 @@
       "sportsbook": "DraftKings",
       "result": "loss",
       "profitLoss": -12,
-      "bankrollAfter": 1363.11,
+      "bankrollAfter": 1424.75,
       "resolvedAt": "2026-10-09T12:36:43.139Z"
     }
   ]
