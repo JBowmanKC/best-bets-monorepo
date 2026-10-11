@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1424.75,
-  "totalBets": 31,
+  "totalBets": 37,
   "wins": 19,
   "losses": 12,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 883.5,
+  "totalStaked": 1169,
   "totalProfit": 924.75,
   "roi": 1.0467,
   "peakBankroll": 1436.75,
@@ -1164,6 +1164,221 @@
       "profitLoss": -12,
       "bankrollAfter": 1424.75,
       "resolvedAt": "2026-10-09T12:36:43.139Z"
+    },
+    {
+      "betId": "nfl-401872989-prop-omarionhampton-player_rush_yards-2026-10-11",
+      "date": "2026-10-11",
+      "sport": "nfl",
+      "matchup": "Denver Broncos @ Los Angeles Chargers",
+      "pickLabel": "Omarion Hampton Over 42.5",
+      "odds": -109,
+      "stakeAmount": 53.5,
+      "potentialPayout": 102.58,
+      "estimatedWinPct": 0.689,
+      "impliedWinPct": 0.522,
+      "evEdge": 0.167,
+      "tier": "elite",
+      "scores": {
+        "composite": 92
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Omarion Hampton",
+      "line": 42.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872987-prop-tylershough-player_pass_yards-2026-10-11",
+      "date": "2026-10-11",
+      "sport": "nfl",
+      "matchup": "Minnesota Vikings @ New Orleans Saints",
+      "pickLabel": "Tyler Shough Over 239.5",
+      "odds": -110,
+      "stakeAmount": 53.5,
+      "potentialPayout": 102.14,
+      "estimatedWinPct": 0.641,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.118,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_pass_yards",
+      "playerName": "Tyler Shough",
+      "line": 239.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872986-prop-rhamondrestevenson-player_rush_yards-2026-10-11",
+      "date": "2026-10-11",
+      "sport": "nfl",
+      "matchup": "Las Vegas Raiders @ New England Patriots",
+      "pickLabel": "Rhamondre Stevenson Over 37.5",
+      "odds": -111,
+      "stakeAmount": 48,
+      "potentialPayout": 91.24,
+      "estimatedWinPct": 0.641,
+      "impliedWinPct": 0.526,
+      "evEdge": 0.115,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Rhamondre Stevenson",
+      "line": 37.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-10-11",
+      "date": "2026-10-11",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Minnesota Vikings ML",
+          "odds": -130,
+          "sport": "nfl",
+          "matchup": "Minnesota Vikings @ New Orleans Saints",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Cleveland Browns ML",
+          "odds": 114,
+          "sport": "nfl",
+          "matchup": "Cleveland Browns @ New York Jets",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Denver Broncos ML",
+          "odds": -185,
+          "sport": "nfl",
+          "matchup": "Denver Broncos @ Los Angeles Chargers",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 483,
+      "stakeAmount": 53.5,
+      "potentialPayout": 311.9,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-11",
+      "date": "2026-10-11",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Cleveland Browns ML",
+          "odds": 114,
+          "sport": "nfl",
+          "matchup": "Cleveland Browns @ New York Jets",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "San Francisco 49ers ML",
+          "odds": 140,
+          "sport": "nfl",
+          "matchup": "San Francisco 49ers @ Seattle Seahawks",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Minnesota Vikings ML",
+          "odds": -130,
+          "sport": "nfl",
+          "matchup": "Minnesota Vikings @ New Orleans Saints",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Omarion Hampton Over 42.5 Rushing Yards",
+          "odds": -109,
+          "sport": "nfl",
+          "matchup": "Denver Broncos @ Los Angeles Chargers",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Omarion Hampton",
+          "line": 42.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Denver Broncos ML",
+          "odds": -185,
+          "sport": "nfl",
+          "matchup": "Denver Broncos @ Los Angeles Chargers",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 2584,
+      "stakeAmount": 23.5,
+      "potentialPayout": 630.74,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-10-11",
+      "date": "2026-10-11",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Minnesota Vikings ML",
+          "odds": -130,
+          "sport": "nfl",
+          "matchup": "Minnesota Vikings @ New Orleans Saints",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Denver Broncos ML",
+          "odds": -185,
+          "sport": "nfl",
+          "matchup": "Denver Broncos @ Los Angeles Chargers",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Chicago Bears ML",
+          "odds": -125,
+          "sport": "nfl",
+          "matchup": "Chicago Bears @ Green Bay Packers",
+          "date": "2026-10-11",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 391,
+      "stakeAmount": 53.5,
+      "potentialPayout": 262.69,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
