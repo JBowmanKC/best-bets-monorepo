@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1230.49,
-  "totalBets": 37,
+  "totalBets": 40,
   "wins": 20,
   "losses": 17,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1169,
+  "totalStaked": 1377,
   "totalProfit": 730.49,
   "roi": 0.6249,
   "peakBankroll": 1436.75,
@@ -1390,6 +1390,129 @@
       "profitLoss": -53.5,
       "bankrollAfter": 1230.49,
       "resolvedAt": "2026-10-12T13:52:40.182Z"
+    },
+    {
+      "betId": "nfl-401872994-prop-kyrenwilliams-player_rush_yards-2026-10-12",
+      "date": "2026-10-12",
+      "sport": "nfl",
+      "matchup": "Buffalo Bills @ Los Angeles Rams",
+      "pickLabel": "Kyren Williams Over 69.5",
+      "odds": -114,
+      "stakeAmount": 98.5,
+      "potentialPayout": 184.9,
+      "estimatedWinPct": 0.665,
+      "impliedWinPct": 0.533,
+      "evEdge": 0.132,
+      "tier": "elite",
+      "scores": {
+        "composite": 85
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Kyren Williams",
+      "line": 69.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401872994-away-2026-10-12",
+      "date": "2026-10-12",
+      "sport": "nfl",
+      "matchup": "Buffalo Bills @ Los Angeles Rams",
+      "pickLabel": "Buffalo Bills ML",
+      "odds": 150,
+      "stakeAmount": 98.5,
+      "potentialPayout": 246.25,
+      "estimatedWinPct": 0.659,
+      "impliedWinPct": 0.4,
+      "evEdge": 0.259,
+      "tier": "strong",
+      "scores": {
+        "composite": 68
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-12",
+      "date": "2026-10-12",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Kyren Williams Over 69.5 Rushing Yards",
+          "odds": -114,
+          "sport": "nfl",
+          "matchup": "Buffalo Bills @ Los Angeles Rams",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Kyren Williams",
+          "line": 69.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Matthew Stafford Over 282.5 Passing Yards",
+          "odds": -111,
+          "sport": "nfl",
+          "matchup": "Buffalo Bills @ Los Angeles Rams",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Matthew Stafford",
+          "line": 282.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Dalton Kincaid Under 55.5 Receiving Yards",
+          "odds": -112,
+          "sport": "nfl",
+          "matchup": "Buffalo Bills @ Los Angeles Rams",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Dalton Kincaid",
+          "line": 55.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Davis Allen Over 6.5 Receiving Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "Buffalo Bills @ Los Angeles Rams",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Davis Allen",
+          "line": 6.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Khalil Shakir Under 44.5 Receiving Yards",
+          "odds": -111,
+          "sport": "nfl",
+          "matchup": "Buffalo Bills @ Los Angeles Rams",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Khalil Shakir",
+          "line": 44.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 2320,
+      "stakeAmount": 11,
+      "potentialPayout": 266.2,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
