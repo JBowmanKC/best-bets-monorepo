@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-12",
+  "generatedAt": "2026-10-12T00:00:00.000Z",
+  "cached": false,
+  "sportStatuses": [
+    { "sport": "nhl", "label": "🏒 NHL", "active": false, "note": "No NHL picks generated yet — the first run is Tuesday." }
+  ],
+  "sportsbook": null,
+  "bestBets": [],
+  "allPicks": [],
+  "allPropPicks": [],
+  "allParlays": [],
+  "summary": {
+    "totalBetsPlaced": 0,
+    "totalStaked": 0,
+    "totalPotentialPayout": 0,
+    "bankrollAtRisk": 0,
+    "highestConfidencePick": ""
+  }
+}

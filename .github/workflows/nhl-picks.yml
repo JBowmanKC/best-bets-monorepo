@@ -1,0 +1,162 @@
+name: NHL Picks
+
+# NHL counterpart to Daily Picks (the NFL workflow). Completely separate:
+# its own picks (apps/web/public/nhl-data/picks.json + picks/ archive), its
+# own $500 bankroll (apps/web/public/nhl-data/bankroll.json), and its own
+# bet days — Tuesday, Wednesday, Friday and Saturday (Eastern), so NFL
+# (Thu/Sun/Mon) and NHL never both spend OddsAPI credits on the same day.
+
+on:
+  schedule:
+    # GitHub delays this repo's scheduled runs by hours (see daily-picks.yml),
+    # so slots start early in the day to land before the evening puck drops.
+    # Listed for every day because the delay can push a slot across UTC
+    # midnight; the guard below decides by Eastern weekday, not by which
+    # slot fired.
+    - cron: "7,37 13-21 * * *"
+  workflow_dispatch:
+    inputs:
+      respect_guard:
+        description: "Apply the bet-day and already-generated-today checks a scheduled run gets"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  # Shared with NHL Resolve Results only — both push nhl-data/bankroll.json.
+  # Kept apart from the NFL workflows' group so neither sport can queue
+  # behind (or cancel a pending run of) the other.
+  group: nhl-archive-push
+  cancel-in-progress: false
+
+jobs:
+  fetch-picks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Check bet day and whether today's picks already exist
+        id: guard
+        run: |
+          set -euo pipefail
+          # Everything here is in Eastern time: NHL slates are scheduled by
+          # Eastern date, and a delayed slot landing after UTC midnight must
+          # still count as the previous Eastern day.
+          DATE=$(TZ=America/New_York date +%F)
+          DOW=$(TZ=America/New_York date +%u)   # 1=Mon … 7=Sun
+          HOUR=$(TZ=America/New_York date +%H)
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+
+          TREAT_AS_SCHEDULED=false
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.respect_guard }}" = "true" ]; then TREAT_AS_SCHEDULED=true; fi
+
+          # A manual dispatch always runs — a human asking for picks by hand
+          # is deliberately choosing to spend the OddsAPI credits.
+          if [ "$TREAT_AS_SCHEDULED" != "true" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "$DOW" in
+            2|3|5|6) ;;  # Tue, Wed, Fri, Sat
+            *)
+              echo "Eastern weekday $DOW isn't an NHL bet day (Tue/Wed/Fri/Sat) — skipping."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          # Past 7 PM ET most of the slate has dropped the puck — a slot this
+          # late is GitHub's delay, not a useful run.
+          if [ $((10#$HOUR)) -ge 19 ]; then
+            echo "Scheduled run at ${HOUR}:xx ET is too late for tonight's slate — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ -f apps/web/public/nhl-data/picks.json ] && [ "$(jq -r '.date' apps/web/public/nhl-data/picks.json)" = "$DATE" ]; then
+            echo "nhl-data/picks.json already reflects $DATE — skipping (an earlier slot today already ran)."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch NHL picks from deployed endpoint
+        id: fetch
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+
+          DATE="${{ steps.guard.outputs.date }}"
+          TIME=$(date -u +%H:%M)
+          STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          echo "time=$TIME" >> "$GITHUB_OUTPUT"
+          echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
+
+          URL="https://${{ secrets.VERCEL_URL }}/api/best-bets?date=${DATE}&sports=nhl&ledger=nhl"
+          echo "Fetching $URL"
+
+          HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" "$URL")
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::best-bets endpoint returned HTTP $HTTP_STATUS"
+            cat response.json || true
+            exit 1
+          fi
+
+          echo "Generated $(jq '.allPicks | length' response.json) NHL picks for $DATE, selected $(jq '.bestBets | length' response.json) best bet(s)"
+
+          mkdir -p apps/web/public/nhl-data/picks
+          cp response.json "apps/web/public/nhl-data/picks/picks-${STAMP}.json"
+          mv response.json apps/web/public/nhl-data/picks.json
+
+      - name: Track today's picks in the NHL bankroll ledger
+        if: steps.guard.outputs.skip != 'true'
+        run: node scripts/append-bankroll-bets.mjs apps/web/public/nhl-data/picks.json apps/web/public/nhl-data/bankroll.json
+
+      - name: Log NHL bet summary
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          jq -r '
+            "Sportsbook: \(.sportsbook // "none (no real book price found)")",
+            "Best Bets: \(.bestBets | length)",
+            (.bestBets[] | "  - \(.pickLabel // "?") (\(.odds)) stake: $\(.stakeAmount)"),
+            "Total staked: $\(.summary.totalStaked)",
+            "Bankroll at risk: \(.summary.bankrollAtRisk * 100 | floor)%"
+          ' apps/web/public/nhl-data/picks.json
+
+      - name: Commit and push NHL picks
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add apps/web/public/nhl-data/picks.json "apps/web/public/nhl-data/picks/picks-${{ steps.fetch.outputs.stamp }}.json" apps/web/public/nhl-data/bankroll.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "nhl picks: ${{ steps.guard.outputs.date }} ${{ steps.fetch.outputs.time }} UTC"
+
+          for attempt in 1 2 3 4; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "Push attempt $attempt failed; retrying in $((2 ** attempt))s"
+            sleep $((2 ** attempt))
+          done
+
+          echo "::error::Could not push NHL picks after 4 attempts"
+          exit 1

@@ -24,6 +24,9 @@ const PROP_TYPE_LABELS: Record<string, string> = {
   player_rush_yards: "Rushing Yards",
   player_receiving_yards: "Receiving Yards",
   player_shots_on_goal: "Shots on Goal",
+  player_goals: "Goals",
+  player_assists: "Assists",
+  player_points: "Points",
 };
 
 const VOID_RISK_BADGE: Record<Exclude<VoidRisk, "high">, { label: string; color: string; bg: string }> = {

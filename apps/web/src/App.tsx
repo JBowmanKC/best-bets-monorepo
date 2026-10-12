@@ -1,5 +1,7 @@
 import { Dashboard }   from "./pages/Dashboard";
 import { PickHistory } from "./pages/PickHistory";
+import { NhlDashboard }   from "./pages/NhlDashboard";
+import { NhlPickHistory } from "./pages/NhlPickHistory";
 import { NavLink, useRoute } from "./router";
 
 export default function App() {
@@ -19,16 +21,22 @@ export default function App() {
           background: "linear-gradient(135deg,#f59e0b 0%,#ef4444 45%,#8b5cf6 100%)",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
         }}>
-          ⚡ Best Bets Algorithm
+          {route.startsWith("/nhl") ? "NHL Bets" : "NFL Bets"}
         </h1>
 
-        <nav style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 16 }}>
-          <NavLink to="/"             active={route === "/"}>Today’s Picks</NavLink>
-          <NavLink to="/pick-history" active={route === "/pick-history"}>📜 Pick History</NavLink>
+        {/* NFL and NHL are completely separate page pairs, each with its own bankroll. */}
+        <nav style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginTop: 16 }}>
+          <NavLink to="/"                 active={route === "/"}>🏈 NFL Picks</NavLink>
+          <NavLink to="/pick-history"     active={route === "/pick-history"}>📜 NFL History</NavLink>
+          <NavLink to="/nhl"              active={route === "/nhl"}>🏒 NHL Picks</NavLink>
+          <NavLink to="/nhl/pick-history" active={route === "/nhl/pick-history"}>📜 NHL History</NavLink>
         </nav>
       </div>
 
-      {route === "/pick-history" ? <PickHistory /> : <Dashboard />}
+      {route === "/pick-history"          ? <PickHistory />
+        : route === "/nhl"              ? <NhlDashboard />
+        : route === "/nhl/pick-history" ? <NhlPickHistory />
+        : <Dashboard />}
 
       {/* ── Disclaimer ── */}
       <div style={{

@@ -1,0 +1,79 @@
+name: NHL Resolve Results
+
+# NHL counterpart to Resolve Results. Resolves pending bets in the separate
+# NHL ledger (apps/web/public/nhl-data/bankroll.json) against final scores
+# and commits it — never touches the NFL bankroll.json.
+
+on:
+  schedule:
+    # ~10:40 AM EDT, the morning after each bet day (Wed, Thu, Sat, Sun) —
+    # late West Coast games finish well after UTC midnight. Daily rather than
+    # only those days so a pending bet missed by one run is retried the next.
+    - cron: "41 14 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nhl-archive-push
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve pending NHL bets against final scores
+        id: resolve
+        run: |
+          set -euo pipefail
+
+          DATE=$(date -u +%F)
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+
+          URL="https://${{ secrets.VERCEL_URL }}/api/resolve-results?ledger=nhl"
+          echo "Calling $URL"
+
+          HTTP_STATUS=$(curl -sS -o response.json -w "%{http_code}" "$URL")
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::resolve-results endpoint returned HTTP $HTTP_STATUS"
+            cat response.json || true
+            exit 1
+          fi
+
+          RESOLVED=$(jq '.resolved' response.json)
+          echo "resolved=$RESOLVED" >> "$GITHUB_OUTPUT"
+          echo "Resolved $RESOLVED NHL bet(s); $(jq '.pending' response.json) still pending; NHL bankroll is now \$$(jq '.currentBankroll' response.json)"
+
+          jq '.bankroll' response.json > apps/web/public/nhl-data/bankroll.json.tmp
+          mv apps/web/public/nhl-data/bankroll.json.tmp apps/web/public/nhl-data/bankroll.json
+
+      - name: Commit and push NHL bankroll
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add apps/web/public/nhl-data/bankroll.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "nhl results: ${{ steps.resolve.outputs.date }} — ${{ steps.resolve.outputs.resolved }} resolved"
+
+          for attempt in 1 2 3 4; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "Push attempt $attempt failed; retrying in $((2 ** attempt))s"
+            sleep $((2 ** attempt))
+          done
+
+          echo "::error::Could not push NHL bankroll after 4 attempts"
+          exit 1

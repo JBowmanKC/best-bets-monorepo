@@ -64,7 +64,7 @@ export interface Pick {
   sportsbook: string;
 }
 
-// ─── Prop bets (MLB + NFL today — see api/best-bets.ts) ─────────────────────
+// ─── Prop bets (MLB + NFL + NHL — see api/best-bets.ts) ─────────────────────
 
 export type PropType =
   | "pitcher_strikeouts"
@@ -75,7 +75,10 @@ export type PropType =
   | "player_pass_yards"
   | "player_rush_yards"
   | "player_receiving_yards"
-  | "player_shots_on_goal";
+  | "player_shots_on_goal"
+  | "player_goals"
+  | "player_assists"
+  | "player_points";
 
 export type PropSide = "over" | "under";
 export type VoidRisk = "low" | "medium" | "high";

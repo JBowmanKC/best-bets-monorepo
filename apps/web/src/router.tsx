@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * Two-page client-side routing, hand-rolled rather than pulled in.
+ * Client-side routing for the NFL and NHL page pairs, hand-rolled rather
+ * than pulled in.
  *
  * Vercel rewrites every non-API path to index.html (see vercel.json) and Vite's
  * dev server does the same, so a deep link to /pick-history loads the app and
  * this hook picks the page. react-router would add a dependency and a provider
  * for what is one `useState` and a popstate listener.
  */
-export type Route = "/" | "/pick-history";
+export type Route = "/" | "/pick-history" | "/nhl" | "/nhl/pick-history";
 
-const ROUTES: Route[] = ["/", "/pick-history"];
+const ROUTES: Route[] = ["/", "/pick-history", "/nhl", "/nhl/pick-history"];
 
 function currentRoute(): Route {
   const path = window.location.pathname.replace(/\/+$/, "") || "/";

@@ -231,7 +231,10 @@ async function fetchBankrollFile(req: ApiRequest): Promise<Bankroll> {
     throw new Error("Could not determine this deployment's own host (no Host header and no VERCEL_URL).");
   }
 
-  const url = `https://${host}/bankroll.json`;
+  // NFL and NHL keep completely separate ledgers: `?ledger=nhl` resolves the
+  // NHL one; anything else keeps the original NFL ledger.
+  const ledgerPath = req.query.ledger === "nhl" ? "/nhl-data/bankroll.json" : "/bankroll.json";
+  const url = `https://${host}${ledgerPath}`;
   const res = await fetch(url, { signal: AbortSignal.timeout(RR_FETCH_TIMEOUT_MS) });
 
   if (res.status === 404) {
@@ -503,14 +506,64 @@ async function nflPlayedWithoutStats(game: FinalGame, playerName: string): Promi
   }
 }
 
+/**
+ * NHL boxscore for prop grading (ESPN summary endpoint). Each team has
+ * "forwards"/"defenses"/"goalies" groups; every dressed skater gets a row
+ * even with a zero stat line, so a skater missing from all of them didn't
+ * play (scratched/injured) — unlike NFL, absence really does mean inactive.
+ */
+async function fetchNhlBoxscore(eventId: string): Promise<EspnBoxscoreCategory[] | null> {
+  try {
+    const data = await rrFetchJson(`https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/summary?event=${eventId}`);
+    const teams: any[] = data.boxscore?.players ?? [];
+    return teams.flatMap((t: any) => (t.statistics ?? []) as EspnBoxscoreCategory[]);
+  } catch (e) {
+    console.warn(`fetchNhlBoxscore(${eventId}) failed:`, e);
+    return null;
+  }
+}
+
+/** Boxscore column(s) each NHL prop settles on — "S" is shots on goal (ESPN's "SOG" column is something else). */
+const NHL_PROP_COLUMNS: Record<string, string[]> = {
+  player_goals: ["G"],
+  player_assists: ["A"],
+  player_points: ["G", "A"],
+  player_shots_on_goal: ["S"],
+};
+
+/**
+ * The player's value for `propType`, "absent" when they aren't in any
+ * skater group (didn't dress → void), or null when the columns can't be
+ * found at all (unknown propType or ESPN changed the shape → stay pending).
+ */
+function readNhlBoxscoreStatValue(categories: EspnBoxscoreCategory[], playerName: string, propType: string): number | "absent" | null {
+  const columns = NHL_PROP_COLUMNS[propType];
+  if (!columns) return null;
+
+  for (const category of categories) {
+    const athlete = (category.athletes ?? []).find(
+      a => rrNormalizeTeamName(a.athlete?.displayName ?? "") === rrNormalizeTeamName(playerName)
+    );
+    if (!athlete) continue;
+
+    const indexes = columns.map(col => category.labels?.findIndex(l => String(l).toUpperCase() === col) ?? -1);
+    if (indexes.some(i => i === -1)) return null;
+    return indexes.reduce((sum, i) => {
+      const v = Number(athlete.stats?.[i]);
+      return sum + (Number.isFinite(v) ? v : 0);
+    }, 0);
+  }
+  return "absent";
+}
+
 type PropResolution = { status: "pending" } | { status: "void" } | { status: "value"; value: number };
 
 /**
  * Sport-dispatching prop-stat lookup shared by resolvePropBet and
- * resolveParlayLeg, so both grade NFL props the same way MLB props always
- * have. NHL/NCAAF have no prop pipeline in api/best-bets.ts yet (no prop
- * ever gets written to the ledger for them) — if one ever shows up, this
- * stays pending rather than guessing at a boxscore shape that doesn't exist.
+ * resolveParlayLeg, so singles and parlay legs grade MLB, NFL and NHL props
+ * the same way. NCAAF has no prop pipeline in api/best-bets.ts (no prop ever
+ * gets written to the ledger for it) — if one ever shows up, this stays
+ * pending rather than guessing at a boxscore shape that doesn't exist.
  */
 async function resolvePropStatValue(
   sport: RrSport | undefined, game: FinalGame, propType: string, playerName: string
@@ -535,6 +588,16 @@ async function resolvePropStatValue(
     }
     const value = readNflBoxscoreStatValue(categories, playerName, propType);
     return value === null ? { status: "pending" } : { status: "value", value };
+  }
+
+  if (sport === "nhl") {
+    if (!game.eventId) return { status: "pending" };
+    const categories = await fetchNhlBoxscore(game.eventId);
+    if (!categories || categories.length === 0) return { status: "pending" };
+    const value = readNhlBoxscoreStatValue(categories, playerName, propType);
+    if (value === null) return { status: "pending" };
+    if (value === "absent") return { status: "void" }; // didn't dress — no action
+    return { status: "value", value };
   }
 
   return { status: "pending" };

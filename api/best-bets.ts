@@ -220,9 +220,8 @@ interface BestBetsResponse {
   summary: DailySummary;
 }
 
-// ─── Prop bets (MLB only — see fetchProbablePitchers/fetchPitcherGameLog/
-// fetchBatterGameLog/fetchMLBRosterBatters below; NFL/NHL prop types exist
-// in the union for future extension but have no fetcher/scorer yet) ────────
+// ─── Prop bets (MLB, NFL and NHL — see buildMlbPropPicks, buildNflPropPicks
+// and buildNhlPropPicks below) ────────────────────────────────────────────
 type PropType =
   | "pitcher_strikeouts"
   | "pitcher_outs"
@@ -232,7 +231,10 @@ type PropType =
   | "player_pass_yards"
   | "player_rush_yards"
   | "player_receiving_yards"
-  | "player_shots_on_goal";
+  | "player_shots_on_goal"
+  | "player_goals"
+  | "player_assists"
+  | "player_points";
 
 type PropSide = "over" | "under";
 type VoidRisk = "low" | "medium" | "high";
@@ -288,9 +290,19 @@ const PROP_TYPE_LABELS: Record<PropType, string> = {
   player_rush_yards: "Rushing Yards",
   player_receiving_yards: "Receiving Yards",
   player_shots_on_goal: "Shots on Goal",
+  player_goals: "Goals",
+  player_assists: "Assists",
+  player_points: "Points",
 };
 
 const TOP_GAMES_FOR_PROPS = 5;
+/**
+ * NHL checks props for fewer games than NFL/MLB: it bets four nights a week
+ * (Tue/Wed/Fri/Sat) on the same free 500-credit OddsAPI plan NFL uses, and
+ * each game costs one credit per market. 4 markets × 3 games + 1 moneyline
+ * call = 13 credits a run, ~220 a month — leaves room for NFL's ~210.
+ */
+const NHL_TOP_GAMES_FOR_PROPS = 3;
 /** Hard cap on the prop pipeline so a slow upstream (ESPN under game-day load) can't blow past Vercel's 60s function limit and lose the moneyline picks too. */
 const PROP_PIPELINE_TIMEOUT_MS = 35_000;
 
@@ -1142,13 +1154,18 @@ async function fetchJson(url: string): Promise<any> {
  * browser gets, from this deployment's own static output. Falls back to the
  * $500 starting bankroll and neutral (1.0) multipliers whenever the file
  * doesn't exist yet (first run) or the fetch fails for any reason.
+ *
+ * NFL and NHL run against completely separate bankrolls: `?ledger=nhl` reads
+ * the NHL ledger at /nhl-data/bankroll.json; anything else keeps the original
+ * NFL ledger at /bankroll.json, so existing callers are unchanged.
  */
 async function fetchBankrollState(req: ApiRequest): Promise<BankrollState> {
   const host = selfBaseUrl(req);
   if (!host) return DEFAULT_BANKROLL_STATE;
 
+  const ledgerPath = req.query.ledger === "nhl" ? "/nhl-data/bankroll.json" : "/bankroll.json";
   try {
-    const data = await fetchJson(`https://${host}/bankroll.json`);
+    const data = await fetchJson(`https://${host}${ledgerPath}`);
     const currentBankroll = typeof data?.currentBankroll === "number" ? data.currentBankroll : 500;
     const wpScoreMultiplier = typeof data?.calibration?.wpScoreMultiplier === "number" ? data.calibration.wpScoreMultiplier : 1;
     const evScoreMultiplier = typeof data?.calibration?.evScoreMultiplier === "number" ? data.calibration.evScoreMultiplier : 1;
@@ -1454,6 +1471,10 @@ interface GameLogEntry {
   passingYards?: number;
   rushingYards?: number;
   receivingYards?: number;
+  goals?: number;
+  assists?: number;
+  points?: number;
+  shotsOnGoal?: number;
 }
 
 /** True if 3+ of the player's last 5 days include a logged game (fatigue signal for propContextScore). */
@@ -1679,9 +1700,13 @@ const MLB_PROP_MARKETS = "pitcher_strikeouts,batter_hits,batter_home_runs,batter
   + "pitcher_strikeouts_alternate,batter_hits_alternate,batter_home_runs_alternate,batter_total_bases_alternate";
 const NFL_PROP_MARKETS = "player_pass_yds,player_rush_yds,player_reception_yds,"
   + "player_pass_yds_alternate,player_rush_yds_alternate,player_reception_yds_alternate";
+// Main lines only, no alternates — each market costs a credit per game, and
+// NHL has to fit beside NFL in the 500-credit plan (see NHL_TOP_GAMES_FOR_PROPS).
+const NHL_PROP_MARKETS = "player_goals,player_assists,player_points,player_shots_on_goal";
 const PROP_MARKETS_BY_SPORT: Partial<Record<Sport, string>> = {
   mlb: MLB_PROP_MARKETS,
   nfl: NFL_PROP_MARKETS,
+  nhl: NHL_PROP_MARKETS,
 };
 const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
   pitcher_strikeouts: "pitcher_strikeouts",
@@ -1698,6 +1723,10 @@ const ODDS_API_MARKET_TO_PROP: Record<string, PropType> = {
   player_pass_yds_alternate: "player_pass_yards",
   player_rush_yds_alternate: "player_rush_yards",
   player_reception_yds_alternate: "player_receiving_yards",
+  player_goals: "player_goals",
+  player_assists: "player_assists",
+  player_points: "player_points",
+  player_shots_on_goal: "player_shots_on_goal",
 };
 
 /** Same book chosen for moneylines — a parlay leg can't come from a different book than the rest of the slip. */
@@ -1823,7 +1852,11 @@ function statValueForPropType(entry: GameLogEntry, propType: PropType): number {
     case "player_pass_yards": return entry.passingYards ?? 0;
     case "player_rush_yards": return entry.rushingYards ?? 0;
     case "player_receiving_yards": return entry.receivingYards ?? 0;
-    default: return 0; // NHL prop types have no game-log fetcher yet
+    case "player_goals": return entry.goals ?? 0;
+    case "player_assists": return entry.assists ?? 0;
+    case "player_points": return entry.points ?? 0;
+    case "player_shots_on_goal": return entry.shotsOnGoal ?? 0;
+    default: return 0;
   }
 }
 
@@ -1837,7 +1870,7 @@ function hitRateFor(entries: GameLogEntry[], propType: PropType, line: number, s
   return hits / entries.length;
 }
 
-function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number }, propType: PropType): number {
+function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number; goals?: number; assists?: number; points?: number; shotsOnGoal?: number }, propType: PropType): number {
   switch (propType) {
     case "pitcher_strikeouts": return recentAvg.strikeouts ?? 0;
     case "pitcher_outs": return recentAvg.outs ?? 0;
@@ -1847,6 +1880,10 @@ function recentAverageForPropType(recentAvg: { strikeouts?: number; outs?: numbe
     case "player_pass_yards": return recentAvg.passingYards ?? 0;
     case "player_rush_yards": return recentAvg.rushingYards ?? 0;
     case "player_receiving_yards": return recentAvg.receivingYards ?? 0;
+    case "player_goals": return recentAvg.goals ?? 0;
+    case "player_assists": return recentAvg.assists ?? 0;
+    case "player_points": return recentAvg.points ?? 0;
+    case "player_shots_on_goal": return recentAvg.shotsOnGoal ?? 0;
     default: return 0;
   }
 }
@@ -1948,7 +1985,7 @@ interface PropGameContext {
 
 function scoreProp(
   candidate: PropCandidateInput,
-  log: { last10: GameLogEntry[]; last20: GameLogEntry[]; recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number } },
+  log: { last10: GameLogEntry[]; last20: GameLogEntry[]; recentAvg: { strikeouts?: number; outs?: number; hits?: number; totalBases?: number; homeRuns?: number; passingYards?: number; rushingYards?: number; receivingYards?: number; goals?: number; assists?: number; points?: number; shotsOnGoal?: number } },
   oddsEntry: PropOddsEntry,
   matchupScore: number,
   game: PropGameContext,
@@ -2555,8 +2592,16 @@ function nflDefenseRankContext(
   const rank = ranked.findIndex(([abbr]) => abbr === teamAbbr);
   if (rank === -1) return null;
 
-  return `has the ${ordinal(rank + 1)} best ${categoryLabel} in the league`;
+  const perGame = Math.round(ranked[rank][1][key]);
+  return `has the ${ordinal(rank + 1)} best ${categoryLabel} in the league. `
+    + `On average they allow ${perGame} ${NFL_YARDS_ALLOWED_LABEL[key] ?? "yards"} per game`;
 }
+
+const NFL_YARDS_ALLOWED_LABEL: Partial<Record<keyof NflDefenseAllowed, string>> = {
+  passYardsAllowed: "passing yards",
+  rushYardsAllowed: "rushing yards",
+  recYardsAllowed: "receiving yards",
+};
 
 const NFL_DISQUALIFYING_INJURY_STATUSES = new Set(["out", "doubtful", "injured reserve", "ir", "suspended", "pup", "physically unable to perform"]);
 
@@ -2760,6 +2805,343 @@ async function buildNflPropPicks(
   return perGame.flat().sort((a, b) => b.scores.composite - a.scores.composite);
 }
 
+// ─── NHL props (goals / assists / points / shots on goal) ──────────────────
+// Same odds-first design as NFL: only players OddsAPI actually prices are
+// scored, resolved to an ESPN athlete id via the team roster to pull their
+// game log. Goalies are never looked up — no saves market is requested.
+interface NhlRosterPlayer {
+  id: number;
+  fullName: string;
+  position: string;
+}
+
+/**
+ * Active skaters only. A player ESPN lists as injured/day-to-day isn't in
+ * this list, so their props are skipped rather than risk a scratch voiding
+ * one of the day's best-bet slots (the NHL stand-in for NFL's injury report).
+ */
+async function fetchNhlRosterSkaters(teamId: number): Promise<NhlRosterPlayer[]> {
+  try {
+    const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/${teamId}/roster`);
+    return (data.athletes ?? [])
+      .flatMap((g: any) => g.items ?? [])
+      .filter((p: any) => p.position?.abbreviation !== "G" && p.status?.type === "active")
+      .map((p: any) => ({ id: parseInt(p.id, 10), fullName: p.fullName ?? "Unknown", position: p.position?.abbreviation ?? "" }))
+      .filter((p: NhlRosterPlayer) => Number.isFinite(p.id));
+  } catch (e) {
+    console.warn(`fetchNhlRosterSkaters(${teamId}) failed:`, e);
+    return [];
+  }
+}
+
+/**
+ * One season's regular-season game log for an NHL skater, most recent first.
+ * ESPN groups the events by month and the month order isn't guaranteed, so
+ * they're sorted by game date explicitly. ESPN's "shotsTotal" is shots on
+ * goal (it matches the boxscore's "S" column), which is what the
+ * player_shots_on_goal market settles on.
+ */
+async function fetchNhlSeasonGameLog(playerId: number, season: number): Promise<GameLogEntry[]> {
+  try {
+    const data = await fetchJson(
+      `https://site.web.api.espn.com/apis/common/v3/sports/hockey/nhl/athletes/${playerId}/gamelog?season=${season}`
+    );
+    const names: string[] = data.names ?? [];
+    const col = (name: string) => names.indexOf(name);
+    const [gi, ai, pi, si] = [col("goals"), col("assists"), col("points"), col("shotsTotal")];
+    const regularSeason = (data.seasonTypes ?? []).find((st: any) => /Regular Season/i.test(st.displayName ?? ""));
+    const events: any[] = (regularSeason?.categories ?? []).flatMap((c: any) => c.events ?? []);
+    const stat = (ev: any, i: number) => {
+      const v = i === -1 ? NaN : Number(ev.stats?.[i]);
+      return Number.isFinite(v) ? v : 0;
+    };
+
+    return events
+      .map((ev: any): GameLogEntry => {
+        const meta = data.events?.[ev.eventId];
+        return {
+          date: meta?.gameDate ? String(meta.gameDate).slice(0, 10) : undefined,
+          goals: stat(ev, gi),
+          assists: stat(ev, ai),
+          points: stat(ev, pi),
+          shotsOnGoal: stat(ev, si),
+        };
+      })
+      .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  } catch (e) {
+    console.warn(`fetchNhlSeasonGameLog(${playerId}, ${season}) failed:`, e);
+    return [];
+  }
+}
+
+interface NhlGameLogResult {
+  last10: GameLogEntry[];
+  last20: GameLogEntry[];
+  recentAvg: { goals: number; assists: number; points: number; shotsOnGoal: number };
+}
+
+/** Same early-season padding as NFL_MIN_GAMELOG_SAMPLE — a handful of October games isn't a sample. */
+const NHL_MIN_GAMELOG_SAMPLE = 10;
+
+async function fetchNhlPlayerGameLog(playerId: number, season: number): Promise<NhlGameLogResult> {
+  let events = await fetchNhlSeasonGameLog(playerId, season);
+  if (events.length < NHL_MIN_GAMELOG_SAMPLE) {
+    const prior = await fetchNhlSeasonGameLog(playerId, season - 1);
+    events = events.concat(prior.slice(0, NHL_MIN_GAMELOG_SAMPLE - events.length));
+  }
+
+  const last20 = events.slice(0, 20);
+  const last10 = events.slice(0, 10);
+  const avg = (key: "goals" | "assists" | "points" | "shotsOnGoal") =>
+    last10.length > 0 ? last10.reduce((a, b) => a + (b[key] ?? 0), 0) / last10.length : 0;
+
+  return {
+    last10, last20,
+    recentAvg: { goals: avg("goals"), assists: avg("assists"), points: avg("points"), shotsOnGoal: avg("shotsOnGoal") },
+  };
+}
+
+/** ESPN names NHL seasons by the year they end: October 2026 is the 2027 season. */
+function nhlSeasonFor(date: string): number {
+  const year = parseInt(date.slice(0, 4), 10);
+  const month = parseInt(date.slice(5, 7), 10);
+  return month >= 8 ? year + 1 : year;
+}
+
+interface NhlTeamDefense {
+  goalsAgainstPerGame: number;
+  gamesPlayed: number;
+}
+
+/** Goals allowed per game for every team, keyed by normalized team display name — one standings call. */
+async function fetchNhlGoalsAgainst(): Promise<Map<string, NhlTeamDefense>> {
+  const map = new Map<string, NhlTeamDefense>();
+  try {
+    const data = await fetchJson("https://site.api.espn.com/apis/v2/sports/hockey/nhl/standings");
+    const entries: any[] = (data.children ?? []).flatMap((c: any) => c.standings?.entries ?? []);
+    for (const e of entries) {
+      const stat = (name: string) => Number((e.stats ?? []).find((s: any) => s.name === name)?.value);
+      const gp = stat("gamesPlayed");
+      const ga = stat("pointsAgainst"); // ESPN's generic name — for hockey it's goals against
+      if (!e.team?.displayName || !Number.isFinite(gp) || !Number.isFinite(ga) || gp <= 0) continue;
+      map.set(normalizeTeamName(e.team.displayName), { goalsAgainstPerGame: ga / gp, gamesPlayed: gp });
+    }
+  } catch (e) {
+    console.warn("fetchNhlGoalsAgainst failed:", e);
+  }
+  return map;
+}
+
+/** Shots on goal allowed per game for one team (ESPN team statistics), or null if unavailable. */
+async function fetchNhlShotsAgainstPerGame(teamId: number): Promise<{ perGame: number; gamesPlayed: number } | null> {
+  try {
+    const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/${teamId}/statistics`);
+    const cats: any[] = data.results?.stats?.categories ?? [];
+    const find = (cat: string, name: string) =>
+      Number(cats.find(c => c.name === cat)?.stats?.find((s: any) => s.name === name)?.value);
+    const shotsAgainst = find("defensive", "shotsAgainst");
+    const games = find("general", "games");
+    if (!Number.isFinite(shotsAgainst) || !Number.isFinite(games) || games <= 0) return null;
+    return { perGame: shotsAgainst / games, gamesPlayed: games };
+  } catch (e) {
+    console.warn(`fetchNhlShotsAgainstPerGame(${teamId}) failed:`, e);
+    return null;
+  }
+}
+
+/**
+ * League-average shots on goal allowed per team per game. Only the handful
+ * of teams in tonight's prop games get a shots-against lookup (one ESPN call
+ * each), which is too few to average reliably, so this uses the recent-season
+ * NHL norm instead.
+ */
+const NHL_LEAGUE_AVG_SHOTS_AGAINST = 28;
+
+/**
+ * Same 20-90 scale as matchupScoreForNflProp: an opponent allowing more than
+ * league average in the prop's category is an easier matchup. Goals, assists
+ * and points all read goals-against; shots reads shots-against. Early in the
+ * season a team's per-game rate is pulled toward the league average until it
+ * has ~20 games behind it, so a hot or cold first week can't swing the score.
+ */
+function matchupScoreForNhlProp(
+  propType: PropType,
+  oppGoals: NhlTeamDefense | undefined,
+  leagueAvgGoalsAgainst: number | null,
+  oppShots: { perGame: number; gamesPlayed: number } | null
+): number {
+  const ratio = (allowed: number, gp: number, avg: number) => {
+    const weight = Math.min(gp, 20) / 20;
+    const shrunk = avg + (allowed - avg) * weight;
+    return shrunk / avg;
+  };
+
+  if (propType === "player_shots_on_goal") {
+    if (!oppShots) return 50;
+    const r = ratio(oppShots.perGame, oppShots.gamesPlayed, NHL_LEAGUE_AVG_SHOTS_AGAINST);
+    return Math.min(90, Math.max(20, Math.round(50 + (r - 1) * 100)));
+  }
+
+  if (!oppGoals || !leagueAvgGoalsAgainst || leagueAvgGoalsAgainst <= 0) return 50;
+  const r = ratio(oppGoals.goalsAgainstPerGame, oppGoals.gamesPlayed, leagueAvgGoalsAgainst);
+  return Math.min(90, Math.max(20, Math.round(50 + (r - 1) * 100)));
+}
+
+/**
+ * The opponent phrase for buildPropRationale. Goals/assists/points: "has the
+ * 5th best goals-against average in the league. On average they allow 2.6
+ * goals per game". Shots: only tonight's teams have shots-against data (see
+ * NHL_LEAGUE_AVG_SHOTS_AGAINST), so there's no league rank — just the
+ * per-game number against the league norm.
+ */
+function nhlOpponentContext(
+  propType: PropType, teamName: string, goalsAgainst: Map<string, NhlTeamDefense>,
+  oppShots: { perGame: number; gamesPlayed: number } | null
+): string | null {
+  if (propType === "player_shots_on_goal") {
+    if (!oppShots) return null;
+    return `allows ${oppShots.perGame.toFixed(1)} shots on goal per game (league average is about ${NHL_LEAGUE_AVG_SHOTS_AGAINST})`;
+  }
+  const ranked = [...goalsAgainst.entries()].sort((a, b) => a[1].goalsAgainstPerGame - b[1].goalsAgainstPerGame);
+  const rank = ranked.findIndex(([name]) => name === normalizeTeamName(teamName));
+  if (rank === -1) return null;
+  return `has the ${ordinal(rank + 1)} best goals-against average in the league. `
+    + `On average they allow ${ranked[rank][1].goalsAgainstPerGame.toFixed(1)} goals per game`;
+}
+
+const NHL_PROP_TYPES = ["player_goals", "player_assists", "player_points", "player_shots_on_goal"] as const;
+
+async function buildNhlPropsForGame(
+  game: RawGame,
+  propOddsMap: PropOddsMap,
+  bankrollState: BankrollState,
+  season: number,
+  goalsAgainst: Map<string, NhlTeamDefense>,
+  leagueAvgGoalsAgainst: number | null
+): Promise<PropPick[]> {
+  const gameCtx: PropGameContext = {
+    gameId: game.id, sport: game.sport,
+    matchup: `${game.awayTeam} @ ${game.homeTeam}`, startTime: game.startTime,
+  };
+
+  const propTypesByPlayer = new Map<string, PropType[]>();
+  for (const key of propOddsMap.keys()) {
+    const propType = NHL_PROP_TYPES.find(t => key.endsWith(`-${t}`));
+    if (!propType) continue;
+    const playerName = key.slice(0, key.length - propType.length - 1);
+    const list = propTypesByPlayer.get(playerName) ?? [];
+    list.push(propType);
+    propTypesByPlayer.set(playerName, list);
+  }
+  if (propTypesByPlayer.size === 0) return [];
+
+  const [homeRoster, awayRoster, homeShots, awayShots] = await Promise.all([
+    fetchNhlRosterSkaters(game.homeTeamId),
+    fetchNhlRosterSkaters(game.awayTeamId),
+    fetchNhlShotsAgainstPerGame(game.homeTeamId),
+    fetchNhlShotsAgainstPerGame(game.awayTeamId),
+  ]);
+  const rosterByName = new Map<string, { player: NhlRosterPlayer; isHome: boolean }>();
+  for (const player of homeRoster) rosterByName.set(normalizeTeamName(player.fullName), { player, isHome: true });
+  for (const player of awayRoster) rosterByName.set(normalizeTeamName(player.fullName), { player, isHome: false });
+
+  const props: PropPick[] = [];
+  await Promise.all([...propTypesByPlayer.entries()].map(async ([playerName, propTypes]) => {
+    const match = rosterByName.get(normalizeTeamName(playerName));
+    if (!match) return; // not an active skater on either roster — skip rather than guess
+
+    const { player, isHome } = match;
+    const log = await fetchNhlPlayerGameLog(player.id, season);
+    if (log.last10.length === 0) return;
+
+    const team = isHome ? game.homeTeam : game.awayTeam;
+    const opponent = isHome ? game.awayTeam : game.homeTeam;
+    const oppGoals = goalsAgainst.get(normalizeTeamName(opponent));
+    const oppShots = isHome ? awayShots : homeShots;
+    // Back-to-backs are routine in the NHL and do dent skater output.
+    const fatigued = isFatigued(log.last10, game.startTime);
+
+    for (const propType of propTypes) {
+      const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
+      if (!oddsEntries || oddsEntries.length === 0) continue;
+      const matchupScore = matchupScoreForNhlProp(propType, oppGoals, leagueAvgGoalsAgainst, oppShots);
+      const candidates = oddsEntries
+        .map(oddsEntry => scoreProp(
+          {
+            playerId: player.id, playerName: player.fullName, team, opponent, isHome,
+            // NHL lines aren't confirmed until warmups, so every skater prop is
+            // "Probable" (medium void risk) — same treatment as an MLB batter.
+            isPitcher: false,
+            propType, fatigued, injuryConcern: false,
+          },
+          log, oddsEntry, matchupScore, gameCtx, bankrollState,
+          nhlOpponentContext(propType, opponent, goalsAgainst, oppShots)
+        ))
+        .filter((p): p is PropPick => p !== null);
+      const pick = pickPropPick(candidates);
+      if (pick) props.push(pick);
+    }
+  }));
+
+  return props;
+}
+
+/**
+ * Scores props for the top NHL_TOP_GAMES_FOR_PROPS games, ranked the same way
+ * as NFL (games with the strongest moneyline pick first, then the rest).
+ * Every failure is caught per-game so props can never take down moneylines.
+ */
+async function buildNhlPropPicks(
+  moneylinePicks: BetPick[],
+  rawGames: RawGame[],
+  nhlOddsEntries: OddsApiEntry[],
+  bankrollState: BankrollState,
+  date: string,
+  book: Sportsbook | null
+): Promise<PropPick[]> {
+  const rankedGameIds = moneylinePicks
+    .filter(p => p.sport === "nhl")
+    .slice()
+    .sort((a, b) => b.scores.composite - a.scores.composite)
+    .map(p => p.id.replace(/-(home|away)$/, ""));
+
+  const nhlGames = rawGames.filter(g => g.sport === "nhl");
+  const ranked = [...new Set(rankedGameIds)].map(id => nhlGames.find(g => g.id === id)).filter((g): g is RawGame => !!g);
+  const unranked = nhlGames.filter(g => !rankedGameIds.includes(g.id));
+  const topGames = [...ranked, ...unranked].slice(0, NHL_TOP_GAMES_FOR_PROPS);
+  if (topGames.length === 0 || !book) return [];
+
+  const eventIdByGameId = new Map<string, string>();
+  for (const game of topGames) {
+    const match = nhlOddsEntries.find(
+      o => normalizeTeamName(o.homeTeam) === normalizeTeamName(game.homeTeam) &&
+           normalizeTeamName(o.awayTeam) === normalizeTeamName(game.awayTeam)
+    );
+    if (match) eventIdByGameId.set(game.id, match.id);
+  }
+
+  const season = nhlSeasonFor(date);
+  const goalsAgainst = await fetchNhlGoalsAgainst();
+  const teams = [...goalsAgainst.values()];
+  const leagueAvgGoalsAgainst = teams.length > 0
+    ? teams.reduce((a, b) => a + b.goalsAgainstPerGame, 0) / teams.length
+    : null;
+
+  const perGame = await Promise.all(topGames.map(async game => {
+    const eventId = eventIdByGameId.get(game.id);
+    if (!eventId) return [];
+    try {
+      const propOddsMap = await fetchPropOddsForGame(eventId, book, "nhl");
+      return await buildNhlPropsForGame(game, propOddsMap, bankrollState, season, goalsAgainst, leagueAvgGoalsAgainst);
+    } catch (e) {
+      console.warn(`NHL prop scoring failed for game ${game.id}:`, e);
+      return [];
+    }
+  }));
+
+  return perGame.flat().sort((a, b) => b.scores.composite - a.scores.composite);
+}
+
 const MAX_PROP_PICKS = 10;
 
 /** Merges the per-sport prop pipelines and caps the combined pool — Full Analysis only needs the top 10 overall. */
@@ -2771,12 +3153,13 @@ async function buildPropPicks(
   date: string,
   book: Sportsbook | null
 ): Promise<PropPick[]> {
-  const [mlbProps, nflProps] = await Promise.all([
+  const [mlbProps, nflProps, nhlProps] = await Promise.all([
     buildMlbPropPicks(moneylinePicks, rawGames, oddsBySport.mlb ?? [], bankrollState, date, book),
     buildNflPropPicks(moneylinePicks, rawGames, oddsBySport.nfl ?? [], bankrollState, date, book),
+    buildNhlPropPicks(moneylinePicks, rawGames, oddsBySport.nhl ?? [], bankrollState, date, book),
   ]);
 
-  return [...mlbProps, ...nflProps]
+  return [...mlbProps, ...nflProps, ...nhlProps]
     .sort((a, b) => b.scores.composite - a.scores.composite)
     .slice(0, MAX_PROP_PICKS);
 }

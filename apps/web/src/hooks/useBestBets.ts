@@ -4,6 +4,8 @@ import type { BestBetsResponse } from "@best-bets/algorithm";
 interface UseBestBetsOptions {
   date?: string;
   sports?: string[];
+  /** Static picks file to read — NFL by default; the NHL pages pass "/nhl-data/picks.json". */
+  source?: string;
 }
 
 interface UseBestBetsResult {
@@ -14,10 +16,10 @@ interface UseBestBetsResult {
   lastFetch: Date | null;
 }
 
-// `options` is accepted (but unused) for compatibility with existing callers —
+// `date`/`sports` are accepted (but unused) for compatibility with existing callers —
 // picks.json is a static file that always holds today's picks, so there is no
 // date/sports selection to make at fetch time.
-export function useBestBets(_options: UseBestBetsOptions = {}): UseBestBetsResult {
+export function useBestBets({ source = "/picks.json" }: UseBestBetsOptions = {}): UseBestBetsResult {
   const [data,      setData]      = useState<BestBetsResponse | null>(null);
   const [loading,   setLoading]   = useState(true);
   const [error,     setError]     = useState<string | null>(null);
@@ -31,7 +33,7 @@ export function useBestBets(_options: UseBestBetsOptions = {}): UseBestBetsResul
     setLoading(true);
     setError(null);
 
-    fetch(`/picks.json?t=${Date.now()}`)
+    fetch(`${source}?t=${Date.now()}`)
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
@@ -50,7 +52,7 @@ export function useBestBets(_options: UseBestBetsOptions = {}): UseBestBetsResul
       });
 
     return () => { cancelled = true; };
-  }, [tick]);
+  }, [tick, source]);
 
   return { data, loading, error, refresh, lastFetch };
 }

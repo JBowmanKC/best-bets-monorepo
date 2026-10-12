@@ -6,7 +6,11 @@
 // tracked here: the whole point of the daily-selection system is that the
 // bankroll only ever commits to the 6 bets selectDailyBets() actually chose.
 //
-//   node scripts/append-bankroll-bets.mjs [picksJsonPath]
+//   node scripts/append-bankroll-bets.mjs [picksJsonPath] [bankrollJsonPath]
+//
+// bankrollJsonPath defaults to the NFL ledger (apps/web/public/bankroll.json);
+// the NHL workflow passes apps/web/public/nhl-data/bankroll.json so the two
+// sports never share a bankroll.
 //
 // Run by the Daily Picks workflow right after picks.json is fetched.
 // Idempotent: re-running against the same picks file is a no-op because bets
@@ -18,7 +22,7 @@ import { join } from "node:path";
 
 import { PUBLIC_DIR } from "./lib/history.mjs";
 
-const BANKROLL_FILE = join(PUBLIC_DIR, "bankroll.json");
+const BANKROLL_FILE = process.argv[3] ?? join(PUBLIC_DIR, "bankroll.json");
 
 const defaultBankroll = () => ({
   initialBankroll: 500,
@@ -167,7 +171,7 @@ async function main() {
   }
 
   await writeFile(BANKROLL_FILE, `${JSON.stringify(bankroll, null, 2)}\n`, "utf8");
-  console.log(`Added ${added} new bet(s) to bankroll.json for ${payload.date} (${bestBets.length} single(s), ${candidates.length - bestBets.length} parlay(s)).`);
+  console.log(`Added ${added} new bet(s) to ${BANKROLL_FILE} for ${payload.date} (${bestBets.length} single(s), ${candidates.length - bestBets.length} parlay(s)).`);
 }
 
 main().catch(err => {
