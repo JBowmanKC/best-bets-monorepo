@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1230.49,
-  "totalBets": 40,
+  "totalBets": 41,
   "wins": 20,
   "losses": 17,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1377,
+  "totalStaked": 1456,
   "totalProfit": 730.49,
   "roi": 0.6249,
   "peakBankroll": 1436.75,
@@ -1513,6 +1513,32 @@
       "profitLoss": null,
       "bankrollAfter": null,
       "resolvedAt": null
+    },
+    {
+      "betId": "nfl-401872994-prop-matthewstafford-player_pass_yards-2026-10-12",
+      "date": "2026-10-12",
+      "sport": "nfl",
+      "matchup": "Buffalo Bills @ Los Angeles Rams",
+      "pickLabel": "Matthew Stafford Over 278.5",
+      "odds": -112,
+      "stakeAmount": 79,
+      "potentialPayout": 149.54,
+      "estimatedWinPct": 0.632,
+      "impliedWinPct": 0.528,
+      "evEdge": 0.104,
+      "tier": "strong",
+      "scores": {
+        "composite": 78
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_pass_yards",
+      "playerName": "Matthew Stafford",
+      "line": 278.5,
+      "recommendedSide": "over"
     }
   ]
 }
