@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1424.75,
+  "currentBankroll": 1230.49,
   "totalBets": 37,
-  "wins": 19,
-  "losses": 12,
+  "wins": 20,
+  "losses": 17,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1169,
-  "totalProfit": 924.75,
-  "roi": 1.0467,
+  "totalProfit": 730.49,
+  "roi": 0.6249,
   "peakBankroll": 1436.75,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.7059,
+    "eliteWinRate": 0.65,
     "strongWinRate": 0.75,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.5046,
+    "nflRoi": 0.3436,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-11T19:01:10.653Z",
-    "totalResultsTracked": 31
+    "lastCalibrated": "2026-10-12T13:52:40.182Z",
+    "totalResultsTracked": 37
   },
   "bets": [
     {
@@ -1182,10 +1182,10 @@
         "composite": 92
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -53.5,
+      "bankrollAfter": 1371.25,
+      "resolvedAt": "2026-10-12T13:52:40.068Z",
       "propType": "player_rush_yards",
       "playerName": "Omarion Hampton",
       "line": 42.5,
@@ -1208,10 +1208,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -53.5,
+      "bankrollAfter": 1317.75,
+      "resolvedAt": "2026-10-12T13:52:40.097Z",
       "propType": "player_pass_yards",
       "playerName": "Tyler Shough",
       "line": 239.5,
@@ -1234,10 +1234,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 43.24,
+      "bankrollAfter": 1360.99,
+      "resolvedAt": "2026-10-12T13:52:40.155Z",
       "propType": "player_rush_yards",
       "playerName": "Rhamondre Stevenson",
       "line": 37.5,
@@ -1254,7 +1254,8 @@
           "sport": "nfl",
           "matchup": "Minnesota Vikings @ New Orleans Saints",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Cleveland Browns ML",
@@ -1262,7 +1263,8 @@
           "sport": "nfl",
           "matchup": "Cleveland Browns @ New York Jets",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Denver Broncos ML",
@@ -1270,17 +1272,18 @@
           "sport": "nfl",
           "matchup": "Denver Broncos @ Los Angeles Chargers",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 483,
       "stakeAmount": 53.5,
       "potentialPayout": 311.9,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -53.5,
+      "bankrollAfter": 1307.49,
+      "resolvedAt": "2026-10-12T13:52:40.156Z"
     },
     {
       "betId": "parlay-high-2026-10-11",
@@ -1293,7 +1296,8 @@
           "sport": "nfl",
           "matchup": "Cleveland Browns @ New York Jets",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "San Francisco 49ers ML",
@@ -1301,7 +1305,8 @@
           "sport": "nfl",
           "matchup": "San Francisco 49ers @ Seattle Seahawks",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Minnesota Vikings ML",
@@ -1309,7 +1314,8 @@
           "sport": "nfl",
           "matchup": "Minnesota Vikings @ New Orleans Saints",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Omarion Hampton Over 42.5 Rushing Yards",
@@ -1321,7 +1327,8 @@
           "propType": "player_rush_yards",
           "playerName": "Omarion Hampton",
           "line": 42.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Denver Broncos ML",
@@ -1329,17 +1336,18 @@
           "sport": "nfl",
           "matchup": "Denver Broncos @ Los Angeles Chargers",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2584,
       "stakeAmount": 23.5,
       "potentialPayout": 630.74,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -23.5,
+      "bankrollAfter": 1283.99,
+      "resolvedAt": "2026-10-12T13:52:40.181Z"
     },
     {
       "betId": "parlay-double-2026-10-11",
@@ -1352,7 +1360,8 @@
           "sport": "nfl",
           "matchup": "Minnesota Vikings @ New Orleans Saints",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Denver Broncos ML",
@@ -1360,7 +1369,8 @@
           "sport": "nfl",
           "matchup": "Denver Broncos @ Los Angeles Chargers",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Chicago Bears ML",
@@ -1368,17 +1378,18 @@
           "sport": "nfl",
           "matchup": "Chicago Bears @ Green Bay Packers",
           "date": "2026-10-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 391,
       "stakeAmount": 53.5,
       "potentialPayout": 262.69,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -53.5,
+      "bankrollAfter": 1230.49,
+      "resolvedAt": "2026-10-12T13:52:40.182Z"
     }
   ]
 }
