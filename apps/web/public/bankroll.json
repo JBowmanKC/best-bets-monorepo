@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1230.49,
+  "currentBankroll": 1339.28,
   "totalBets": 41,
-  "wins": 20,
-  "losses": 17,
+  "wins": 22,
+  "losses": 19,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1456,
-  "totalProfit": 730.49,
-  "roi": 0.6249,
+  "totalProfit": 839.28,
+  "roi": 0.5764,
   "peakBankroll": 1436.75,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.65,
-    "strongWinRate": 0.75,
+    "eliteWinRate": 0.619,
+    "strongWinRate": 0.8333,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.3436,
+    "nflRoi": 0.3651,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-12T22:10:07.295Z",
-    "totalResultsTracked": 37
+    "lastCalibrated": "2026-10-13T20:17:09.225Z",
+    "totalResultsTracked": 41
   },
   "bets": [
     {
@@ -1408,10 +1408,10 @@
         "composite": 85
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -98.5,
+      "bankrollAfter": 1131.99,
+      "resolvedAt": "2026-10-13T20:17:08.951Z",
       "propType": "player_rush_yards",
       "playerName": "Kyren Williams",
       "line": 69.5,
@@ -1434,10 +1434,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 147.75,
+      "bankrollAfter": 1279.74,
+      "resolvedAt": "2026-10-13T20:17:08.951Z"
     },
     {
       "betId": "parlay-high-2026-10-12",
@@ -1454,7 +1454,8 @@
           "propType": "player_rush_yards",
           "playerName": "Kyren Williams",
           "line": 69.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Stafford Over 282.5 Passing Yards",
@@ -1466,7 +1467,8 @@
           "propType": "player_pass_yards",
           "playerName": "Matthew Stafford",
           "line": 282.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Dalton Kincaid Under 55.5 Receiving Yards",
@@ -1478,7 +1480,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Dalton Kincaid",
           "line": 55.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Davis Allen Over 6.5 Receiving Yards",
@@ -1490,7 +1493,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Davis Allen",
           "line": 6.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Khalil Shakir Under 44.5 Receiving Yards",
@@ -1502,17 +1506,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Khalil Shakir",
           "line": 44.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2320,
       "stakeAmount": 11,
       "potentialPayout": 266.2,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 1268.74,
+      "resolvedAt": "2026-10-13T20:17:09.179Z"
     },
     {
       "betId": "nfl-401872994-prop-matthewstafford-player_pass_yards-2026-10-12",
@@ -1531,10 +1536,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 70.54,
+      "bankrollAfter": 1339.28,
+      "resolvedAt": "2026-10-13T20:17:09.225Z",
       "propType": "player_pass_yards",
       "playerName": "Matthew Stafford",
       "line": 278.5,
