@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 500,
-  "totalBets": 0,
+  "totalBets": 6,
   "wins": 0,
   "losses": 0,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 0,
+  "totalStaked": 100.5,
   "totalProfit": 0,
   "roi": 0,
   "peakBankroll": 500,
@@ -24,5 +24,217 @@
     "lastCalibrated": null,
     "totalResultsTracked": 0
   },
-  "bets": []
+  "bets": [
+    {
+      "betId": "nhl-401892494-home-2026-10-13",
+      "date": "2026-10-13",
+      "sport": "nhl",
+      "matchup": "St. Louis Blues @ Ottawa Senators",
+      "pickLabel": "Ottawa Senators ML",
+      "odds": -108,
+      "stakeAmount": 17.5,
+      "potentialPayout": 33.7,
+      "estimatedWinPct": 0.804,
+      "impliedWinPct": 0.519,
+      "evEdge": 0.285,
+      "tier": "elite",
+      "scores": {
+        "composite": 80
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "nhl-401892501-home-2026-10-13",
+      "date": "2026-10-13",
+      "sport": "nhl",
+      "matchup": "Calgary Flames @ Anaheim Ducks",
+      "pickLabel": "Anaheim Ducks ML",
+      "odds": -175,
+      "stakeAmount": 17.5,
+      "potentialPayout": 27.5,
+      "estimatedWinPct": 0.82,
+      "impliedWinPct": 0.636,
+      "evEdge": 0.184,
+      "tier": "elite",
+      "scores": {
+        "composite": 81
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "nhl-401892501-prop-mikaelgranlund-player_assists-2026-10-13",
+      "date": "2026-10-13",
+      "sport": "nhl",
+      "matchup": "Calgary Flames @ Anaheim Ducks",
+      "pickLabel": "Mikael Granlund Over 0.5",
+      "odds": 125,
+      "stakeAmount": 17.5,
+      "potentialPayout": 39.38,
+      "estimatedWinPct": 0.604,
+      "impliedWinPct": 0.444,
+      "evEdge": 0.159,
+      "tier": "elite",
+      "scores": {
+        "composite": 90
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Mikael Granlund",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-10-13",
+      "date": "2026-10-13",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Seattle Kraken ML",
+          "odds": 102,
+          "sport": "nhl",
+          "matchup": "Seattle Kraken @ Philadelphia Flyers",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Pittsburgh Penguins ML",
+          "odds": -162,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Chicago Blackhawks",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Edmonton Oilers ML",
+          "odds": -130,
+          "sport": "nhl",
+          "matchup": "Edmonton Oilers @ Los Angeles Kings",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 478,
+      "stakeAmount": 17.5,
+      "potentialPayout": 101.15,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-13",
+      "date": "2026-10-13",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Seattle Kraken ML",
+          "odds": 102,
+          "sport": "nhl",
+          "matchup": "Seattle Kraken @ Philadelphia Flyers",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Ottawa Senators ML",
+          "odds": -108,
+          "sport": "nhl",
+          "matchup": "St. Louis Blues @ Ottawa Senators",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Edmonton Oilers ML",
+          "odds": -130,
+          "sport": "nhl",
+          "matchup": "Edmonton Oilers @ Los Angeles Kings",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Pittsburgh Penguins ML",
+          "odds": -162,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Chicago Blackhawks",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Anaheim Ducks ML",
+          "odds": -175,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Anaheim Ducks",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 1649,
+      "stakeAmount": 13,
+      "potentialPayout": 227.37,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-10-13",
+      "date": "2026-10-13",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Anaheim Ducks ML",
+          "odds": -175,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Anaheim Ducks",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Pittsburgh Penguins ML",
+          "odds": -162,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Chicago Blackhawks",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Edmonton Oilers ML",
+          "odds": -130,
+          "sport": "nhl",
+          "matchup": "Edmonton Oilers @ Los Angeles Kings",
+          "date": "2026-10-14",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Carolina Hurricanes ML",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Washington Capitals @ Carolina Hurricanes",
+          "date": "2026-10-13",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 640,
+      "stakeAmount": 17.5,
+      "potentialPayout": 129.5,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    }
+  ]
 }
