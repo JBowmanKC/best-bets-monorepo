@@ -1,16 +1,16 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 438.88,
+  "currentBankroll": 347.88,
   "totalBets": 10,
   "wins": 1,
-  "losses": 5,
+  "losses": 9,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 191.5,
-  "totalProfit": -61.12,
-  "roi": -0.6082,
+  "totalProfit": -152.12,
+  "roi": -0.7944,
   "peakBankroll": 500,
-  "lowestBankroll": 438.88,
+  "lowestBankroll": 347.88,
   "calibration": {
     "eliteWinRate": null,
     "strongWinRate": null,
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 6
+    "totalResultsTracked": 10
   },
   "bets": [
     {
@@ -265,10 +265,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -40,
+      "bankrollAfter": 398.88,
+      "resolvedAt": "2026-10-15T18:37:02.115Z"
     },
     {
       "betId": "nhl-401892505-prop-miroheiskanen-player_shots_on_goal-2026-10-14",
@@ -287,10 +287,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -24,
+      "bankrollAfter": 374.88,
+      "resolvedAt": "2026-10-15T18:37:02.221Z",
       "propType": "player_shots_on_goal",
       "playerName": "Miro Heiskanen",
       "line": 1.5,
@@ -313,10 +313,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -20,
+      "bankrollAfter": 354.88,
+      "resolvedAt": "2026-10-15T18:37:02.256Z",
       "propType": "player_points",
       "playerName": "Nathan MacKinnon",
       "line": 1.5,
@@ -333,7 +333,8 @@
           "sport": "nhl",
           "matchup": "Dallas Stars @ Colorado Avalanche",
           "date": "2026-10-15",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Miro Heiskanen Under 1.5 Shots on Goal",
@@ -345,7 +346,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Miro Heiskanen",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Nathan MacKinnon Over 1.5 Points",
@@ -357,7 +359,8 @@
           "propType": "player_points",
           "playerName": "Nathan MacKinnon",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Sam Malinski Under 0.5 Assists",
@@ -369,7 +372,8 @@
           "propType": "player_assists",
           "playerName": "Sam Malinski",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Sam Malinski Under 0.5 Points",
@@ -381,17 +385,18 @@
           "propType": "player_points",
           "playerName": "Sam Malinski",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 1400,
       "stakeAmount": 7,
       "potentialPayout": 105,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7,
+      "bankrollAfter": 347.88,
+      "resolvedAt": "2026-10-15T18:37:02.473Z"
     }
   ]
 }
