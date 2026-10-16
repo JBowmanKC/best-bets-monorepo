@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1339.28,
+  "currentBankroll": 1373.44,
   "totalBets": 45,
-  "wins": 22,
-  "losses": 19,
+  "wins": 24,
+  "losses": 21,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1723.5,
-  "totalProfit": 839.28,
-  "roi": 0.5764,
+  "totalProfit": 873.44,
+  "roi": 0.5068,
   "peakBankroll": 1436.75,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.619,
-    "strongWinRate": 0.8333,
+    "strongWinRate": 0.7778,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.3651,
+    "nflRoi": 0.329,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-15T18:24:28.099Z",
-    "totalResultsTracked": 41
+    "lastCalibrated": "2026-10-16T18:12:04.447Z",
+    "totalResultsTracked": 45
   },
   "bets": [
     {
@@ -1562,10 +1562,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -98.5,
+      "bankrollAfter": 1240.78,
+      "resolvedAt": "2026-10-16T18:12:04.177Z",
       "propType": "player_receiving_yards",
       "playerName": "Marvin Mims Jr.",
       "line": 10.5,
@@ -1588,10 +1588,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 67.11,
+      "bankrollAfter": 1307.89,
+      "resolvedAt": "2026-10-16T18:12:04.209Z",
       "propType": "player_receiving_yards",
       "playerName": "Jaylen Waddle",
       "line": 45.5,
@@ -1614,10 +1614,10 @@
         "composite": 73
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 74.55,
+      "bankrollAfter": 1382.44,
+      "resolvedAt": "2026-10-16T18:12:04.256Z",
       "propType": "player_rush_yards",
       "playerName": "Bo Nix",
       "line": 13.5,
@@ -1638,7 +1638,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Marvin Mims Jr.",
           "line": 10.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaylen Waddle Under 45.5 Receiving Yards",
@@ -1650,7 +1651,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaylen Waddle",
           "line": 45.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Bo Nix Under 13.5 Rushing Yards",
@@ -1662,7 +1664,8 @@
           "propType": "player_rush_yards",
           "playerName": "Bo Nix",
           "line": 13.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Tory Horton Over 2.5 Receiving Yards",
@@ -1674,7 +1677,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Tory Horton",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Troy Franklin Under 17.5 Receiving Yards",
@@ -1686,17 +1690,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Troy Franklin",
           "line": 17.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2280,
       "stakeAmount": 9,
       "potentialPayout": 214.2,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9,
+      "bankrollAfter": 1373.44,
+      "resolvedAt": "2026-10-16T18:12:04.446Z"
     }
   ]
 }
