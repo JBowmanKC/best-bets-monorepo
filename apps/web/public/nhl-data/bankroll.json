@@ -1,14 +1,14 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 347.88,
+  "currentBankroll": 471.29,
   "totalBets": 20,
-  "wins": 1,
+  "wins": 5,
   "losses": 9,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 318.5,
-  "totalProfit": -152.12,
-  "roi": -0.7944,
+  "totalProfit": -28.71,
+  "roi": -0.1151,
   "peakBankroll": 500,
   "lowestBankroll": 347.88,
   "calibration": {
@@ -22,7 +22,7 @@
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
     "lastCalibrated": null,
-    "totalResultsTracked": 10
+    "totalResultsTracked": 14
   },
   "bets": [
     {
@@ -415,10 +415,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 22.4,
+      "bankrollAfter": 370.28,
+      "resolvedAt": "2026-10-17T17:31:37.893Z",
       "propType": "player_shots_on_goal",
       "playerName": "Morgan Geekie",
       "line": 1.5,
@@ -441,10 +441,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.75,
+      "bankrollAfter": 384.03,
+      "resolvedAt": "2026-10-17T17:31:37.941Z",
       "propType": "player_shots_on_goal",
       "playerName": "Evgeni Malkin",
       "line": 1.5,
@@ -467,10 +467,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 17,
+      "bankrollAfter": 401.03,
+      "resolvedAt": "2026-10-17T17:31:37.967Z",
       "propType": "player_shots_on_goal",
       "playerName": "David Pastrnak",
       "line": 3.5,
@@ -491,7 +491,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Morgan Geekie",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Evgeni Malkin Over 1.5 Shots on Goal",
@@ -503,7 +504,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Evgeni Malkin",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "David Pastrnak Over 3.5 Shots on Goal",
@@ -515,7 +517,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "David Pastrnak",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Fraser Minten Over 1.5 Shots on Goal",
@@ -527,7 +530,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Fraser Minten",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Rickard Rakell Under 0.5 Points",
@@ -539,17 +543,18 @@
           "propType": "player_points",
           "playerName": "Rickard Rakell",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2342,
       "stakeAmount": 3,
       "potentialPayout": 73.26,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 70.26,
+      "bankrollAfter": 471.29,
+      "resolvedAt": "2026-10-17T17:31:38.125Z"
     },
     {
       "betId": "nhl-401892532-home-2026-10-17",
