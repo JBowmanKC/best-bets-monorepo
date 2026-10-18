@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 471.29,
+  "currentBankroll": 445.88,
   "totalBets": 20,
-  "wins": 5,
-  "losses": 9,
+  "wins": 7,
+  "losses": 13,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 318.5,
-  "totalProfit": -28.71,
-  "roi": -0.1151,
+  "totalProfit": -54.12,
+  "roi": -0.1699,
   "peakBankroll": 500,
   "lowestBankroll": 347.88,
   "calibration": {
-    "eliteWinRate": null,
-    "strongWinRate": null,
+    "eliteWinRate": 0.5,
+    "strongWinRate": 0.5,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": null,
+    "nhlRoi": -0.1543,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 1,
+    "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": null,
-    "totalResultsTracked": 14
+    "lastCalibrated": "2026-10-18T17:31:36.389Z",
+    "totalResultsTracked": 20
   },
   "bets": [
     {
@@ -573,10 +573,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 6.59,
+      "bankrollAfter": 477.88,
+      "resolvedAt": "2026-10-18T17:31:36.225Z"
     },
     {
       "betId": "nhl-401892530-prop-davidpastrnak-player_shots_on_goal-2026-10-17",
@@ -595,10 +595,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 466.88,
+      "resolvedAt": "2026-10-18T17:31:36.318Z",
       "propType": "player_shots_on_goal",
       "playerName": "David Pastrnak",
       "line": 3.5,
@@ -621,10 +621,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.5,
+      "bankrollAfter": 480.38,
+      "resolvedAt": "2026-10-18T17:31:36.343Z",
       "propType": "player_shots_on_goal",
       "playerName": "Morgan Geekie",
       "line": 1.5,
@@ -641,7 +641,8 @@
           "sport": "nhl",
           "matchup": "Ottawa Senators @ Philadelphia Flyers",
           "date": "2026-10-17",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Boston Bruins ML",
@@ -649,17 +650,18 @@
           "sport": "nhl",
           "matchup": "Boston Bruins @ Los Angeles Kings",
           "date": "2026-10-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 252,
       "stakeAmount": 13.5,
       "potentialPayout": 47.52,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -13.5,
+      "bankrollAfter": 466.88,
+      "resolvedAt": "2026-10-18T17:31:36.388Z"
     },
     {
       "betId": "parlay-high-2026-10-17",
@@ -672,7 +674,8 @@
           "sport": "nhl",
           "matchup": "Boston Bruins @ Los Angeles Kings",
           "date": "2026-10-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "New York Rangers ML",
@@ -680,7 +683,8 @@
           "sport": "nhl",
           "matchup": "New York Rangers @ Columbus Blue Jackets",
           "date": "2026-10-17",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Ottawa Senators ML",
@@ -688,7 +692,8 @@
           "sport": "nhl",
           "matchup": "Ottawa Senators @ Philadelphia Flyers",
           "date": "2026-10-17",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "San Jose Sharks ML",
@@ -696,7 +701,8 @@
           "sport": "nhl",
           "matchup": "San Jose Sharks @ Detroit Red Wings",
           "date": "2026-10-17",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Vegas Golden Knights ML",
@@ -704,17 +710,18 @@
           "sport": "nhl",
           "matchup": "Pittsburgh Penguins @ Vegas Golden Knights",
           "date": "2026-10-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2478,
       "stakeAmount": 7.5,
       "potentialPayout": 193.35,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7.5,
+      "bankrollAfter": 459.38,
+      "resolvedAt": "2026-10-18T17:31:36.388Z"
     },
     {
       "betId": "parlay-double-2026-10-17",
@@ -727,7 +734,8 @@
           "sport": "nhl",
           "matchup": "Pittsburgh Penguins @ Vegas Golden Knights",
           "date": "2026-10-18",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Ottawa Senators ML",
@@ -735,17 +743,18 @@
           "sport": "nhl",
           "matchup": "Ottawa Senators @ Philadelphia Flyers",
           "date": "2026-10-17",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 145,
       "stakeAmount": 13.5,
       "potentialPayout": 33.08,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -13.5,
+      "bankrollAfter": 445.88,
+      "resolvedAt": "2026-10-18T17:31:36.388Z"
     }
   ]
 }
