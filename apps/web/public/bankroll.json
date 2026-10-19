@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1373.44,
+  "currentBankroll": 1421.59,
   "totalBets": 49,
-  "wins": 24,
-  "losses": 21,
+  "wins": 26,
+  "losses": 23,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1998.5,
-  "totalProfit": 873.44,
-  "roi": 0.5068,
-  "peakBankroll": 1436.75,
+  "totalProfit": 921.59,
+  "roi": 0.4611,
+  "peakBankroll": 1526.59,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.619,
+    "eliteWinRate": 0.625,
     "strongWinRate": 0.7778,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.329,
+    "nflRoi": 0.318,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-18T17:26:05.203Z",
-    "totalResultsTracked": 45
+    "lastCalibrated": "2026-10-19T12:03:03.977Z",
+    "totalResultsTracked": 49
   },
   "bets": [
     {
@@ -1720,10 +1720,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 78.38,
+      "bankrollAfter": 1451.82,
+      "resolvedAt": "2026-10-19T12:03:03.687Z",
       "propType": "player_receiving_yards",
       "playerName": "Jalen Royals",
       "line": 24.5,
@@ -1746,10 +1746,10 @@
         "composite": 83
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 74.77,
+      "bankrollAfter": 1526.59,
+      "resolvedAt": "2026-10-19T12:03:03.727Z",
       "propType": "player_receiving_yards",
       "playerName": "Tre Tucker",
       "line": 39.5,
@@ -1772,10 +1772,10 @@
         "composite": 83
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -87,
+      "bankrollAfter": 1439.59,
+      "resolvedAt": "2026-10-19T12:03:03.792Z",
       "propType": "player_pass_yards",
       "playerName": "Matthew Stafford",
       "line": 280.5,
@@ -1796,7 +1796,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Tyler Allgeier",
           "line": 13.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Jalen Brooks Under 20.5 Receiving Yards",
@@ -1808,7 +1809,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jalen Brooks",
           "line": 20.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Jalen Royals Under 24.5 Receiving Yards",
@@ -1820,7 +1822,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jalen Royals",
           "line": 24.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Green Bay Packers ML",
@@ -1828,7 +1831,8 @@
           "sport": "nfl",
           "matchup": "Dallas Cowboys @ Green Bay Packers",
           "date": "2026-10-19",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Tre Tucker Over 39.5 Receiving Yards",
@@ -1840,17 +1844,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Tre Tucker",
           "line": 39.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2395,
       "stakeAmount": 18,
       "potentialPayout": 449.1,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -18,
+      "bankrollAfter": 1421.59,
+      "resolvedAt": "2026-10-19T12:03:03.976Z"
     }
   ]
 }
