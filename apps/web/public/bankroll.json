@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1421.59,
+  "currentBankroll": 1314.28,
   "totalBets": 53,
-  "wins": 26,
-  "losses": 23,
+  "wins": 27,
+  "losses": 26,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 2283,
-  "totalProfit": 921.59,
-  "roi": 0.4611,
+  "totalProfit": 814.28,
+  "roi": 0.3567,
   "peakBankroll": 1526.59,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.625,
-    "strongWinRate": 0.7778,
+    "strongWinRate": 0.6667,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.318,
+    "nflRoi": 0.2241,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-19T20:00:57.911Z",
-    "totalResultsTracked": 49
+    "lastCalibrated": "2026-10-20T12:11:14.428Z",
+    "totalResultsTracked": 53
   },
   "bets": [
     {
@@ -1874,10 +1874,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 83.19,
+      "bankrollAfter": 1504.78,
+      "resolvedAt": "2026-10-20T12:11:14.203Z",
       "propType": "player_rush_yards",
       "playerName": "Rachaad White",
       "line": 45.5,
@@ -1900,10 +1900,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -83.5,
+      "bankrollAfter": 1421.28,
+      "resolvedAt": "2026-10-20T12:11:14.228Z",
       "propType": "player_receiving_yards",
       "playerName": "Terry McLaurin",
       "line": 49.5,
@@ -1926,10 +1926,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -95.5,
+      "bankrollAfter": 1325.78,
+      "resolvedAt": "2026-10-20T12:11:14.258Z",
       "propType": "player_pass_yards",
       "playerName": "Jayden Daniels",
       "line": 211.5,
@@ -1950,7 +1950,8 @@
           "propType": "player_rush_yards",
           "playerName": "Rachaad White",
           "line": 45.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Terry McLaurin Over 49.5 Receiving Yards",
@@ -1962,7 +1963,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Terry McLaurin",
           "line": 49.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jayden Daniels Under 211.5 Passing Yards",
@@ -1974,7 +1976,8 @@
           "propType": "player_pass_yards",
           "playerName": "Jayden Daniels",
           "line": 211.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "George Kittle Over 67.5 Receiving Yards",
@@ -1986,7 +1989,8 @@
           "propType": "player_receiving_yards",
           "playerName": "George Kittle",
           "line": 67.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Brock Purdy Over 19.5 Rushing Yards",
@@ -1998,17 +2002,18 @@
           "propType": "player_rush_yards",
           "playerName": "Brock Purdy",
           "line": 19.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2310,
       "stakeAmount": 11.5,
       "potentialPayout": 277.15,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11.5,
+      "bankrollAfter": 1314.28,
+      "resolvedAt": "2026-10-20T12:11:14.428Z"
     }
   ]
 }
