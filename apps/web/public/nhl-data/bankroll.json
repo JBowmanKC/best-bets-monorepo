@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 445.88,
-  "totalBets": 20,
+  "totalBets": 26,
   "wins": 7,
   "losses": 13,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 318.5,
+  "totalStaked": 408,
   "totalProfit": -54.12,
   "roi": -0.1699,
   "peakBankroll": 500,
@@ -755,6 +755,197 @@
       "profitLoss": -13.5,
       "bankrollAfter": 445.88,
       "resolvedAt": "2026-10-18T17:31:36.388Z"
+    },
+    {
+      "betId": "nhl-401892544-prop-masonmctavish-player_points-2026-10-20",
+      "date": "2026-10-20",
+      "sport": "nhl",
+      "matchup": "Winnipeg Jets @ St. Louis Blues",
+      "pickLabel": "Mason McTavish Over 0.5",
+      "odds": -135,
+      "stakeAmount": 17,
+      "potentialPayout": 29.59,
+      "estimatedWinPct": 0.697,
+      "impliedWinPct": 0.574,
+      "evEdge": 0.123,
+      "tier": "elite",
+      "scores": {
+        "composite": 82
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Mason McTavish",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892544-away-2026-10-20",
+      "date": "2026-10-20",
+      "sport": "nhl",
+      "matchup": "Winnipeg Jets @ St. Louis Blues",
+      "pickLabel": "Winnipeg Jets ML",
+      "odds": 124,
+      "stakeAmount": 17,
+      "potentialPayout": 38.08,
+      "estimatedWinPct": 0.654,
+      "impliedWinPct": 0.446,
+      "evEdge": 0.207,
+      "tier": "strong",
+      "scores": {
+        "composite": 68
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "nhl-401892542-home-2026-10-20",
+      "date": "2026-10-20",
+      "sport": "nhl",
+      "matchup": "Los Angeles Kings @ Washington Capitals",
+      "pickLabel": "Washington Capitals ML",
+      "odds": -155,
+      "stakeAmount": 17,
+      "potentialPayout": 27.97,
+      "estimatedWinPct": 0.768,
+      "impliedWinPct": 0.608,
+      "evEdge": 0.16,
+      "tier": "strong",
+      "scores": {
+        "composite": 78
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-safe-2026-10-20",
+      "date": "2026-10-20",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Washington Capitals ML",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Los Angeles Kings @ Washington Capitals",
+          "date": "2026-10-20",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Winnipeg Jets ML",
+          "odds": 124,
+          "sport": "nhl",
+          "matchup": "Winnipeg Jets @ St. Louis Blues",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 269,
+      "stakeAmount": 17,
+      "potentialPayout": 62.73,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-20",
+      "date": "2026-10-20",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Boston Bruins ML",
+          "odds": 142,
+          "sport": "nhl",
+          "matchup": "Boston Bruins @ Dallas Stars",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Winnipeg Jets ML",
+          "odds": 124,
+          "sport": "nhl",
+          "matchup": "Winnipeg Jets @ St. Louis Blues",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Washington Capitals ML",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Los Angeles Kings @ Washington Capitals",
+          "date": "2026-10-20",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Mason McTavish Over 0.5 Points",
+          "odds": -135,
+          "sport": "nhl",
+          "matchup": "Winnipeg Jets @ St. Louis Blues",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Mason McTavish",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Seattle Kraken ML",
+          "odds": -102,
+          "sport": "nhl",
+          "matchup": "Detroit Red Wings @ Seattle Kraken",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 2974,
+      "stakeAmount": 4.5,
+      "potentialPayout": 138.33,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-10-20",
+      "date": "2026-10-20",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Washington Capitals ML",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Los Angeles Kings @ Washington Capitals",
+          "date": "2026-10-20",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Carolina Hurricanes ML",
+          "odds": -298,
+          "sport": "nhl",
+          "matchup": "Carolina Hurricanes @ Vancouver Canucks",
+          "date": "2026-10-21",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 120,
+      "stakeAmount": 17,
+      "potentialPayout": 37.4,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
