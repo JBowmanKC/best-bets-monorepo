@@ -651,8 +651,17 @@ function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
   return [picks[0]]; // best side per game only
 }
 
-function scoreAllGames(games: RawGame[], bankrollState: BankrollState): BetPick[] {
-  const allPicks = games.flatMap(game => scoreGame(game, bankrollState));
+function scoreAllGames(
+  games: RawGame[],
+  bankrollState: BankrollState,
+  /** NHL games are scored by their own model (scoreNhlGame); every other sport is unchanged. */
+  nhlContexts: Map<string, NhlMatchupContext> = new Map()
+): BetPick[] {
+  const allPicks = games.flatMap(game => {
+    if (game.sport !== "nhl") return scoreGame(game, bankrollState);
+    const ctx = nhlContexts.get(game.id);
+    return ctx ? scoreNhlGame(game, ctx, bankrollState) : [];
+  });
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
   allPicks.sort((a, b) => {
     const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
@@ -660,6 +669,498 @@ function scoreAllGames(games: RawGame[], bankrollState: BankrollState): BetPick[
     return b.scores.composite - a.scores.composite;
   });
   return allPicks;
+}
+
+// ─── NHL moneyline model ─────────────────────────────────────────────────────
+// The record-gap estimate scoreGame uses (0.5 + 0.8 × win% gap) produced
+// 80%-vs-52% "edges" in October NHL — a 4-1 team vs a 1-4 team hits its 82%
+// cap after five games, regardless of who those games were against. NHL
+// moneylines went 1-5 on it. This model instead rates each team in goals per
+// game and adds the situational factors that actually move NHL lines:
+//
+//   rating     goal differential per game, adjusted for strength of schedule
+//              (who they've played), blended with last season's rating while
+//              this season's sample is small
+//   venue      league-wide home ice plus each team's own home/road split
+//   rest       second night of a back-to-back, 3 games in 4 nights
+//   road trip  each consecutive road game past the second wears a team down
+//   goalie     tonight's probable starter vs the save % the team has had
+//   injuries   points per game lost to stars listed out
+//
+// Every factor is in goals per game (for the home team), summed and turned
+// into a win probability. That probability is then blended with the market's
+// own (de-vigged) price rather than trusted outright — the same discipline
+// scoreProp uses — so a bet needs the model to clearly disagree with the
+// book, not just a good record.
+
+/** One completed regular-season game from a team's point of view. */
+interface NhlTeamGame {
+  date: string; // YYYY-MM-DD, local game date
+  opp: string; // NHL abbrev
+  home: boolean;
+  gf: number;
+  ga: number;
+}
+
+interface NhlStandingsRow {
+  abbrev: string;
+  name: string;
+  gamesPlayed: number;
+  gdPerGame: number;
+}
+
+interface NhlGoalie {
+  name: string;
+  gamesPlayed: number;
+  savePct: number;
+  shotsAgainst: number;
+}
+
+interface NhlSkaterLine {
+  name: string;
+  gamesPlayed: number;
+  points: number;
+}
+
+interface NhlInjury {
+  name: string;
+  status: string;
+}
+
+/** Everything the model knows about one team going into tonight. */
+interface NhlTeamContext {
+  abbrev: string;
+  name: string;
+  games: NhlTeamGame[];
+  rating: number; // goals/game vs a league-average opponent
+  homeSplit: number; // home GD/game minus overall GD/game, shrunk
+  roadSplit: number;
+  playedYesterday: boolean;
+  threeInFour: boolean;
+  roadTripGame: number; // tonight's place in a run of road games (0 if home)
+  last10GdPerGame: number;
+  last10Record: string;
+  starter: NhlGoalie | null;
+  teamSavePct: number | null;
+  starsOut: { name: string; pointsPerGame: number; status: string }[];
+}
+
+interface NhlMatchupContext {
+  home: NhlTeamContext;
+  away: NhlTeamContext;
+}
+
+/** Goal-equivalent factor contributions, from the home team's side. */
+interface NhlFactorBreakdown {
+  rating: number;
+  venue: number;
+  rest: number;
+  roadTrip: number;
+  goalie: number;
+  injuries: number;
+  total: number;
+}
+
+const NHL_HOME_ICE_GOALS = 0.2; // ~54% home win rate league-wide
+const NHL_GOALS_TO_LOGIT = 0.85; // a 1 goal/game edge ≈ a 70% favorite
+const NHL_RATING_PRIOR_GAMES = 12; // games before this season's rating outweighs last season's
+const NHL_PRIOR_REGRESSION = 0.5; // rosters turn over — keep half of last season's rating
+const NHL_SPLIT_PRIOR_GAMES = 15;
+const NHL_BACK_TO_BACK_GOALS = 0.25;
+const NHL_THREE_IN_FOUR_GOALS = 0.1;
+const NHL_SHOTS_PER_GAME = 28;
+const NHL_STAR_MIN_PPG = 0.6;
+const NHL_REPLACEMENT_PPG = 0.3;
+const NHL_POINTS_PER_GOAL = 2.7; // a goal plus ~1.7 assists
+/** How far the estimate moves from the market toward the model — same cap as scoreProp's MAX_SIGNAL_WEIGHT. */
+const NHL_MODEL_WEIGHT = 0.35;
+
+/** ESPN and the NHL disagree on five team abbreviations. */
+const ESPN_TO_NHL_ABBREV: Record<string, string> = { LA: "LAK", NJ: "NJD", SJ: "SJS", TB: "TBL", UTAH: "UTA" };
+
+/** Lowercase, accents stripped, letters/digits only — "Montréal" and "Montreal" match. */
+function nhlFold(name: string): string {
+  return (name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function shiftIsoDate(date: string, days: number): string {
+  const d = new Date(`${date}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+const clampGoals = (v: number, cap: number) => Math.min(Math.max(v, -cap), cap);
+
+/**
+ * Strength-of-schedule-adjusted rating: each game's margin plus how good the
+ * opponent has been (their own GD/game), averaged — beating good teams counts
+ * for more than beating bad ones. Blended with last season's regressed
+ * rating while the current sample is small.
+ */
+function nhlTeamRating(games: NhlTeamGame[], oppGdPerGame: Map<string, number>, priorGdPerGame: number | null): number {
+  const prior = (priorGdPerGame ?? 0) * NHL_PRIOR_REGRESSION;
+  if (games.length === 0) return prior;
+  const adjusted = games.reduce((acc, g) => acc + (g.gf - g.ga) + (oppGdPerGame.get(g.opp) ?? 0), 0) / games.length;
+  return (adjusted * games.length + prior * NHL_RATING_PRIOR_GAMES) / (games.length + NHL_RATING_PRIOR_GAMES);
+}
+
+/** Home (or road) GD/game relative to the team's overall GD/game, shrunk toward zero on small samples. */
+function nhlVenueSplit(games: NhlTeamGame[], home: boolean): number {
+  const venueGames = games.filter(g => g.home === home);
+  if (games.length === 0 || venueGames.length === 0) return 0;
+  const overall = games.reduce((a, g) => a + g.gf - g.ga, 0) / games.length;
+  const venue = venueGames.reduce((a, g) => a + g.gf - g.ga, 0) / venueGames.length;
+  return (venue - overall) * (venueGames.length / (venueGames.length + NHL_SPLIT_PRIOR_GAMES));
+}
+
+/** Rest and travel going into tonight. `games` must be sorted oldest → newest and only include games before `date`. */
+function nhlSchedulePressure(games: NhlTeamGame[], date: string, homeTonight: boolean) {
+  const yesterday = shiftIsoDate(date, -1);
+  const threeDaysAgo = shiftIsoDate(date, -3);
+  const playedYesterday = games.some(g => g.date === yesterday);
+  const threeInFour = games.filter(g => g.date >= threeDaysAgo && g.date < date).length >= 2;
+  let roadTripGame = 0;
+  if (!homeTonight) {
+    roadTripGame = 1;
+    for (let i = games.length - 1; i >= 0 && !games[i].home; i--) roadTripGame += 1;
+  }
+  return { playedYesterday, threeInFour, roadTripGame };
+}
+
+function nhlLast10(games: NhlTeamGame[]): { gdPerGame: number; record: string } {
+  const last = games.slice(-10);
+  if (last.length === 0) return { gdPerGame: 0, record: "0-0" };
+  const w = last.filter(g => g.gf > g.ga).length;
+  return { gdPerGame: last.reduce((a, g) => a + g.gf - g.ga, 0) / last.length, record: `${w}-${last.length - w}` };
+}
+
+/** Goals/game the team loses to its listed-out stars. Only players who've been in the lineup most of the season count — a player out for weeks is already reflected in the rating. */
+function nhlInjuryGoals(starsOut: NhlTeamContext["starsOut"]): number {
+  const lost = starsOut.reduce((acc, s) => {
+    const weight = s.status === "Day-To-Day" ? 0.5 : 1;
+    return acc + weight * Math.max(s.pointsPerGame - NHL_REPLACEMENT_PPG, 0) / NHL_POINTS_PER_GOAL;
+  }, 0);
+  return Math.min(lost, 0.6);
+}
+
+/**
+ * Tonight's starter vs the save % the team has actually been getting, in
+ * goals/game — the team rating already reflects its usual goaltending, so only
+ * a change of goalie should move the line. The starter's own % is shrunk
+ * toward the team's on a small sample (so the regular starter nets out to
+ * ~zero, and a backup with two starts can't swing it much). A starter with
+ * no NHL games this season — a call-up — is treated as replacement level.
+ */
+const NHL_REPLACEMENT_SAVE_PCT = 0.89;
+
+function nhlGoalieGoals(team: NhlTeamContext): number {
+  if (!team.starter || team.teamSavePct === null) return 0;
+  const gp = team.starter.gamesPlayed;
+  const starterSv = gp === 0
+    ? NHL_REPLACEMENT_SAVE_PCT
+    : (team.starter.savePct * gp + team.teamSavePct * 4) / (gp + 4);
+  return clampGoals((starterSv - team.teamSavePct) * NHL_SHOTS_PER_GAME, 0.4);
+}
+
+function nhlFactors(ctx: NhlMatchupContext): NhlFactorBreakdown {
+  const { home, away } = ctx;
+  const rating = home.rating - away.rating;
+  const venue = NHL_HOME_ICE_GOALS + clampGoals(0.5 * home.homeSplit + 0.5 * -away.roadSplit, 0.3);
+  const fatigue = (t: NhlTeamContext) =>
+    (t.playedYesterday ? NHL_BACK_TO_BACK_GOALS : 0) + (t.threeInFour ? NHL_THREE_IN_FOUR_GOALS : 0);
+  const rest = fatigue(away) - fatigue(home);
+  const roadTrip = Math.min(0.05 * Math.max(away.roadTripGame - 2, 0), 0.2);
+  const goalie = nhlGoalieGoals(home) - nhlGoalieGoals(away);
+  const injuries = nhlInjuryGoals(away.starsOut) - nhlInjuryGoals(home.starsOut);
+  const total = rating + venue + rest + roadTrip + goalie + injuries;
+  return { rating, venue, rest, roadTrip, goalie, injuries, total };
+}
+
+function nhlHomeWinProb(totalGoals: number): number {
+  return 1 / (1 + Math.exp(-NHL_GOALS_TO_LOGIT * totalGoals));
+}
+
+const fmtGoals = (v: number) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
+
+function buildNhlRationale(
+  game: RawGame, ctx: NhlMatchupContext, f: NhlFactorBreakdown, pickHome: boolean,
+  modelPct: number, marketPct: number, estimatedPct: number, evEdge: number
+): string {
+  const me = pickHome ? ctx.home : ctx.away;
+  const opp = pickHome ? ctx.away : ctx.home;
+  const sign = pickHome ? 1 : -1;
+  const notes: string[] = [];
+
+  notes.push(
+    `${me.name} rate ${fmtGoals(me.rating)} goals/game after strength of schedule vs ${fmtGoals(opp.rating)} for ${opp.name}`
+    + ` (last 10: ${me.last10Record} vs ${opp.last10Record}).`
+  );
+  notes.push(pickHome ? "Home ice." : "On the road.");
+  if (me.playedYesterday) notes.push(`${me.name} are on the second night of a back-to-back.`);
+  if (opp.playedYesterday) notes.push(`${opp.name} are on the second night of a back-to-back.`);
+  if (me.roadTripGame >= 3) notes.push(`Game ${me.roadTripGame} of a road trip for ${me.name}.`);
+  if (opp.roadTripGame >= 3) notes.push(`Game ${opp.roadTripGame} of a road trip for ${opp.name}.`);
+  const goalieLine = (t: NhlTeamContext) => t.starter ? `${t.starter.name} (${t.starter.savePct.toFixed(3)})` : "starter unconfirmed";
+  notes.push(`In net: ${goalieLine(me)} vs ${goalieLine(opp)}.`);
+  const starsLine = (t: NhlTeamContext) => t.starsOut.map(s => `${s.name} (${s.pointsPerGame.toFixed(2)} pts/gm, ${s.status})`).join(", ");
+  if (me.starsOut.length) notes.push(`${me.name} without ${starsLine(me)}.`);
+  if (opp.starsOut.length) notes.push(`${opp.name} without ${starsLine(opp)}.`);
+
+  const situational = sign * (f.venue + f.rest + f.roadTrip + f.goalie + f.injuries);
+  notes.push(
+    `Model ${Math.round(modelPct * 100)}% vs market ${Math.round(marketPct * 100)}%`
+    + ` (situational factors ${fmtGoals(situational)} goals) — blended estimate ${Math.round(estimatedPct * 100)}%, +${Math.round(evEdge * 100)}% EV edge.`
+  );
+  return notes.join(" ");
+}
+
+/** Best side of one NHL game, or nothing when the model doesn't clear the market by enough. */
+function scoreNhlGame(game: RawGame, ctx: NhlMatchupContext, bankrollState: BankrollState): BetPick[] {
+  const f = nhlFactors(ctx);
+  const modelHome = nhlHomeWinProb(f.total);
+
+  const homeOdds = game.odds.homeMoneyline;
+  const awayOdds = game.odds.awayMoneyline;
+  // De-vig when both sides are priced, so the market's "fair" number is comparable to the model's.
+  const rawHome = homeOdds !== null && homeOdds !== undefined ? oddsToImpliedProb(homeOdds) : null;
+  const rawAway = awayOdds !== null && awayOdds !== undefined ? oddsToImpliedProb(awayOdds) : null;
+  const fairHome = rawHome !== null && rawAway !== null ? rawHome / (rawHome + rawAway) : rawHome ?? (rawAway !== null ? 1 - rawAway : 0.5);
+
+  const picks: BetPick[] = [];
+  for (const pickHome of [true, false]) {
+    const odds = pickHome ? homeOdds : awayOdds;
+    if (odds === null || odds === undefined) continue;
+
+    const impliedWinPct = oddsToImpliedProb(odds);
+    const marketPct = pickHome ? fairHome : 1 - fairHome;
+    const modelPct = pickHome ? modelHome : 1 - modelHome;
+    const estimatedWinPct = Math.min(Math.max(marketPct + (modelPct - marketPct) * NHL_MODEL_WEIGHT, 0.05), 0.95);
+
+    const rawEv = scoreExpectedValue(estimatedWinPct, impliedWinPct);
+    const evEdge = rawEv.evEdge;
+    if (evEdge <= 0) continue;
+
+    const sign = pickHome ? 1 : -1;
+    const me = pickHome ? ctx.home : ctx.away;
+    const opp = pickHome ? ctx.away : ctx.home;
+    const wpScore = Math.min(Math.max(Math.round(((estimatedWinPct - 0.3) / 0.52) * 100 * bankrollState.calibration.wpScoreMultiplier), 0), 100);
+    const evScore = Math.min(Math.max(Math.round(rawEv.score * bankrollState.calibration.evScoreMultiplier), 0), 100);
+    // Momentum: last-10 goal differential, this team vs the opponent.
+    const momScore = Math.min(Math.max(Math.round(50 + (me.last10GdPerGame - opp.last10GdPerGame) * 15), 0), 100);
+    // Context: the situational factors (venue/rest/travel/goalie/injuries) in this side's favor.
+    const situational = sign * (f.venue + f.rest + f.roadTrip + f.goalie + f.injuries);
+    const ctxScore = Math.min(Math.max(Math.round(50 + situational * 60), 0), 100);
+
+    const factorScores: FactorScores = { winProbability: wpScore, expectedValue: evScore, momentum: momScore, context: ctxScore, composite: 0 };
+    factorScores.composite = composite(factorScores);
+    const tier = getTier(factorScores.composite);
+    if (!tier) continue;
+
+    const team = pickHome ? game.homeTeam : game.awayTeam;
+    const stakeAmount = kellyStake(bankrollState.currentBankroll, estimatedWinPct, odds);
+    const potentialPayout = Math.round(
+      (odds > 0 ? stakeAmount + (stakeAmount * odds) / 100 : stakeAmount + (stakeAmount * 100) / Math.abs(odds)) * 100
+    ) / 100;
+
+    picks.push({
+      id: `${game.id}-${pickHome ? "home" : "away"}`,
+      sport: game.sport,
+      matchup: `${game.awayTeam} @ ${game.homeTeam}`,
+      betType: `Moneyline — ${pickHome ? "Home Win" : "Away Win"}`,
+      pickLabel: `${team} ML`,
+      odds,
+      estimatedWinPct: Math.round(estimatedWinPct * 1000) / 1000,
+      impliedWinPct: Math.round(impliedWinPct * 1000) / 1000,
+      evEdge: Math.round(evEdge * 1000) / 1000,
+      tier,
+      scores: factorScores,
+      startTime: game.startTime,
+      rationale: buildNhlRationale(game, ctx, f, pickHome, modelPct, marketPct, estimatedWinPct, evEdge),
+      stake: STAKE_BY_TIER[tier],
+      isPositiveEV: true,
+      stakeAmount,
+      potentialPayout,
+      sportsbook: sportsbookLabel(game.sportsbook),
+    });
+  }
+
+  if (picks.length === 0) return [];
+  picks.sort((a, b) => b.scores.composite - a.scores.composite);
+  return [picks[0]];
+}
+
+// ─── NHL model data (NHL's own API + ESPN; free, no key) ────────────────────
+async function fetchNhlStandingsTable(date: string | "now"): Promise<NhlStandingsRow[]> {
+  try {
+    const data = await fetchJson(`https://api-web.nhle.com/v1/standings/${date}`);
+    return (data.standings ?? [])
+      .map((t: any): NhlStandingsRow => ({
+        abbrev: t.teamAbbrev?.default ?? "",
+        name: t.teamName?.default ?? "",
+        gamesPlayed: Number(t.gamesPlayed) || 0,
+        gdPerGame: Number(t.gamesPlayed) > 0 ? Number(t.goalDifferential) / Number(t.gamesPlayed) : 0,
+      }))
+      .filter((r: NhlStandingsRow) => r.abbrev);
+  } catch (e) {
+    console.warn(`fetchNhlStandingsTable(${date}) failed:`, e);
+    return [];
+  }
+}
+
+/** Completed regular-season games, oldest first, before `beforeDate`. */
+async function fetchNhlTeamGames(abbrev: string, seasonId: string, beforeDate: string): Promise<NhlTeamGame[]> {
+  try {
+    const data = await fetchJson(`https://api-web.nhle.com/v1/club-schedule-season/${abbrev}/${seasonId}`);
+    return (data.games ?? [])
+      .filter((g: any) => g.gameType === 2 && (g.gameState === "FINAL" || g.gameState === "OFF") && g.gameDate < beforeDate)
+      .map((g: any): NhlTeamGame => {
+        const home = g.homeTeam?.abbrev === abbrev;
+        const me = home ? g.homeTeam : g.awayTeam;
+        const them = home ? g.awayTeam : g.homeTeam;
+        return { date: g.gameDate, opp: them?.abbrev ?? "", home, gf: Number(me?.score) || 0, ga: Number(them?.score) || 0 };
+      })
+      .sort((a: NhlTeamGame, b: NhlTeamGame) => a.date.localeCompare(b.date));
+  } catch (e) {
+    console.warn(`fetchNhlTeamGames(${abbrev}) failed:`, e);
+    return [];
+  }
+}
+
+async function fetchNhlClubStats(abbrev: string): Promise<{ skaters: NhlSkaterLine[]; goalies: NhlGoalie[] }> {
+  try {
+    const data = await fetchJson(`https://api-web.nhle.com/v1/club-stats/${abbrev}/now`);
+    const full = (p: any) => `${p.firstName?.default ?? ""} ${p.lastName?.default ?? ""}`.trim();
+    return {
+      skaters: (data.skaters ?? []).map((s: any) => ({ name: full(s), gamesPlayed: Number(s.gamesPlayed) || 0, points: Number(s.points) || 0 })),
+      goalies: (data.goalies ?? []).map((g: any) => ({
+        name: full(g), gamesPlayed: Number(g.gamesPlayed) || 0, savePct: Number(g.savePercentage) || 0, shotsAgainst: Number(g.shotsAgainst) || 0,
+      })),
+    };
+  } catch (e) {
+    console.warn(`fetchNhlClubStats(${abbrev}) failed:`, e);
+    return { skaters: [], goalies: [] };
+  }
+}
+
+/** ESPN injury report, keyed by folded team display name. */
+async function fetchNhlInjuries(): Promise<Map<string, NhlInjury[]>> {
+  const map = new Map<string, NhlInjury[]>();
+  try {
+    const data = await fetchJson("https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/injuries");
+    for (const team of data.injuries ?? []) {
+      map.set(nhlFold(team.displayName ?? ""), (team.injuries ?? []).map((i: any) => ({
+        name: i.athlete?.displayName ?? "", status: String(i.status ?? ""),
+      })));
+    }
+  } catch (e) {
+    console.warn("fetchNhlInjuries failed:", e);
+  }
+  return map;
+}
+
+/** ESPN's probable starting goalie for each side of an event, keyed by ESPN team id. */
+async function fetchNhlProbableGoalies(date: string): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  try {
+    const data = await fetchJson(`https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates=${date.replace(/-/g, "")}`);
+    for (const e of data.events ?? []) {
+      for (const c of e.competitions?.[0]?.competitors ?? []) {
+        const goalie = (c.probables ?? []).find((p: any) => p.name === "probableStartingGoalie")?.athlete?.fullName;
+        if (goalie) map.set(`${e.id}:${c.team?.id}`, goalie);
+      }
+    }
+  } catch (e) {
+    console.warn("fetchNhlProbableGoalies failed:", e);
+  }
+  return map;
+}
+
+/**
+ * Builds the model inputs for every NHL game on tonight's slate. Only the
+ * teams playing tonight get their schedule/stats fetched (2 calls each);
+ * standings (this season + last), injuries and probable goalies are one
+ * call apiece. A team the NHL API can't be matched to is left out, and its
+ * game simply gets no moneyline pick.
+ */
+async function fetchNhlMatchupContexts(games: RawGame[], date: string): Promise<Map<string, NhlMatchupContext>> {
+  const result = new Map<string, NhlMatchupContext>();
+  const nhlGames = games.filter(g => g.sport === "nhl");
+  if (nhlGames.length === 0) return result;
+
+  const seasonEnd = nhlSeasonFor(date);
+  const seasonId = `${seasonEnd - 1}${seasonEnd}`;
+  const [standings, priorStandings, injuries, probables] = await Promise.all([
+    fetchNhlStandingsTable("now"),
+    fetchNhlStandingsTable(`${seasonEnd - 1}-04-15`),
+    fetchNhlInjuries(),
+    fetchNhlProbableGoalies(date),
+  ]);
+  const oppGdPerGame = new Map(standings.map(r => [r.abbrev, r.gdPerGame]));
+  const priorGd = new Map(priorStandings.map(r => [r.abbrev, r.gdPerGame]));
+  const abbrevByName = new Map(standings.map(r => [nhlFold(r.name), r.abbrev]));
+  const nameByAbbrev = new Map(standings.map(r => [r.abbrev, r.name]));
+  const toAbbrev = (espnName: string, espnAbbr: string) =>
+    abbrevByName.get(nhlFold(espnName)) ?? ESPN_TO_NHL_ABBREV[espnAbbr] ?? espnAbbr;
+
+  const teamAbbrevs = new Set<string>();
+  for (const g of nhlGames) {
+    teamAbbrevs.add(toAbbrev(g.homeTeam, g.homeTeamAbbr));
+    teamAbbrevs.add(toAbbrev(g.awayTeam, g.awayTeamAbbr));
+  }
+  const perTeam = new Map<string, { games: NhlTeamGame[]; stats: { skaters: NhlSkaterLine[]; goalies: NhlGoalie[] } }>();
+  await Promise.all([...teamAbbrevs].map(async abbrev => {
+    const [teamGames, stats] = await Promise.all([fetchNhlTeamGames(abbrev, seasonId, date), fetchNhlClubStats(abbrev)]);
+    perTeam.set(abbrev, { games: teamGames, stats });
+  }));
+
+  const buildTeam = (game: RawGame, home: boolean): NhlTeamContext | null => {
+    const espnName = home ? game.homeTeam : game.awayTeam;
+    const abbrev = toAbbrev(espnName, home ? game.homeTeamAbbr : game.awayTeamAbbr);
+    const data = perTeam.get(abbrev);
+    if (!data || !nameByAbbrev.has(abbrev)) return null;
+
+    const pressure = nhlSchedulePressure(data.games, date, home);
+    const last10 = nhlLast10(data.games);
+    const goalies = data.stats.goalies.filter(g => g.gamesPlayed > 0);
+    const totalShots = goalies.reduce((a, g) => a + g.shotsAgainst, 0);
+    const teamSavePct = totalShots > 0 ? goalies.reduce((a, g) => a + g.savePct * g.shotsAgainst, 0) / totalShots : null;
+    const espnTeamId = home ? game.homeTeamId : game.awayTeamId;
+    const starterName = probables.get(`${game.id}:${espnTeamId}`);
+    const starter = starterName
+      ? data.stats.goalies.find(g => nhlFold(g.name) === nhlFold(starterName)) ?? { name: starterName, gamesPlayed: 0, savePct: NHL_REPLACEMENT_SAVE_PCT, shotsAgainst: 0 }
+      : null;
+
+    const teamGp = data.games.length;
+    const injured = injuries.get(nhlFold(espnName)) ?? [];
+    const starsOut = injured.flatMap(inj => {
+      const line = data.stats.skaters.find(s => nhlFold(s.name) === nhlFold(inj.name));
+      if (!line || line.gamesPlayed < Math.max(3, teamGp * 0.5)) return [];
+      const ppg = line.points / line.gamesPlayed;
+      return ppg >= NHL_STAR_MIN_PPG ? [{ name: line.name, pointsPerGame: ppg, status: inj.status }] : [];
+    });
+
+    return {
+      abbrev,
+      name: espnName,
+      games: data.games,
+      rating: nhlTeamRating(data.games, oppGdPerGame, priorGd.get(abbrev) ?? null),
+      homeSplit: nhlVenueSplit(data.games, true),
+      roadSplit: nhlVenueSplit(data.games, false),
+      ...pressure,
+      last10GdPerGame: last10.gdPerGame,
+      last10Record: last10.record,
+      starter,
+      teamSavePct,
+      starsOut,
+    };
+  };
+
+  for (const g of nhlGames) {
+    const home = buildTeam(g, true);
+    const away = buildTeam(g, false);
+    if (home && away) result.set(g.id, { home, away });
+  }
+  return result;
 }
 
 function calcParlayPayout(odds: number[]): number {
@@ -3200,7 +3701,10 @@ module.exports = async function handler(req: ApiRequest, res: ApiResponse) {
 
     const bankrollState = await fetchBankrollState(req);
     const rawGames = attachOdds(games, oddsBySport, chosenBook);
-    const picks = scoreAllGames(rawGames, bankrollState);
+    // NHL moneylines need the model's schedule/goalie/injury inputs; returns
+    // an empty map (no fetches) when there are no NHL games, e.g. NFL runs.
+    const nhlContexts = await fetchNhlMatchupContexts(rawGames, date);
+    const picks = scoreAllGames(rawGames, bankrollState, nhlContexts);
 
     // Prop bets are best-effort: any failure here must never take down the
     // moneyline picks that already succeeded above. They're also time-boxed —
