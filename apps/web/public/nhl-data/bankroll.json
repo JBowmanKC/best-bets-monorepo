@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 445.88,
+  "currentBankroll": 356.38,
   "totalBets": 30,
   "wins": 7,
-  "losses": 13,
+  "losses": 19,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 497,
-  "totalProfit": -54.12,
-  "roi": -0.1699,
+  "totalProfit": -143.62,
+  "roi": -0.352,
   "peakBankroll": 500,
   "lowestBankroll": 347.88,
   "calibration": {
-    "eliteWinRate": 0.5,
-    "strongWinRate": 0.5,
+    "eliteWinRate": 0.4286,
+    "strongWinRate": 0.375,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1543,
+    "nhlRoi": -0.31,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-20T18:41:58.871Z",
-    "totalResultsTracked": 20
+    "lastCalibrated": "2026-10-21T18:53:17.643Z",
+    "totalResultsTracked": 26
   },
   "bets": [
     {
@@ -773,10 +773,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 428.88,
+      "resolvedAt": "2026-10-21T18:53:17.563Z",
       "propType": "player_points",
       "playerName": "Mason McTavish",
       "line": 0.5,
@@ -799,10 +799,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 411.88,
+      "resolvedAt": "2026-10-21T18:53:17.564Z"
     },
     {
       "betId": "nhl-401892542-home-2026-10-20",
@@ -821,10 +821,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 394.88,
+      "resolvedAt": "2026-10-21T18:53:17.564Z"
     },
     {
       "betId": "parlay-safe-2026-10-20",
@@ -837,7 +837,8 @@
           "sport": "nhl",
           "matchup": "Los Angeles Kings @ Washington Capitals",
           "date": "2026-10-20",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Winnipeg Jets ML",
@@ -845,17 +846,18 @@
           "sport": "nhl",
           "matchup": "Winnipeg Jets @ St. Louis Blues",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         }
       ],
       "combinedOdds": 269,
       "stakeAmount": 17,
       "potentialPayout": 62.73,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 377.88,
+      "resolvedAt": "2026-10-21T18:53:17.589Z"
     },
     {
       "betId": "parlay-high-2026-10-20",
@@ -868,7 +870,8 @@
           "sport": "nhl",
           "matchup": "Boston Bruins @ Dallas Stars",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Winnipeg Jets ML",
@@ -876,7 +879,8 @@
           "sport": "nhl",
           "matchup": "Winnipeg Jets @ St. Louis Blues",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Washington Capitals ML",
@@ -884,7 +888,8 @@
           "sport": "nhl",
           "matchup": "Los Angeles Kings @ Washington Capitals",
           "date": "2026-10-20",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Mason McTavish Over 0.5 Points",
@@ -896,7 +901,8 @@
           "propType": "player_points",
           "playerName": "Mason McTavish",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Seattle Kraken ML",
@@ -904,17 +910,18 @@
           "sport": "nhl",
           "matchup": "Detroit Red Wings @ Seattle Kraken",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 2974,
       "stakeAmount": 4.5,
       "potentialPayout": 138.33,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -4.5,
+      "bankrollAfter": 373.38,
+      "resolvedAt": "2026-10-21T18:53:17.617Z"
     },
     {
       "betId": "parlay-double-2026-10-20",
@@ -927,7 +934,8 @@
           "sport": "nhl",
           "matchup": "Los Angeles Kings @ Washington Capitals",
           "date": "2026-10-20",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Carolina Hurricanes ML",
@@ -935,17 +943,18 @@
           "sport": "nhl",
           "matchup": "Carolina Hurricanes @ Vancouver Canucks",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 120,
       "stakeAmount": 17,
       "potentialPayout": 37.4,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 356.38,
+      "resolvedAt": "2026-10-21T18:53:17.618Z"
     },
     {
       "betId": "nhl-401892550-prop-zachbenson-player_assists-2026-10-21",
