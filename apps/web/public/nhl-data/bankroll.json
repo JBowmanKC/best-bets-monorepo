@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 356.38,
+  "currentBankroll": 267.38,
   "totalBets": 30,
   "wins": 7,
-  "losses": 19,
+  "losses": 23,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 497,
-  "totalProfit": -143.62,
-  "roi": -0.352,
+  "totalProfit": -232.62,
+  "roi": -0.468,
   "peakBankroll": 500,
-  "lowestBankroll": 347.88,
+  "lowestBankroll": 267.38,
   "calibration": {
     "eliteWinRate": 0.4286,
-    "strongWinRate": 0.375,
+    "strongWinRate": 0.2727,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.31,
+    "nhlRoi": -0.4713,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
-    "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-21T18:53:17.643Z",
-    "totalResultsTracked": 26
+    "evScoreMultiplier": 0.92,
+    "lastCalibrated": "2026-10-22T18:46:20.925Z",
+    "totalResultsTracked": 30
   },
   "bets": [
     {
@@ -973,10 +973,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -25,
+      "bankrollAfter": 331.38,
+      "resolvedAt": "2026-10-22T18:46:20.682Z",
       "propType": "player_assists",
       "playerName": "Zach Benson",
       "line": 0.5,
@@ -999,10 +999,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -26,
+      "bankrollAfter": 305.38,
+      "resolvedAt": "2026-10-22T18:46:20.708Z",
       "propType": "player_shots_on_goal",
       "playerName": "Tage Thompson",
       "line": 3.5,
@@ -1025,10 +1025,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -33.5,
+      "bankrollAfter": 271.88,
+      "resolvedAt": "2026-10-22T18:46:20.708Z"
     },
     {
       "betId": "parlay-high-2026-10-21",
@@ -1045,7 +1045,8 @@
           "propType": "player_assists",
           "playerName": "Zach Benson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Tage Thompson Over 3.5 Shots on Goal",
@@ -1057,7 +1058,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Tage Thompson",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Buffalo Sabres ML",
@@ -1065,7 +1067,8 @@
           "sport": "nhl",
           "matchup": "Philadelphia Flyers @ Buffalo Sabres",
           "date": "2026-10-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Sam Reinhart Over 2.5 Shots on Goal",
@@ -1077,7 +1080,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Sam Reinhart",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Tkachuk Over 0.5 Points",
@@ -1089,17 +1093,18 @@
           "propType": "player_points",
           "playerName": "Matthew Tkachuk",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2298,
       "stakeAmount": 4.5,
       "potentialPayout": 107.91,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -4.5,
+      "bankrollAfter": 267.38,
+      "resolvedAt": "2026-10-22T18:46:20.925Z"
     }
   ]
 }
