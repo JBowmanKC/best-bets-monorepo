@@ -1,14 +1,14 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1314.28,
+  "currentBankroll": 1354.85,
   "totalBets": 57,
-  "wins": 27,
-  "losses": 26,
+  "wins": 29,
+  "losses": 28,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 2508.5,
-  "totalProfit": 814.28,
-  "roi": 0.3567,
+  "totalProfit": 854.85,
+  "roi": 0.3408,
   "peakBankroll": 1526.59,
   "lowestBankroll": 386.8,
   "calibration": {
@@ -16,13 +16,13 @@
     "strongWinRate": 0.6667,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2241,
+    "nflRoi": 0.2257,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-22T18:39:20.066Z",
-    "totalResultsTracked": 53
+    "lastCalibrated": "2026-10-23T18:30:17.828Z",
+    "totalResultsTracked": 57
   },
   "bets": [
     {
@@ -2032,10 +2032,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 69.82,
+      "bankrollAfter": 1384.1,
+      "resolvedAt": "2026-10-23T18:30:17.510Z",
       "propType": "player_rush_yards",
       "playerName": "Roschon Johnson",
       "line": 26.5,
@@ -2058,10 +2058,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -74,
+      "bankrollAfter": 1310.1,
+      "resolvedAt": "2026-10-23T18:30:17.558Z",
       "propType": "player_rush_yards",
       "playerName": "D'Andre Swift",
       "line": 60.5,
@@ -2084,10 +2084,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 55.75,
+      "bankrollAfter": 1365.85,
+      "resolvedAt": "2026-10-23T18:30:17.600Z",
       "propType": "player_receiving_yards",
       "playerName": "Hunter Henry",
       "line": 36.5,
@@ -2108,7 +2108,8 @@
           "propType": "player_rush_yards",
           "playerName": "Roschon Johnson",
           "line": 26.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "D'Andre Swift Under 60.5 Rushing Yards",
@@ -2120,7 +2121,8 @@
           "propType": "player_rush_yards",
           "playerName": "D'Andre Swift",
           "line": 60.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Hunter Henry Over 36.5 Receiving Yards",
@@ -2132,7 +2134,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Hunter Henry",
           "line": 36.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Luther Burden III Over 57.5 Receiving Yards",
@@ -2144,7 +2147,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Luther Burden III",
           "line": 57.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Rhamondre Stevenson Over 42.5 Rushing Yards",
@@ -2156,17 +2160,18 @@
           "propType": "player_rush_yards",
           "playerName": "Rhamondre Stevenson",
           "line": 42.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2330,
       "stakeAmount": 11,
       "potentialPayout": 267.3,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 1354.85,
+      "resolvedAt": "2026-10-23T18:30:17.827Z"
     }
   ]
 }
