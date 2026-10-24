@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 267.38,
+  "currentBankroll": 272.76,
   "totalBets": 39,
-  "wins": 7,
-  "losses": 23,
+  "wins": 9,
+  "losses": 25,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 599,
-  "totalProfit": -232.62,
-  "roi": -0.468,
+  "totalProfit": -227.24,
+  "roi": -0.4166,
   "peakBankroll": 500,
-  "lowestBankroll": 267.38,
+  "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.4286,
-    "strongWinRate": 0.2727,
+    "strongWinRate": 0.3571,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.4713,
+    "nhlRoi": -0.398,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-23T18:41:20.472Z",
-    "totalResultsTracked": 30
+    "lastCalibrated": "2026-10-24T17:33:49.096Z",
+    "totalResultsTracked": 34
   },
   "bets": [
     {
@@ -1123,10 +1123,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 15,
+      "bankrollAfter": 282.38,
+      "resolvedAt": "2026-10-24T17:33:48.847Z",
       "propType": "player_points",
       "playerName": "Artturi Lehkonen",
       "line": 0.5,
@@ -1149,10 +1149,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -17,
+      "bankrollAfter": 265.38,
+      "resolvedAt": "2026-10-24T17:33:48.873Z",
       "propType": "player_points",
       "playerName": "Gage Goncalves",
       "line": 0.5,
@@ -1175,10 +1175,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10.38,
+      "bankrollAfter": 275.76,
+      "resolvedAt": "2026-10-24T17:33:48.899Z",
       "propType": "player_shots_on_goal",
       "playerName": "T.J. Hughes",
       "line": 1.5,
@@ -1199,7 +1199,8 @@
           "propType": "player_points",
           "playerName": "Artturi Lehkonen",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Gage Goncalves Under 0.5 Points",
@@ -1211,7 +1212,8 @@
           "propType": "player_points",
           "playerName": "Gage Goncalves",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "T.J. Hughes Over 1.5 Shots on Goal",
@@ -1223,7 +1225,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "T.J. Hughes",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Brandon Hagel Over 0.5 Points",
@@ -1235,7 +1238,8 @@
           "propType": "player_points",
           "playerName": "Brandon Hagel",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jake Guentzel Under 2.5 Shots on Goal",
@@ -1247,17 +1251,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Jake Guentzel",
           "line": 2.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 1442,
       "stakeAmount": 3,
       "potentialPayout": 46.26,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3,
+      "bankrollAfter": 272.76,
+      "resolvedAt": "2026-10-24T17:33:49.071Z"
     },
     {
       "betId": "nhl-401892571-prop-ryanleonard-player_shots_on_goal-2026-10-24",
