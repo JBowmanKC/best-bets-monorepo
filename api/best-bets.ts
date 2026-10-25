@@ -390,12 +390,17 @@ function kellyStake(
   return Math.round(Math.min(Math.max(raw, 2), bankroll * 0.15) * 2) / 2;
 }
 
+const RECORD_PRIOR_GAMES = 6;
+
 function recordGapToWinProb(
   favRecord: TeamRecord,
   dogRecord: TeamRecord,
   isFavHome: boolean
 ): number {
-  const pct = (r: TeamRecord) => (r.wins + r.losses > 0 ? r.wins / (r.wins + r.losses) : 0.5);
+  // Regressed toward .500 as if every team had RECORD_PRIOR_GAMES extra games
+  // split evenly — a 5-0 start reads as ~.73, not a perfect 1.000 that maxes
+  // out the estimate after five games.
+  const pct = (r: TeamRecord) => (r.wins + RECORD_PRIOR_GAMES / 2) / (r.wins + r.losses + RECORD_PRIOR_GAMES);
   const gap = pct(favRecord) - pct(dogRecord);
   let prob = 0.5 + gap * 0.8;
   if (isFavHome) prob += 0.04;
@@ -461,7 +466,10 @@ function getTier(score: number): Tier | null {
   return null;
 }
 
-function buildRationale(game: RawGame, pickHome: boolean, winPct: number, evEdge: number): string {
+function buildRationale(
+  game: RawGame, pickHome: boolean, winPct: number, impliedPct: number, evEdge: number,
+  recordPct: number, marketPct: number
+): string {
   const team = pickHome ? game.homeTeam : game.awayTeam;
   const oppTeam = pickHome ? game.awayTeam : game.homeTeam;
   const teamRec = pickHome ? game.homeRecord : game.awayRecord;
@@ -476,8 +484,11 @@ function buildRationale(game: RawGame, pickHome: boolean, winPct: number, evEdge
     recDiff > 0
       ? `${team} is ${recDiff} games better on the season.`
       : `Slim record edge — value play.`,
-    `Won ${winsLast5} of last 5 games ${homeStr}.`,
-    `Algorithm win probability: ${Math.round(winPct * 100)}% vs implied ${Math.round((winPct - evEdge) * 100)}% — +${Math.round(evEdge * 100)}% positive EV edge.`,
+    // ESPN's NFL/NHL scoreboard carries no recent results, so form is empty
+    // there — say nothing rather than "Won 0 of last 5".
+    form.length > 0 ? `Won ${winsLast5} of last ${form.length} games ${homeStr}.` : `Playing ${homeStr}.`,
+    `Record-based estimate ${Math.round(recordPct * 100)}% vs market ${Math.round(marketPct * 100)}% — blended ${Math.round(winPct * 100)}%`
+      + ` vs implied ${Math.round(impliedPct * 100)}%, +${Math.round(evEdge * 100)}% EV edge.`,
   ].join(" ");
 }
 
@@ -579,8 +590,32 @@ async function generatePropExplanation(prop: PropPick): Promise<string> {
   return callHaikuExplanation(buildPropExplanationPrompt(prop), prop.rationale);
 }
 
+/**
+ * How far a moneyline estimate moves from the market's own price toward the
+ * record-based estimate. The record gap alone claimed 77% on average for NFL
+ * moneyline singles that won 50% (e.g. a 5-0 team at 77% vs 45% implied, on
+ * the road), so it can't replace the book's price outright. Set looser than
+ * the 0.35 props/NHL use: at 0.35 almost no NFL moneyline cleared the
+ * strong tier, which emptied the safe and double-up parlays most weeks.
+ */
+const MONEYLINE_MODEL_WEIGHT = 0.6;
+/**
+ * When the record-based estimate and the market disagree by more than this,
+ * the market almost always knows something a W-L record can't see (a
+ * starting QB out, a soft early schedule) — e.g. a 4-2 Giants side at +400
+ * the record called a 71% team. Those games are skipped rather than bet.
+ * 0.25 still screens out 10/25's 5-0 Chiefs at Seattle (~70% vs 43%);
+ * 0.30 let them back in as a best bet.
+ */
+const MAX_RECORD_MARKET_GAP = 0.25;
+
 function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
   const picks: BetPick[] = [];
+
+  // De-vig when both sides are priced, so the market's number is a fair probability.
+  const rawHome = game.odds.homeMoneyline !== null && game.odds.homeMoneyline !== undefined ? oddsToImpliedProb(game.odds.homeMoneyline) : null;
+  const rawAway = game.odds.awayMoneyline !== null && game.odds.awayMoneyline !== undefined ? oddsToImpliedProb(game.odds.awayMoneyline) : null;
+  const fairHome = rawHome !== null && rawAway !== null ? rawHome / (rawHome + rawAway) : null;
 
   for (const pickHome of [true, false]) {
     const odds = pickHome ? game.odds.homeMoneyline : game.odds.awayMoneyline;
@@ -594,7 +629,10 @@ function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
       Math.max(Math.round(scoreWinProbability(game, pickHome) * bankrollState.calibration.wpScoreMultiplier), 0),
       100
     );
-    const estimatedWinPct = 0.3 + (wpScore / 100) * 0.52;
+    const recordWinPct = 0.3 + (wpScore / 100) * 0.52;
+    const marketPct = fairHome === null ? impliedWinPct : pickHome ? fairHome : 1 - fairHome;
+    if (Math.abs(recordWinPct - marketPct) > MAX_RECORD_MARKET_GAP) continue;
+    const estimatedWinPct = marketPct + (recordWinPct - marketPct) * MONEYLINE_MODEL_WEIGHT;
 
     const rawEv = scoreExpectedValue(estimatedWinPct, impliedWinPct);
     const evEdge = rawEv.evEdge;
@@ -637,7 +675,7 @@ function scoreGame(game: RawGame, bankrollState: BankrollState): BetPick[] {
       tier,
       scores: factorScores,
       startTime: game.startTime,
-      rationale: buildRationale(game, pickHome, estimatedWinPct, evEdge),
+      rationale: buildRationale(game, pickHome, estimatedWinPct, impliedWinPct, evEdge, recordWinPct, marketPct),
       stake: STAKE_BY_TIER[tier],
       isPositiveEV: true,
       stakeAmount,
