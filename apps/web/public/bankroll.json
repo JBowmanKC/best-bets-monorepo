@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1354.85,
-  "totalBets": 63,
+  "totalBets": 62,
   "wins": 29,
   "losses": 28,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 2779.5,
+  "totalStaked": 2725.5,
   "totalProfit": 854.85,
   "roi": 0.3408,
   "peakBankroll": 1526.59,
@@ -2224,28 +2224,6 @@
       "playerName": "John Metchie III",
       "line": 12.5,
       "recommendedSide": "over"
-    },
-    {
-      "betId": "nfl-401873022-away-2026-10-25",
-      "date": "2026-10-25",
-      "sport": "nfl",
-      "matchup": "Kansas City Chiefs @ Seattle Seahawks",
-      "pickLabel": "Kansas City Chiefs ML",
-      "odds": 124,
-      "stakeAmount": 54,
-      "potentialPayout": 120.96,
-      "estimatedWinPct": 0.768,
-      "impliedWinPct": 0.446,
-      "evEdge": 0.322,
-      "tier": "strong",
-      "scores": {
-        "composite": 76
-      },
-      "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
     },
     {
       "betId": "parlay-safe-2026-10-25",
