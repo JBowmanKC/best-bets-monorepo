@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1354.85,
-  "totalBets": 57,
+  "totalBets": 63,
   "wins": 29,
   "losses": 28,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 2508.5,
+  "totalStaked": 2779.5,
   "totalProfit": 854.85,
   "roi": 0.3408,
   "peakBankroll": 1526.59,
@@ -2172,6 +2172,229 @@
       "profitLoss": -11,
       "bankrollAfter": 1354.85,
       "resolvedAt": "2026-10-23T18:30:17.827Z"
+    },
+    {
+      "betId": "nfl-401873018-prop-johnmetchieiii-player_receiving_yards-2026-10-25",
+      "date": "2026-10-25",
+      "sport": "nfl",
+      "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+      "pickLabel": "John Metchie III Over 12.5",
+      "odds": -114,
+      "stakeAmount": 68,
+      "potentialPayout": 127.65,
+      "estimatedWinPct": 0.667,
+      "impliedWinPct": 0.533,
+      "evEdge": 0.134,
+      "tier": "elite",
+      "scores": {
+        "composite": 86
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "John Metchie III",
+      "line": 12.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nfl-401873022-prop-jalenroyals-player_receiving_yards-2026-10-25",
+      "date": "2026-10-25",
+      "sport": "nfl",
+      "matchup": "Kansas City Chiefs @ Seattle Seahawks",
+      "pickLabel": "Jalen Royals Under 21.5",
+      "odds": -112,
+      "stakeAmount": 64.5,
+      "potentialPayout": 122.09,
+      "estimatedWinPct": 0.647,
+      "impliedWinPct": 0.528,
+      "evEdge": 0.119,
+      "tier": "strong",
+      "scores": {
+        "composite": 74
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Jalen Royals",
+      "line": 21.5,
+      "recommendedSide": "under"
+    },
+    {
+      "betId": "nfl-401873018-prop-buckyirving-player_receiving_yards-2026-10-25",
+      "date": "2026-10-25",
+      "sport": "nfl",
+      "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+      "pickLabel": "Bucky Irving Under 16.5",
+      "odds": -107,
+      "stakeAmount": 58,
+      "potentialPayout": 112.21,
+      "estimatedWinPct": 0.627,
+      "impliedWinPct": 0.517,
+      "evEdge": 0.11,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "Bucky Irving",
+      "line": 16.5,
+      "recommendedSide": "under"
+    },
+    {
+      "betId": "parlay-safe-2026-10-25",
+      "date": "2026-10-25",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Brandin Cooks Under 24.5 Receiving Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "San Francisco 49ers @ Atlanta Falcons",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Brandin Cooks",
+          "line": 24.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Kirk Cousins Under 1.5 Rushing Yards",
+          "odds": -117,
+          "sport": "nfl",
+          "matchup": "Los Angeles Rams @ Las Vegas Raiders",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Kirk Cousins",
+          "line": 1.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 250,
+      "stakeAmount": 46,
+      "potentialPayout": 161,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-25",
+      "date": "2026-10-25",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "John Metchie III Over 12.5 Receiving Yards",
+          "odds": -114,
+          "sport": "nfl",
+          "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "John Metchie III",
+          "line": 12.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Jalen Royals Under 21.5 Receiving Yards",
+          "odds": -112,
+          "sport": "nfl",
+          "matchup": "Kansas City Chiefs @ Seattle Seahawks",
+          "date": "2026-10-26",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Jalen Royals",
+          "line": 21.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Bucky Irving Under 16.5 Receiving Yards",
+          "odds": -107,
+          "sport": "nfl",
+          "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Bucky Irving",
+          "line": 16.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Kansas City Chiefs ML",
+          "odds": 120,
+          "sport": "nfl",
+          "matchup": "Kansas City Chiefs @ Seattle Seahawks",
+          "date": "2026-10-26",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Baker Mayfield Over 16.5 Rushing Yards",
+          "odds": -116,
+          "sport": "nfl",
+          "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Baker Mayfield",
+          "line": 16.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 2716,
+      "stakeAmount": 10.5,
+      "potentialPayout": 295.68,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-10-25",
+      "date": "2026-10-25",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Kirk Cousins Under 1.5 Rushing Yards",
+          "odds": -117,
+          "sport": "nfl",
+          "matchup": "Los Angeles Rams @ Las Vegas Raiders",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Kirk Cousins",
+          "line": 1.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Cleveland Browns ML",
+          "odds": -135,
+          "sport": "nfl",
+          "matchup": "Cleveland Browns @ Tennessee Titans",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 223,
+      "stakeAmount": 24,
+      "potentialPayout": 77.52,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
