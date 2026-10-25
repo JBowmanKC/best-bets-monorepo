@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1354.85,
-  "totalBets": 62,
+  "totalBets": 63,
   "wins": 29,
   "losses": 28,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 2725.5,
+  "totalStaked": 2779.5,
   "totalProfit": 854.85,
   "roi": 0.3408,
   "peakBankroll": 1526.59,
@@ -2226,6 +2226,32 @@
       "recommendedSide": "over"
     },
     {
+      "betId": "nfl-401873018-prop-bakermayfield-player_rush_yards-2026-10-25",
+      "date": "2026-10-25",
+      "sport": "nfl",
+      "matchup": "Tampa Bay Buccaneers @ Carolina Panthers",
+      "pickLabel": "Baker Mayfield Over 16.5",
+      "odds": -113,
+      "stakeAmount": 54,
+      "potentialPayout": 101.79,
+      "estimatedWinPct": 0.642,
+      "impliedWinPct": 0.531,
+      "evEdge": 0.111,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Baker Mayfield",
+      "line": 16.5,
+      "recommendedSide": "over"
+    },
+    {
       "betId": "parlay-safe-2026-10-25",
       "date": "2026-10-25",
       "betType": "parlay",
@@ -2270,12 +2296,16 @@
       "betType": "parlay",
       "parlayLegs": [
         {
-          "pickLabel": "Kansas City Chiefs ML",
-          "odds": 124,
+          "pickLabel": "Malik Nabers Over 68.5 Receiving Yards",
+          "odds": -113,
           "sport": "nfl",
-          "matchup": "Kansas City Chiefs @ Seattle Seahawks",
-          "date": "2026-10-26",
-          "sportsbook": "DraftKings"
+          "matchup": "New York Giants @ Houston Texans",
+          "date": "2026-10-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Malik Nabers",
+          "line": 68.5,
+          "recommendedSide": "over"
         },
         {
           "pickLabel": "Las Vegas Raiders ML",
@@ -2310,9 +2340,9 @@
           "sportsbook": "DraftKings"
         }
       ],
-      "combinedOdds": 2649,
+      "combinedOdds": 2213,
       "stakeAmount": 26,
-      "potentialPayout": 714.74,
+      "potentialPayout": 601.44,
       "sportsbook": "DraftKings",
       "result": "pending",
       "profitLoss": null,
