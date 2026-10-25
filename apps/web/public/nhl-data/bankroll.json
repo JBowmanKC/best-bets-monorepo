@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 272.76,
+  "currentBankroll": 378.17,
   "totalBets": 39,
-  "wins": 9,
+  "wins": 14,
   "losses": 25,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 599,
-  "totalProfit": -227.24,
-  "roi": -0.4166,
+  "totalProfit": -121.83,
+  "roi": -0.2034,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.4286,
-    "strongWinRate": 0.3571,
+    "eliteWinRate": 0.5,
+    "strongWinRate": 0.4375,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.398,
+    "nhlRoi": -0.2792,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-24T17:33:49.096Z",
-    "totalResultsTracked": 34
+    "lastCalibrated": "2026-10-25T17:49:50.295Z",
+    "totalResultsTracked": 39
   },
   "bets": [
     {
@@ -1281,10 +1281,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10.88,
+      "bankrollAfter": 283.64,
+      "resolvedAt": "2026-10-25T17:49:50.055Z",
       "propType": "player_shots_on_goal",
       "playerName": "Ryan Leonard",
       "line": 1.5,
@@ -1307,10 +1307,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.04,
+      "bankrollAfter": 296.68,
+      "resolvedAt": "2026-10-25T17:49:50.080Z",
       "propType": "player_shots_on_goal",
       "playerName": "Rasmus Dahlin",
       "line": 2.5,
@@ -1333,10 +1333,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 11.2,
+      "bankrollAfter": 307.88,
+      "resolvedAt": "2026-10-25T17:49:50.121Z",
       "propType": "player_shots_on_goal",
       "playerName": "James Hagens",
       "line": 1.5,
@@ -1357,7 +1357,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Ryan Leonard",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jordan Kyrou Over 0.5 Assists",
@@ -1369,7 +1370,8 @@
           "propType": "player_assists",
           "playerName": "Jordan Kyrou",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Rasmus Dahlin Over 2.5 Shots on Goal",
@@ -1381,7 +1383,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Rasmus Dahlin",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "James Hagens Over 1.5 Shots on Goal",
@@ -1393,7 +1396,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "James Hagens",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Leo Carlsson Under 2.5 Shots on Goal",
@@ -1405,17 +1409,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Leo Carlsson",
           "line": 2.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2169,
       "stakeAmount": 3,
       "potentialPayout": 68.07,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 65.07,
+      "bankrollAfter": 372.95,
+      "resolvedAt": "2026-10-25T17:49:50.294Z"
     },
     {
       "betId": "parlay-double-2026-10-24",
@@ -1428,7 +1433,8 @@
           "sport": "nhl",
           "matchup": "San Jose Sharks @ Boston Bruins",
           "date": "2026-10-24",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Washington Capitals ML",
@@ -1436,17 +1442,18 @@
           "sport": "nhl",
           "matchup": "Buffalo Sabres @ Washington Capitals",
           "date": "2026-10-24",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 174,
       "stakeAmount": 3,
       "potentialPayout": 8.22,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 5.22,
+      "bankrollAfter": 378.17,
+      "resolvedAt": "2026-10-25T17:49:50.294Z"
     }
   ]
 }
