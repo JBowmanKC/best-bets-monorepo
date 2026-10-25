@@ -2332,11 +2332,11 @@
           "recommendedSide": "under"
         },
         {
-          "pickLabel": "Kansas City Chiefs ML",
-          "odds": 120,
+          "pickLabel": "Las Vegas Raiders ML",
+          "odds": 154,
           "sport": "nfl",
-          "matchup": "Kansas City Chiefs @ Seattle Seahawks",
-          "date": "2026-10-26",
+          "matchup": "Los Angeles Rams @ Las Vegas Raiders",
+          "date": "2026-10-25",
           "sportsbook": "DraftKings"
         },
         {
@@ -2352,9 +2352,9 @@
           "recommendedSide": "over"
         }
       ],
-      "combinedOdds": 2716,
+      "combinedOdds": 3151,
       "stakeAmount": 10.5,
-      "potentialPayout": 295.68,
+      "potentialPayout": 341.38,
       "sportsbook": "DraftKings",
       "result": "pending",
       "profitLoss": null,
