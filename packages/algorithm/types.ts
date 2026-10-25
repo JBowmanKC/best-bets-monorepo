@@ -122,6 +122,8 @@ export interface PropPick {
   isAlternateLine: boolean;
   /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
   sportsbook: string;
+  /** An extra alternate line kept only as a safe/double-up parlay leg — never a single. */
+  parlayOnly?: boolean;
 }
 
 // ─── Custom parlay builder (server + client share this options shape) ───────

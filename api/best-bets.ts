@@ -278,6 +278,8 @@ interface PropPick {
   isAlternateLine: boolean;
   /** Which book this price is from — a real book name, or "Estimated" (never bet on). */
   sportsbook: string;
+  /** An extra alternate line kept only as a safe/double-up parlay leg — never a single (see propPicksFor). */
+  parlayOnly?: boolean;
 }
 
 const PROP_TYPE_LABELS: Record<PropType, string> = {
@@ -1381,6 +1383,7 @@ function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | Pro
     // actually recommended, not always the over side.
     const hitRateInDirection = p.recommendedSide === "over" ? p.hitRateLast10 : 1 - p.hitRateLast10;
     return (
+      !p.parlayOnly &&
       p.scores.composite >= 68 &&
       (p.voidRisk === "low" || p.voidRisk === "medium") &&
       hitRateInDirection >= 0.6 &&
@@ -1403,20 +1406,59 @@ function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | Pro
   return pool.slice(0, 3);
 }
 
-/** 2-3 elite/strong moneyline legs, preferring picks not already used as a best bet. */
-function selectSafeParlayLegs(picks: BetPick[], excludeIds: Set<string>): BetPick[] {
-  const eligible = picks.filter(p =>
-    (p.tier === "elite" || p.tier === "strong") && p.odds >= -200 && p.odds <= 150 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
-  );
-  if (eligible.length === 0) return [];
+type ParlayItem = BetPick | PropPick;
 
-  const targetLegs = eligible.length < 3 ? Math.min(2, eligible.length) : 3;
-  const byComposite = (a: BetPick, b: BetPick) => b.scores.composite - a.scores.composite;
+/** The game a leg belongs to — moneyline ids are "<gameId>-home|away", props carry gameId. */
+function legGameId(item: ParlayItem): string {
+  return isPropPick(item) ? item.gameId : item.id.replace(/-(home|away)$/, "");
+}
 
-  const nonOverlap = eligible.filter(p => !excludeIds.has(p.id)).sort(byComposite);
-  const pool = nonOverlap.length >= targetLegs ? nonOverlap : [...eligible].sort(byComposite);
+function legWinPct(item: ParlayItem): number {
+  return isPropPick(item) ? item.estimatedHitPct : item.estimatedWinPct;
+}
 
-  let legs = pool.slice(0, targetLegs);
+/** A prop sound enough to anchor a low-variance parlay: real price, likely to play, and has actually cleared this line in its recommended direction. */
+function isSafePropLeg(p: PropPick): boolean {
+  const hitRateInDirection = p.recommendedSide === "over" ? p.hitRateLast10 : 1 - p.hitRateLast10;
+  return (p.voidRisk === "low" || p.voidRisk === "medium") && hitRateInDirection >= 0.6 && p.sportsbook !== ESTIMATED_SOURCE_LABEL;
+}
+
+/** Highest-composite first, at most one leg per game — two legs from one game ride on the same game script. */
+function onePerGame(items: ParlayItem[]): ParlayItem[] {
+  const seen = new Set<string>();
+  return [...items]
+    .sort((a, b) => b.scores.composite - a.scores.composite)
+    .filter(item => {
+      const g = legGameId(item);
+      if (seen.has(g)) return false;
+      seen.add(g);
+      return true;
+    });
+}
+
+/**
+ * 2-3 elite/strong legs — moneylines, main-line props or parlay-only
+ * alternate lines — one per game, preferring legs not already bet as a
+ * single (a prop's alternate counts as the same bet as its single).
+ */
+/** Same bet regardless of line — a prop's alternate counts as the same bet as its main-line single. */
+function betKey(item: ParlayItem): string {
+  return isPropPick(item) ? `${item.gameId}-${item.playerName}-${item.propType}` : item.id;
+}
+
+function selectSafeParlayLegs(picks: BetPick[], propPicks: PropPick[], bestBets: ParlayItem[]): ParlayItem[] {
+  const strong = (t: Tier) => t === "elite" || t === "strong";
+  const singleKeys = new Set(bestBets.map(betKey));
+
+  const eligible: ParlayItem[] = [
+    ...picks.filter(p => strong(p.tier) && p.odds >= -200 && p.odds <= 150 && p.sportsbook !== ESTIMATED_SOURCE_LABEL),
+    ...propPicks.filter(p => strong(p.tier) && p.odds >= -300 && p.odds <= 150 && isSafePropLeg(p)),
+  ];
+  const fresh = onePerGame(eligible.filter(item => !singleKeys.has(betKey(item))));
+  const pool = fresh.length >= 2 ? fresh : onePerGame(eligible);
+  if (pool.length < 2) return [];
+
+  let legs = pool.slice(0, 3);
   // Combined payout target +150 to +450 — if it runs past +500, drop the lowest-scoring leg.
   while (legs.length > 2 && calcParlayPayout(legs.map(l => l.odds)) > 500) {
     legs = legs.slice(0, -1);
@@ -1436,7 +1478,7 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
   // night with no QB prop clearing the bar, even with plenty of good RB/WR
   // props available).
   const propPool = propPicks.filter(p =>
-    (p.voidRisk === "low" || p.voidRisk === "medium") && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
+    !p.parlayOnly && (p.voidRisk === "low" || p.voidRisk === "medium") && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
   );
   const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool].sort((a, b) => b.evEdge - a.evEdge);
   if (combined.length === 0) return [];
@@ -1493,30 +1535,58 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
 }
 
 /**
- * 2+ heavy-favorite moneyline legs targeting a combined payout near +100 —
- * "double up": stake $10, walk away with $20. Needs legs negative enough
- * that even multiplied together the parlay stays close to even money;
- * lighter favorites (as used by selectSafeParlayLegs) would blow well past
- * +100 the moment a second leg is added.
+ * 2-3 heavy-favorite legs targeting a combined payout near +100 — "double
+ * up": stake $10, walk away with $20. Legs can be moneylines, main-line
+ * props or parlay-only alternate lines (an alt at -250 is exactly this kind
+ * of leg), one per game.
+ *
+ * Previously this started from two favorites and kept *adding* legs while
+ * the payout was above +150 — but every added leg raises the payout, so it
+ * swallowed every favorite on the board (10/25: six legs at about +1220).
+ * Now it searches the 2- and 3-leg combinations of the strongest candidates
+ * for the one inside +70..+150 with the best average score, or failing
+ * that, the one closest to +100.
  */
-function selectDoubleUpParlayLegs(picks: BetPick[]): BetPick[] {
-  const eligible = picks.filter(p => p.odds <= -110 && p.odds >= -450 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
-  if (eligible.length < 2) return [];
+const DOUBLE_UP_MIN_PAYOUT = 70;
+const DOUBLE_UP_MAX_PAYOUT = 150;
+const DOUBLE_UP_TARGET_PAYOUT = 100;
 
-  const byComposite = (a: BetPick, b: BetPick) => b.scores.composite - a.scores.composite;
-  const pool = [...eligible].sort(byComposite);
+function selectDoubleUpParlayLegs(picks: BetPick[], propPicks: PropPick[], bestBets: ParlayItem[]): ParlayItem[] {
+  const heavy = (odds: number) => odds <= -110 && odds >= -450;
+  const eligible: ParlayItem[] = [
+    ...picks.filter(p => heavy(p.odds) && p.sportsbook !== ESTIMATED_SOURCE_LABEL),
+    ...propPicks.filter(p => heavy(p.odds) && isSafePropLeg(p)),
+  ];
+  // Prefer legs not already staked as a single, same as the safe parlay.
+  const singleKeys = new Set(bestBets.map(betKey));
+  const fresh = onePerGame(eligible.filter(item => !singleKeys.has(betKey(item))));
+  const pool = (fresh.length >= 2 ? fresh : onePerGame(eligible)).slice(0, 8);
+  if (pool.length < 2) return [];
 
-  let legs = pool.slice(0, 2);
-  let payout = calcParlayPayout(legs.map(l => l.odds));
-
-  // Target band +70 to +150 (as close to doubling the stake as the board
-  // allows) — keep adding the next-best favorite while running too hot.
-  for (let i = 2; payout > 150 && i < pool.length; i++) {
-    legs.push(pool[i]);
-    payout = calcParlayPayout(legs.map(l => l.odds));
+  const combos: ParlayItem[][] = [];
+  for (let i = 0; i < pool.length; i++) {
+    for (let j = i + 1; j < pool.length; j++) {
+      combos.push([pool[i], pool[j]]);
+      for (let k = j + 1; k < pool.length; k++) combos.push([pool[i], pool[j], pool[k]]);
+    }
   }
 
-  return legs;
+  const avgScore = (legs: ParlayItem[]) => legs.reduce((a, l) => a + l.scores.composite, 0) / legs.length;
+  const inBand = combos.filter(c => {
+    const payout = calcParlayPayout(c.map(l => l.odds));
+    return payout >= DOUBLE_UP_MIN_PAYOUT && payout <= DOUBLE_UP_MAX_PAYOUT;
+  });
+  if (inBand.length > 0) {
+    // Best average score; ties go to fewer legs, then the higher combined win chance.
+    return inBand.sort((a, b) =>
+      avgScore(b) - avgScore(a) || a.length - b.length ||
+      b.reduce((x, l) => x * legWinPct(l), 1) - a.reduce((x, l) => x * legWinPct(l), 1)
+    )[0];
+  }
+  return combos.sort((a, b) =>
+    Math.abs(calcParlayPayout(a.map(l => l.odds)) - DOUBLE_UP_TARGET_PAYOUT) -
+    Math.abs(calcParlayPayout(b.map(l => l.odds)) - DOUBLE_UP_TARGET_PAYOUT)
+  )[0];
 }
 
 interface ParlayStakeInfo {
@@ -1651,11 +1721,10 @@ function emptyParlay(id: Parlay["id"], label: string, emoji: string): Parlay {
 
 function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll: number): DailyBetsResult {
   const bestBets = selectBestBets(allPicks, allPropPicks);
-  const bestBetIds = new Set(bestBets.map(b => b.id));
 
-  const safeLegs = selectSafeParlayLegs(allPicks, bestBetIds);
+  const safeLegs = selectSafeParlayLegs(allPicks, allPropPicks, bestBets);
   const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks);
-  const doubleLegs = selectDoubleUpParlayLegs(allPicks);
+  const doubleLegs = selectDoubleUpParlayLegs(allPicks, allPropPicks, bestBets);
 
   const safeParlay = safeLegs.length >= 2
     ? buildCommittedParlay(safeLegs, computeParlayStake(safeLegs, bankroll, 1), { id: "safe", label: "💚 Safe Parlay", emoji: "💚" })
@@ -2710,6 +2779,35 @@ function pickPropPick(candidates: PropPick[]): PropPick | null {
   return saferAlts[0] ?? main;
 }
 
+/**
+ * Odds band for an alternate line kept as a parlay-only leg: the high-
+ * probability range (roughly 64-82% implied) that safe and double-up
+ * parlays are built from. Too juiced to bet as a single — PROP_RISK_ODDS_THRESHOLD
+ * — but exactly what a parlay leg should be.
+ */
+const PARLAY_ALT_ODDS_MIN = -450;
+const PARLAY_ALT_ODDS_MAX = -180;
+
+/**
+ * The prop(s) to keep for one player+propType: the line pickPropPick chooses
+ * (eligible as a single), plus — when the book also hangs a positive-EV
+ * alternate in PARLAY_ALT_ODDS_MIN..MAX on the same side — that alternate,
+ * flagged parlayOnly so it's offered to the safe/double-up parlays and never
+ * staked as a single. Previously every alternate but the chosen one was
+ * thrown away, which left the moneyline-only parlays nothing else to use.
+ */
+function propPicksFor(candidates: PropPick[]): PropPick[] {
+  const primary = pickPropPick(candidates);
+  if (!primary) return [];
+  const alt = candidates
+    .filter(c =>
+      c.isAlternateLine && c.id !== primary.id && c.recommendedSide === primary.recommendedSide &&
+      c.odds >= PARLAY_ALT_ODDS_MIN && c.odds <= PARLAY_ALT_ODDS_MAX
+    )
+    .sort((a, b) => b.scores.composite - a.scores.composite)[0];
+  return alt ? [primary, { ...alt, parlayOnly: true }] : [primary];
+}
+
 // ─── Prop orchestration (top TOP_GAMES_FOR_PROPS MLB games only) ───────────
 /** Real OddsAPI line(s) (main + any alternates) if available, else a single recent-average estimate described in Step 3. */
 function resolvePropOddsCandidates(
@@ -2770,8 +2868,7 @@ async function buildPropsForGame(
           log, oddsEntry, matchupScore, gameCtx, bankrollState
         ))
         .filter((p): p is PropPick => p !== null);
-      const pick = pickPropPick(candidates);
-      if (pick) props.push(pick);
+      props.push(...propPicksFor(candidates));
     }
   }));
 
@@ -2807,8 +2904,7 @@ async function buildPropsForGame(
           log, oddsEntry, matchupScore, gameCtx, bankrollState
         ))
         .filter((p): p is PropPick => p !== null);
-      const pick = pickPropPick(candidates);
-      if (pick) props.push(pick);
+      props.push(...propPicksFor(candidates));
     }
   }));
 
@@ -3276,8 +3372,7 @@ async function buildNflPropsForGame(
           log, oddsEntry, matchupScore, gameCtx, bankrollState, opponentRankContext
         ))
         .filter((p): p is PropPick => p !== null);
-      const pick = pickPropPick(candidates);
-      if (pick) props.push(pick);
+      props.push(...propPicksFor(candidates));
     }
   }));
 
@@ -3617,8 +3712,7 @@ async function buildNhlPropsForGame(
           nhlOpponentContext(propType, opponent, goalsAgainst, oppShots)
         ))
         .filter((p): p is PropPick => p !== null);
-      const pick = pickPropPick(candidates);
-      if (pick) props.push(pick);
+      props.push(...propPicksFor(candidates));
     }
   }));
 
@@ -3698,9 +3792,13 @@ async function buildPropPicks(
     buildNhlPropPicks(moneylinePicks, rawGames, oddsBySport.nhl ?? [], bankrollState, date, book),
   ]);
 
-  return [...mlbProps, ...nflProps, ...nhlProps]
-    .sort((a, b) => b.scores.composite - a.scores.composite)
-    .slice(0, MAX_PROP_PICKS);
+  // Main-line props and parlay-only alternates are capped separately, so the
+  // alternates can't crowd singles out of the pool (or vice versa).
+  const all = [...mlbProps, ...nflProps, ...nhlProps].sort((a, b) => b.scores.composite - a.scores.composite);
+  return [
+    ...all.filter(p => !p.parlayOnly).slice(0, MAX_PROP_PICKS),
+    ...all.filter(p => p.parlayOnly).slice(0, MAX_PROP_PICKS),
+  ];
 }
 
 // ─── Main handler ────────────────────────────────────────────────────────────
