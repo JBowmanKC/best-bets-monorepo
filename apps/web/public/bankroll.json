@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1354.85,
+  "currentBankroll": 1445.8,
   "totalBets": 63,
-  "wins": 29,
-  "losses": 28,
+  "wins": 32,
+  "losses": 31,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 2779.5,
-  "totalProfit": 854.85,
-  "roi": 0.3408,
+  "totalProfit": 945.8,
+  "roi": 0.3403,
   "peakBankroll": 1526.59,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.625,
-    "strongWinRate": 0.6667,
+    "eliteWinRate": 0.64,
+    "strongWinRate": 0.7059,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2257,
+    "nflRoi": 0.2804,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-25T17:42:19.038Z",
-    "totalResultsTracked": 57
+    "lastCalibrated": "2026-10-26T12:51:08.364Z",
+    "totalResultsTracked": 63
   },
   "bets": [
     {
@@ -2190,10 +2190,10 @@
         "composite": 86
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 59.65,
+      "bankrollAfter": 1414.5,
+      "resolvedAt": "2026-10-26T12:51:08.055Z",
       "propType": "player_receiving_yards",
       "playerName": "John Metchie III",
       "line": 12.5,
@@ -2216,10 +2216,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 57.59,
+      "bankrollAfter": 1472.09,
+      "resolvedAt": "2026-10-26T12:51:08.092Z",
       "propType": "player_receiving_yards",
       "playerName": "Jalen Royals",
       "line": 21.5,
@@ -2242,10 +2242,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 54.21,
+      "bankrollAfter": 1526.3,
+      "resolvedAt": "2026-10-26T12:51:08.119Z",
       "propType": "player_receiving_yards",
       "playerName": "Bucky Irving",
       "line": 16.5,
@@ -2266,7 +2266,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Brandin Cooks",
           "line": 24.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Kirk Cousins Under 1.5 Rushing Yards",
@@ -2278,17 +2279,18 @@
           "propType": "player_rush_yards",
           "playerName": "Kirk Cousins",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 250,
       "stakeAmount": 46,
       "potentialPayout": 161,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -46,
+      "bankrollAfter": 1480.3,
+      "resolvedAt": "2026-10-26T12:51:08.199Z"
     },
     {
       "betId": "parlay-high-2026-10-25",
@@ -2305,7 +2307,8 @@
           "propType": "player_receiving_yards",
           "playerName": "John Metchie III",
           "line": 12.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jalen Royals Under 21.5 Receiving Yards",
@@ -2317,7 +2320,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jalen Royals",
           "line": 21.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Bucky Irving Under 16.5 Receiving Yards",
@@ -2329,7 +2333,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Bucky Irving",
           "line": 16.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Las Vegas Raiders ML",
@@ -2337,7 +2342,8 @@
           "sport": "nfl",
           "matchup": "Los Angeles Rams @ Las Vegas Raiders",
           "date": "2026-10-25",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Baker Mayfield Over 16.5 Rushing Yards",
@@ -2349,17 +2355,18 @@
           "propType": "player_rush_yards",
           "playerName": "Baker Mayfield",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 3151,
       "stakeAmount": 10.5,
       "potentialPayout": 341.38,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -10.5,
+      "bankrollAfter": 1469.8,
+      "resolvedAt": "2026-10-26T12:51:08.341Z"
     },
     {
       "betId": "parlay-double-2026-10-25",
@@ -2376,7 +2383,8 @@
           "propType": "player_rush_yards",
           "playerName": "Kirk Cousins",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Cleveland Browns ML",
@@ -2384,17 +2392,18 @@
           "sport": "nfl",
           "matchup": "Cleveland Browns @ Tennessee Titans",
           "date": "2026-10-25",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 223,
       "stakeAmount": 24,
       "potentialPayout": 77.52,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -24,
+      "bankrollAfter": 1445.8,
+      "resolvedAt": "2026-10-26T12:51:08.364Z"
     }
   ]
 }
