@@ -2598,8 +2598,15 @@ function scoreProp(
   matchupScore: number,
   game: PropGameContext,
   bankrollState: BankrollState,
-  /** See buildPropRationale — a pre-built "has the Nth best X defense in the league" phrase, NFL-only for now. */
-  opponentRankContext: string | null = null
+  /** See buildPropRationale — a pre-built "has the Nth best X defense in the league" phrase. */
+  opponentRankContext: string | null = null,
+  /**
+   * A matchup-adjusted chance of going over this line, computed by the
+   * caller. When given it replaces the hit-rate-plus-flat-nudge estimate below
+   * for both the probability and the hit-rate score (NHL — see
+   * nhlMatchupOverRate). Null keeps the original behavior (NFL, MLB).
+   */
+  modelOverRate: number | null = null
 ): PropPick | null {
   const { propType, line } = { propType: candidate.propType, line: oddsEntry.line };
   if (log.last10.length === 0) return null; // no game-log history to score from
@@ -2631,7 +2638,7 @@ function scoreProp(
   // quality is a real but secondary signal, not a substitute for market
   // pricing.
   const matchupAdjustment = (matchupScore - 50) / 200;
-  const matchupAdjustedRate = Math.min(Math.max(weightedOverRate + matchupAdjustment, 0), 1);
+  const matchupAdjustedRate = modelOverRate ?? Math.min(Math.max(weightedOverRate + matchupAdjustment, 0), 1);
 
   const impliedOverPct = oddsToImpliedProb(oddsEntry.overOdds);
   const impliedUnderPct = oddsToImpliedProb(oddsEntry.underOdds);
@@ -2669,7 +2676,11 @@ function scoreProp(
   const impliedHitPct = side === "over" ? impliedOverPct : impliedUnderPct;
   const odds = side === "over" ? oddsEntry.overOdds : oddsEntry.underOdds;
 
-  const hitRateScoreBasis = side === "over" ? weightedOverRate : 1 - weightedOverRate;
+  // With a caller-supplied matchup-adjusted rate, the score reads that too —
+  // otherwise a hot streak against the league's best defense still scored as
+  // if the opponent didn't matter.
+  const scoreRate = modelOverRate ?? weightedOverRate;
+  const hitRateScoreBasis = side === "over" ? scoreRate : 1 - scoreRate;
   const hitRateScore = Math.min(Math.max(((hitRateScoreBasis - 0.30) / 0.50) * 100, 0), 100);
   const { score: evScore } = scoreExpectedValue(estimatedHitPct, impliedHitPct);
 
@@ -3592,33 +3603,92 @@ async function fetchNhlShotsAgainstPerGame(teamId: number): Promise<{ perGame: n
 const NHL_LEAGUE_AVG_SHOTS_AGAINST = 28;
 
 /**
- * Same 20-90 scale as matchupScoreForNflProp: an opponent allowing more than
- * league average in the prop's category is an easier matchup. Goals, assists
- * and points all read goals-against; shots reads shots-against. Early in the
- * season a team's per-game rate is pulled toward the league average until it
- * has ~20 games behind it, so a hot or cold first week can't swing the score.
+ * How much of a normal night's output to expect against this opponent:
+ * their goals (or, for shots props, shots on goal) allowed per game divided
+ * by the league average — Dallas allowing 1.8 goals against a 3.1 league
+ * average is 0.59. A team's own rate is trusted more as its games pile up
+ * (60% at 10 games, 77% at 20) and pulled toward 1.0 before that.
+ *
+ * This used to feed only a flat ±17-point nudge to a hit rate, and was
+ * shrunk twice as hard — Gritsyuk's 7-of-10 over 0.5 points against the
+ * league's stingiest defense (10/27) lost just 11 points and stayed a
+ * strong best bet.
  */
+const NHL_OPP_PRIOR_GAMES = 6;
+
+function nhlOpponentFactor(
+  propType: PropType,
+  oppGoals: NhlTeamDefense | undefined,
+  leagueAvgGoalsAgainst: number | null,
+  oppShots: { perGame: number; gamesPlayed: number } | null
+): { factor: number; raw: number } {
+  const shrink = (allowed: number, gp: number, avg: number) => {
+    const raw = allowed / avg;
+    return { raw, factor: 1 + (raw - 1) * (gp / (gp + NHL_OPP_PRIOR_GAMES)) };
+  };
+  if (propType === "player_shots_on_goal") {
+    return oppShots ? shrink(oppShots.perGame, oppShots.gamesPlayed, NHL_LEAGUE_AVG_SHOTS_AGAINST) : { factor: 1, raw: 1 };
+  }
+  if (!oppGoals || !leagueAvgGoalsAgainst || leagueAvgGoalsAgainst <= 0) return { factor: 1, raw: 1 };
+  return shrink(oppGoals.goalsAgainstPerGame, oppGoals.gamesPlayed, leagueAvgGoalsAgainst);
+}
+
+/** Same 20-90 scale as matchupScoreForNflProp, from nhlOpponentFactor — above-average allowed is the easier matchup. */
 function matchupScoreForNhlProp(
   propType: PropType,
   oppGoals: NhlTeamDefense | undefined,
   leagueAvgGoalsAgainst: number | null,
   oppShots: { perGame: number; gamesPlayed: number } | null
 ): number {
-  const ratio = (allowed: number, gp: number, avg: number) => {
-    const weight = Math.min(gp, 20) / 20;
-    const shrunk = avg + (allowed - avg) * weight;
-    return shrunk / avg;
-  };
+  const { factor } = nhlOpponentFactor(propType, oppGoals, leagueAvgGoalsAgainst, oppShots);
+  return Math.min(90, Math.max(20, Math.round(50 + (factor - 1) * 100)));
+}
 
-  if (propType === "player_shots_on_goal") {
-    if (!oppShots) return 50;
-    const r = ratio(oppShots.perGame, oppShots.gamesPlayed, NHL_LEAGUE_AVG_SHOTS_AGAINST);
-    return Math.min(90, Math.max(20, Math.round(50 + (r - 1) * 100)));
+const NHL_STAT_KEY: Record<string, "goals" | "assists" | "points" | "shotsOnGoal"> = {
+  player_goals: "goals", player_assists: "assists", player_points: "points", player_shots_on_goal: "shotsOnGoal",
+};
+
+/** Per-game output weighted toward recent games — same 35/40/25 split scoreProp uses for hit rates. */
+function nhlWeightedPerGame(log: NhlGameLogResult, propType: PropType): number {
+  const key = NHL_STAT_KEY[propType];
+  const avg = (games: GameLogEntry[]) => games.length ? games.reduce((a, g) => a + (g[key] ?? 0), 0) / games.length : 0;
+  return avg(log.last10.slice(0, 3)) * 0.35 + avg(log.last10) * 0.4 + avg(log.last20) * 0.25;
+}
+
+/** P(stat > line) for a Poisson count with mean `lambda` — hockey goals/assists/points/shots are low counts. */
+function poissonOver(lambda: number, line: number): number {
+  let cdf = 0, term = Math.exp(-lambda);
+  for (let k = 0; k <= Math.floor(line); k++) {
+    cdf += term;
+    term *= lambda / (k + 1);
   }
+  return Math.min(Math.max(1 - cdf, 0), 1);
+}
 
-  if (!oppGoals || !leagueAvgGoalsAgainst || leagueAvgGoalsAgainst <= 0) return 50;
-  const r = ratio(oppGoals.goalsAgainstPerGame, oppGoals.gamesPlayed, leagueAvgGoalsAgainst);
-  return Math.min(90, Math.max(20, Math.round(50 + (r - 1) * 100)));
+/**
+ * The step-by-step NHL prop explanation: raw hit rate → expected output vs
+ * this opponent → chance of clearing the line → blend with the book's price.
+ */
+function buildNhlPropRationale(
+  pick: PropPick, perGame: number, opp: { factor: number; raw: number }, modelOverRate: number,
+  opponent: string, opponentContext: string | null
+): string {
+  const label = PROP_TYPE_LABELS[pick.propType].toLowerCase();
+  const n = Math.round(pick.hitRateLast10 * 10);
+  const side = pick.recommendedSide;
+  const modelSide = side === "over" ? modelOverRate : 1 - modelOverRate;
+  const expected = perGame * opp.factor;
+  const oppLine = opponentContext ? `${opponent} ${opponentContext}` : `${opponent} are about league average`;
+  const effect = Math.abs(opp.factor - 1) < 0.02
+    ? "about the same"
+    : `${opp.factor < 1 ? "down" : "up"} ${Math.round(Math.abs(1 - opp.factor) * 100)}%`
+      + (Math.abs(opp.raw - opp.factor) >= 0.02 ? ` (they're at ${Math.round(opp.raw * 100)}% of league average; counted at ${Math.round(opp.factor * 100)}% this early)` : "");
+  return [
+    `${pick.playerName} has cleared ${pick.line} ${label} in ${n} of his last 10 games, averaging ${perGame.toFixed(2)} per game (recent games weighted).`,
+    `${oppLine}, so expected ${label} tonight are ${effect}: ${expected.toFixed(2)}.`,
+    `That's a ${Math.round(modelSide * 100)}% chance of going ${side} ${pick.line}.`,
+    `The book prices it at ${Math.round(pick.impliedHitPct * 100)}%; blending the two gives ${Math.round(pick.estimatedHitPct * 100)}%, a +${Math.round(pick.evEdge * 100)}% edge.`,
+  ].join(" ");
 }
 
 /**
@@ -3699,18 +3769,27 @@ async function buildNhlPropsForGame(
       const oddsEntries = propOddsMap.get(`${playerName}-${propType}`);
       if (!oddsEntries || oddsEntries.length === 0) continue;
       const matchupScore = matchupScoreForNhlProp(propType, oppGoals, leagueAvgGoalsAgainst, oppShots);
+      // Expected output tonight = recent per-game rate × how much this
+      // opponent allows vs league average; the chance of clearing each line
+      // comes from that, not from the raw hit rate (see nhlOpponentFactor).
+      const opp = nhlOpponentFactor(propType, oppGoals, leagueAvgGoalsAgainst, oppShots);
+      const perGame = nhlWeightedPerGame(log, propType);
+      const oppContext = nhlOpponentContext(propType, opponent, goalsAgainst, oppShots);
       const candidates = oddsEntries
-        .map(oddsEntry => scoreProp(
-          {
-            playerId: player.id, playerName: player.fullName, team, opponent, isHome,
-            // NHL lines aren't confirmed until warmups, so every skater prop is
-            // "Probable" (medium void risk) — same treatment as an MLB batter.
-            isPitcher: false,
-            propType, fatigued, injuryConcern: false,
-          },
-          log, oddsEntry, matchupScore, gameCtx, bankrollState,
-          nhlOpponentContext(propType, opponent, goalsAgainst, oppShots)
-        ))
+        .map(oddsEntry => {
+          const modelOverRate = poissonOver(perGame * opp.factor, oddsEntry.line);
+          const pick = scoreProp(
+            {
+              playerId: player.id, playerName: player.fullName, team, opponent, isHome,
+              // NHL lines aren't confirmed until warmups, so every skater prop is
+              // "Probable" (medium void risk) — same treatment as an MLB batter.
+              isPitcher: false,
+              propType, fatigued, injuryConcern: false,
+            },
+            log, oddsEntry, matchupScore, gameCtx, bankrollState, oppContext, modelOverRate
+          );
+          return pick && { ...pick, rationale: buildNhlPropRationale(pick, perGame, opp, modelOverRate, opponent, oppContext) };
+        })
         .filter((p): p is PropPick => p !== null);
       props.push(...propPicksFor(candidates));
     }
