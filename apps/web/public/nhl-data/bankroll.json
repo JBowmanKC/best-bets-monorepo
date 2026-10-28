@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 378.17,
+  "currentBankroll": 365.17,
   "totalBets": 45,
-  "wins": 14,
-  "losses": 25,
+  "wins": 16,
+  "losses": 29,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 675,
-  "totalProfit": -121.83,
-  "roi": -0.2034,
+  "totalProfit": -134.83,
+  "roi": -0.1997,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.5,
-    "strongWinRate": 0.4375,
+    "eliteWinRate": 0.4444,
+    "strongWinRate": 0.5,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.2792,
+    "nhlRoi": -0.2156,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-27T19:36:34.096Z",
-    "totalResultsTracked": 39
+    "lastCalibrated": "2026-10-28T12:43:18.772Z",
+    "totalResultsTracked": 45
   },
   "bets": [
     {
@@ -1472,10 +1472,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -17.5,
+      "bankrollAfter": 360.67,
+      "resolvedAt": "2026-10-28T12:43:18.380Z",
       "propType": "player_shots_on_goal",
       "playerName": "Logan Stankoven",
       "line": 2.5,
@@ -1498,10 +1498,10 @@
         "composite": 73
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 19.6,
+      "bankrollAfter": 380.27,
+      "resolvedAt": "2026-10-28T12:43:18.416Z",
       "propType": "player_shots_on_goal",
       "playerName": "Tyson Foerster",
       "line": 2.5,
@@ -1524,10 +1524,10 @@
         "composite": 72
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 17.4,
+      "bankrollAfter": 397.67,
+      "resolvedAt": "2026-10-28T12:43:18.467Z",
       "propType": "player_points",
       "playerName": "Arseny Gritsyuk",
       "line": 0.5,
@@ -1548,7 +1548,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Timo Meier",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Knies Under 0.5 Points",
@@ -1560,17 +1561,18 @@
           "propType": "player_points",
           "playerName": "Matthew Knies",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 281,
       "stakeAmount": 15,
       "potentialPayout": 57.15,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -15,
+      "bankrollAfter": 382.67,
+      "resolvedAt": "2026-10-28T12:43:18.572Z"
     },
     {
       "betId": "parlay-high-2026-10-27",
@@ -1587,7 +1589,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Logan Stankoven",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Tyson Foerster Over 2.5 Shots on Goal",
@@ -1599,7 +1602,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Tyson Foerster",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "James Hagens Over 1.5 Shots on Goal",
@@ -1611,7 +1615,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "James Hagens",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Luke Evangelista Over 1.5 Shots on Goal",
@@ -1623,7 +1628,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Luke Evangelista",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Timo Meier Over 2.5 Shots on Goal",
@@ -1635,17 +1641,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Timo Meier",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2985,
       "stakeAmount": 2.5,
       "potentialPayout": 77.13,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 380.17,
+      "resolvedAt": "2026-10-28T12:43:18.720Z"
     },
     {
       "betId": "parlay-double-2026-10-27",
@@ -1662,7 +1669,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Luke Evangelista",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Adam Fantilli Under 0.5 Assists",
@@ -1674,17 +1682,18 @@
           "propType": "player_assists",
           "playerName": "Adam Fantilli",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 164,
       "stakeAmount": 15,
       "potentialPayout": 39.6,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -15,
+      "bankrollAfter": 365.17,
+      "resolvedAt": "2026-10-28T12:43:18.772Z"
     }
   ]
 }
