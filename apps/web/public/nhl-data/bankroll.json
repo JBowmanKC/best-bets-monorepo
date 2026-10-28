@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 365.17,
-  "totalBets": 45,
+  "totalBets": 51,
   "wins": 16,
   "losses": 29,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 675,
+  "totalStaked": 748,
   "totalProfit": -134.83,
   "roi": -0.1997,
   "peakBankroll": 500,
@@ -1694,6 +1694,233 @@
       "profitLoss": -15,
       "bankrollAfter": 365.17,
       "resolvedAt": "2026-10-28T12:43:18.772Z"
+    },
+    {
+      "betId": "nhl-401892597-prop-connormcdavid-player_assists-2026-10-28",
+      "date": "2026-10-28",
+      "sport": "nhl",
+      "matchup": "Calgary Flames @ Edmonton Oilers",
+      "pickLabel": "Connor McDavid Over 1.5",
+      "odds": 165,
+      "stakeAmount": 13,
+      "potentialPayout": 34.45,
+      "estimatedWinPct": 0.479,
+      "impliedWinPct": 0.377,
+      "evEdge": 0.101,
+      "tier": "strong",
+      "scores": {
+        "composite": 72
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Connor McDavid",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892597-prop-joelfarabee-player_points-2026-10-28",
+      "date": "2026-10-28",
+      "sport": "nhl",
+      "matchup": "Calgary Flames @ Edmonton Oilers",
+      "pickLabel": "Joel Farabee Over 0.5",
+      "odds": -110,
+      "stakeAmount": 15,
+      "potentialPayout": 28.64,
+      "estimatedWinPct": 0.614,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.09,
+      "tier": "strong",
+      "scores": {
+        "composite": 77
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Joel Farabee",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892597-prop-connormcdavid-player_points-2026-10-28",
+      "date": "2026-10-28",
+      "sport": "nhl",
+      "matchup": "Calgary Flames @ Edmonton Oilers",
+      "pickLabel": "Connor McDavid Over 1.5",
+      "odds": -140,
+      "stakeAmount": 15,
+      "potentialPayout": 25.71,
+      "estimatedWinPct": 0.662,
+      "impliedWinPct": 0.583,
+      "evEdge": 0.079,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Connor McDavid",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-10-28",
+      "date": "2026-10-28",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Dylan Strome Over 1.5 Shots on Goal",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Philadelphia Flyers @ Washington Capitals",
+          "date": "2026-10-28",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Dylan Strome",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Matt Coronato Over 0.5 Points",
+          "odds": -115,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Edmonton Oilers",
+          "date": "2026-10-29",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Matt Coronato",
+          "line": 0.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 208,
+      "stakeAmount": 17.5,
+      "potentialPayout": 53.9,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-10-28",
+      "date": "2026-10-28",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Matt Coronato Over 0.5 Assists",
+          "odds": 155,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Edmonton Oilers",
+          "date": "2026-10-29",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Matt Coronato",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Joel Farabee Over 0.5 Points",
+          "odds": -110,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Edmonton Oilers",
+          "date": "2026-10-29",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Joel Farabee",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Connor McDavid Over 1.5 Points",
+          "odds": -140,
+          "sport": "nhl",
+          "matchup": "Calgary Flames @ Edmonton Oilers",
+          "date": "2026-10-29",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Connor McDavid",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Trevor Zegras Over 1.5 Shots on Goal",
+          "odds": -125,
+          "sport": "nhl",
+          "matchup": "Philadelphia Flyers @ Washington Capitals",
+          "date": "2026-10-28",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Trevor Zegras",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Dylan Strome Over 1.5 Shots on Goal",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Philadelphia Flyers @ Washington Capitals",
+          "date": "2026-10-28",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Dylan Strome",
+          "line": 1.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 2371,
+      "stakeAmount": 2.5,
+      "potentialPayout": 61.78,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-10-28",
+      "date": "2026-10-28",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Dylan Strome Over 1.5 Shots on Goal",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Philadelphia Flyers @ Washington Capitals",
+          "date": "2026-10-28",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Dylan Strome",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Colorado Avalanche ML",
+          "odds": -148,
+          "sport": "nhl",
+          "matchup": "New Jersey Devils @ Colorado Avalanche",
+          "date": "2026-10-29",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 176,
+      "stakeAmount": 10,
+      "potentialPayout": 27.6,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
