@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1499.98,
-  "totalBets": 67,
+  "totalBets": 70,
   "wins": 34,
   "losses": 33,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 3055.5,
+  "totalStaked": 3289.5,
   "totalProfit": 999.98,
   "roi": 0.3273,
   "peakBankroll": 1526.59,
@@ -2562,6 +2562,133 @@
       "profitLoss": -14,
       "bankrollAfter": 1499.98,
       "resolvedAt": "2026-10-27T19:29:29.057Z"
+    },
+    {
+      "betId": "nfl-401873023-prop-trevoretienne-player_rush_yards-2026-10-29",
+      "date": "2026-10-29",
+      "sport": "nfl",
+      "matchup": "Carolina Panthers @ Green Bay Packers",
+      "pickLabel": "Trevor Etienne Under 9.5",
+      "odds": -118,
+      "stakeAmount": 115,
+      "potentialPayout": 212.46,
+      "estimatedWinPct": 0.659,
+      "impliedWinPct": 0.541,
+      "evEdge": 0.117,
+      "tier": "elite",
+      "scores": {
+        "composite": 81
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_rush_yards",
+      "playerName": "Trevor Etienne",
+      "line": 9.5,
+      "recommendedSide": "under"
+    },
+    {
+      "betId": "nfl-401873023-prop-johnmetchieiii-player_receiving_yards-2026-10-29",
+      "date": "2026-10-29",
+      "sport": "nfl",
+      "matchup": "Carolina Panthers @ Green Bay Packers",
+      "pickLabel": "John Metchie III Over 16.5",
+      "odds": -109,
+      "stakeAmount": 104.5,
+      "potentialPayout": 200.37,
+      "estimatedWinPct": 0.633,
+      "impliedWinPct": 0.522,
+      "evEdge": 0.111,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_receiving_yards",
+      "playerName": "John Metchie III",
+      "line": 16.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-high-2026-10-29",
+      "date": "2026-10-29",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Trevor Etienne Under 9.5 Rushing Yards",
+          "odds": -118,
+          "sport": "nfl",
+          "matchup": "Carolina Panthers @ Green Bay Packers",
+          "date": "2026-10-30",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Trevor Etienne",
+          "line": 9.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "John Metchie III Over 16.5 Receiving Yards",
+          "odds": -109,
+          "sport": "nfl",
+          "matchup": "Carolina Panthers @ Green Bay Packers",
+          "date": "2026-10-30",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "John Metchie III",
+          "line": 16.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Savion Williams Over 3.5 Rushing Yards",
+          "odds": -114,
+          "sport": "nfl",
+          "matchup": "Carolina Panthers @ Green Bay Packers",
+          "date": "2026-10-30",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Savion Williams",
+          "line": 3.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "MarShawn Lloyd Over 17.5 Rushing Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "Carolina Panthers @ Green Bay Packers",
+          "date": "2026-10-30",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "MarShawn Lloyd",
+          "line": 17.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Jordan Love Over 262.5 Passing Yards",
+          "odds": -111,
+          "sport": "nfl",
+          "matchup": "Carolina Panthers @ Green Bay Packers",
+          "date": "2026-10-30",
+          "sportsbook": "DraftKings",
+          "propType": "player_pass_yards",
+          "playerName": "Jordan Love",
+          "line": 262.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 2283,
+      "stakeAmount": 14.5,
+      "potentialPayout": 345.54,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
