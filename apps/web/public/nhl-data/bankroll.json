@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 365.17,
+  "currentBankroll": 379.93,
   "totalBets": 51,
-  "wins": 16,
-  "losses": 29,
+  "wins": 19,
+  "losses": 32,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 748,
-  "totalProfit": -134.83,
-  "roi": -0.1997,
+  "totalProfit": -120.07,
+  "roi": -0.1605,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.4444,
-    "strongWinRate": 0.5,
+    "strongWinRate": 0.5238,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.2156,
+    "nhlRoi": -0.1668,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-28T19:50:31.706Z",
-    "totalResultsTracked": 45
+    "lastCalibrated": "2026-10-29T18:38:24.699Z",
+    "totalResultsTracked": 51
   },
   "bets": [
     {
@@ -1712,10 +1712,10 @@
         "composite": 72
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 21.45,
+      "bankrollAfter": 386.62,
+      "resolvedAt": "2026-10-29T18:38:24.375Z",
       "propType": "player_assists",
       "playerName": "Connor McDavid",
       "line": 1.5,
@@ -1738,10 +1738,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -15,
+      "bankrollAfter": 371.62,
+      "resolvedAt": "2026-10-29T18:38:24.402Z",
       "propType": "player_points",
       "playerName": "Joel Farabee",
       "line": 0.5,
@@ -1764,10 +1764,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10.71,
+      "bankrollAfter": 382.33,
+      "resolvedAt": "2026-10-29T18:38:24.432Z",
       "propType": "player_points",
       "playerName": "Connor McDavid",
       "line": 1.5,
@@ -1788,7 +1788,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Dylan Strome",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Matt Coronato Over 0.5 Points",
@@ -1800,17 +1801,18 @@
           "propType": "player_points",
           "playerName": "Matt Coronato",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 208,
       "stakeAmount": 17.5,
       "potentialPayout": 53.9,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -17.5,
+      "bankrollAfter": 364.83,
+      "resolvedAt": "2026-10-29T18:38:24.529Z"
     },
     {
       "betId": "parlay-high-2026-10-28",
@@ -1827,7 +1829,8 @@
           "propType": "player_assists",
           "playerName": "Matt Coronato",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Joel Farabee Over 0.5 Points",
@@ -1839,7 +1842,8 @@
           "propType": "player_points",
           "playerName": "Joel Farabee",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Connor McDavid Over 1.5 Points",
@@ -1851,7 +1855,8 @@
           "propType": "player_points",
           "playerName": "Connor McDavid",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Trevor Zegras Over 1.5 Shots on Goal",
@@ -1863,7 +1868,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Trevor Zegras",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Dylan Strome Over 1.5 Shots on Goal",
@@ -1875,17 +1881,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Dylan Strome",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2371,
       "stakeAmount": 2.5,
       "potentialPayout": 61.78,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 362.33,
+      "resolvedAt": "2026-10-29T18:38:24.670Z"
     },
     {
       "betId": "parlay-double-2026-10-28",
@@ -1902,7 +1909,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Dylan Strome",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Colorado Avalanche ML",
@@ -1910,17 +1918,18 @@
           "sport": "nhl",
           "matchup": "New Jersey Devils @ Colorado Avalanche",
           "date": "2026-10-29",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 176,
       "stakeAmount": 10,
       "potentialPayout": 27.6,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 17.6,
+      "bankrollAfter": 379.93,
+      "resolvedAt": "2026-10-29T18:38:24.699Z"
     }
   ]
 }
