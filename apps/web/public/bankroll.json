@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1499.98,
+  "currentBankroll": 1478.44,
   "totalBets": 70,
-  "wins": 34,
-  "losses": 33,
+  "wins": 35,
+  "losses": 35,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 3289.5,
-  "totalProfit": 999.98,
-  "roi": 0.3273,
-  "peakBankroll": 1526.59,
+  "totalProfit": 978.44,
+  "roi": 0.2974,
+  "peakBankroll": 1597.44,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6538,
-    "strongWinRate": 0.6842,
+    "eliteWinRate": 0.6667,
+    "strongWinRate": 0.65,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2784,
+    "nflRoi": 0.2543,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 0.9,
+    "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-10-29T19:43:46.830Z",
-    "totalResultsTracked": 67
+    "lastCalibrated": "2026-10-30T12:45:11.886Z",
+    "totalResultsTracked": 70
   },
   "bets": [
     {
@@ -2580,10 +2580,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 97.46,
+      "bankrollAfter": 1597.44,
+      "resolvedAt": "2026-10-30T12:45:11.613Z",
       "propType": "player_rush_yards",
       "playerName": "Trevor Etienne",
       "line": 9.5,
@@ -2606,10 +2606,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -104.5,
+      "bankrollAfter": 1492.94,
+      "resolvedAt": "2026-10-30T12:45:11.649Z",
       "propType": "player_receiving_yards",
       "playerName": "John Metchie III",
       "line": 16.5,
@@ -2630,7 +2630,8 @@
           "propType": "player_rush_yards",
           "playerName": "Trevor Etienne",
           "line": 9.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "John Metchie III Over 16.5 Receiving Yards",
@@ -2642,7 +2643,8 @@
           "propType": "player_receiving_yards",
           "playerName": "John Metchie III",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Savion Williams Over 3.5 Rushing Yards",
@@ -2654,7 +2656,8 @@
           "propType": "player_rush_yards",
           "playerName": "Savion Williams",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "MarShawn Lloyd Over 17.5 Rushing Yards",
@@ -2666,7 +2669,8 @@
           "propType": "player_rush_yards",
           "playerName": "MarShawn Lloyd",
           "line": 17.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jordan Love Over 262.5 Passing Yards",
@@ -2678,17 +2682,18 @@
           "propType": "player_pass_yards",
           "playerName": "Jordan Love",
           "line": 262.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2283,
       "stakeAmount": 14.5,
       "potentialPayout": 345.54,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -14.5,
+      "bankrollAfter": 1478.44,
+      "resolvedAt": "2026-10-30T12:45:11.886Z"
     }
   ]
 }
