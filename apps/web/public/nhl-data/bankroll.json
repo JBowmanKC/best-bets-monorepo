@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 379.93,
+  "currentBankroll": 368.22,
   "totalBets": 63,
-  "wins": 19,
-  "losses": 32,
+  "wins": 21,
+  "losses": 36,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 899,
-  "totalProfit": -120.07,
-  "roi": -0.1605,
+  "totalProfit": -131.78,
+  "roi": -0.16,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.4444,
-    "strongWinRate": 0.5238,
+    "eliteWinRate": 0.5,
+    "strongWinRate": 0.5217,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1668,
+    "nhlRoi": -0.1256,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-30T19:39:56.611Z",
-    "totalResultsTracked": 51
+    "lastCalibrated": "2026-10-31T18:44:13.548Z",
+    "totalResultsTracked": 57
   },
   "bets": [
     {
@@ -1948,10 +1948,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 16.96,
+      "bankrollAfter": 396.89,
+      "resolvedAt": "2026-10-31T18:44:12.974Z",
       "propType": "player_shots_on_goal",
       "playerName": "Ryan Strome",
       "line": 1.5,
@@ -1974,10 +1974,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -14,
+      "bankrollAfter": 382.89,
+      "resolvedAt": "2026-10-31T18:44:12.998Z",
       "propType": "player_points",
       "playerName": "Brandon Montour",
       "line": 0.5,
@@ -2000,10 +2000,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.33,
+      "bankrollAfter": 396.22,
+      "resolvedAt": "2026-10-31T18:44:13.087Z",
       "propType": "player_assists",
       "playerName": "Seth Jones",
       "line": 0.5,
@@ -2024,7 +2024,8 @@
           "propType": "player_points",
           "playerName": "Eetu Luostarinen",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Matty Beniers Under 1.5 Shots on Goal",
@@ -2036,17 +2037,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Matty Beniers",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 198,
       "stakeAmount": 14,
       "potentialPayout": 41.72,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -14,
+      "bankrollAfter": 382.22,
+      "resolvedAt": "2026-10-31T18:44:13.180Z"
     },
     {
       "betId": "parlay-high-2026-10-30",
@@ -2063,7 +2065,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Ryan Strome",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Brandon Montour Over 0.5 Points",
@@ -2075,7 +2078,8 @@
           "propType": "player_points",
           "playerName": "Brandon Montour",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Seth Jones Over 0.5 Assists",
@@ -2087,7 +2091,8 @@
           "propType": "player_assists",
           "playerName": "Seth Jones",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Eetu Luostarinen Under 0.5 Points",
@@ -2099,7 +2104,8 @@
           "propType": "player_points",
           "playerName": "Eetu Luostarinen",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Matty Beniers Under 1.5 Shots on Goal",
@@ -2111,17 +2117,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Matty Beniers",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2289,
       "stakeAmount": 2.5,
       "potentialPayout": 59.73,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 379.72,
+      "resolvedAt": "2026-10-31T18:44:13.395Z"
     },
     {
       "betId": "parlay-double-2026-10-30",
@@ -2138,7 +2145,8 @@
           "propType": "player_points",
           "playerName": "Eetu Luostarinen",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Mikael Backlund Under 0.5 Assists",
@@ -2150,17 +2158,18 @@
           "propType": "player_assists",
           "playerName": "Mikael Backlund",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 94,
       "stakeAmount": 11.5,
       "potentialPayout": 22.31,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11.5,
+      "bankrollAfter": 368.22,
+      "resolvedAt": "2026-10-31T18:44:13.495Z"
     },
     {
       "betId": "nhl-401892621-prop-jackroslovic-player_points-2026-10-31",
