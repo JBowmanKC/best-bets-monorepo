@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 368.22,
+  "currentBankroll": 317.72,
   "totalBets": 63,
-  "wins": 21,
-  "losses": 36,
+  "wins": 22,
+  "losses": 41,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 899,
-  "totalProfit": -131.78,
-  "roi": -0.16,
+  "totalProfit": -182.28,
+  "roi": -0.2028,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.5,
-    "strongWinRate": 0.5217,
+    "eliteWinRate": 0.5455,
+    "strongWinRate": 0.48,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1256,
+    "nhlRoi": -0.1496,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-10-31T18:44:13.548Z",
-    "totalResultsTracked": 57
+    "lastCalibrated": "2026-11-01T13:38:19.566Z",
+    "totalResultsTracked": 63
   },
   "bets": [
     {
@@ -2188,10 +2188,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10,
+      "bankrollAfter": 378.22,
+      "resolvedAt": "2026-11-01T13:38:19.190Z",
       "propType": "player_points",
       "playerName": "Jack Roslovic",
       "line": 0.5,
@@ -2214,10 +2214,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -15,
+      "bankrollAfter": 363.22,
+      "resolvedAt": "2026-11-01T13:38:19.227Z",
       "propType": "player_points",
       "playerName": "Pontus Holmberg",
       "line": 0.5,
@@ -2240,10 +2240,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -16,
+      "bankrollAfter": 347.22,
+      "resolvedAt": "2026-11-01T13:38:19.257Z",
       "propType": "player_assists",
       "playerName": "Roman Josi",
       "line": 0.5,
@@ -2264,7 +2264,8 @@
           "propType": "player_points",
           "playerName": "Easton Cowan",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Roman Josi Over 0.5 Points",
@@ -2276,17 +2277,18 @@
           "propType": "player_points",
           "playerName": "Roman Josi",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 236,
       "stakeAmount": 16,
       "potentialPayout": 53.76,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -16,
+      "bankrollAfter": 331.22,
+      "resolvedAt": "2026-11-01T13:38:19.328Z"
     },
     {
       "betId": "parlay-high-2026-10-31",
@@ -2303,7 +2305,8 @@
           "propType": "player_points",
           "playerName": "Pontus Holmberg",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Roman Josi Over 0.5 Assists",
@@ -2315,7 +2318,8 @@
           "propType": "player_assists",
           "playerName": "Roman Josi",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Roman Josi Over 0.5 Points",
@@ -2327,7 +2331,8 @@
           "propType": "player_points",
           "playerName": "Roman Josi",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jack Roslovic Over 0.5 Points",
@@ -2339,7 +2344,8 @@
           "propType": "player_points",
           "playerName": "Jack Roslovic",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Roman Josi Over 1.5 Shots on Goal",
@@ -2351,17 +2357,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Roman Josi",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2631,
       "stakeAmount": 2.5,
       "potentialPayout": 68.28,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 328.72,
+      "resolvedAt": "2026-11-01T13:38:19.502Z"
     },
     {
       "betId": "parlay-double-2026-10-31",
@@ -2378,7 +2385,8 @@
           "propType": "player_points",
           "playerName": "Easton Cowan",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Roman Josi Over 0.5 Points",
@@ -2390,17 +2398,18 @@
           "propType": "player_points",
           "playerName": "Roman Josi",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 236,
       "stakeAmount": 11,
       "potentialPayout": 36.96,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 317.72,
+      "resolvedAt": "2026-11-01T13:38:19.565Z"
     }
   ]
 }
