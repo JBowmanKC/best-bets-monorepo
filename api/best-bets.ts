@@ -1480,7 +1480,19 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
   const propPool = propPicks.filter(p =>
     !p.parlayOnly && (p.voidRisk === "low" || p.voidRisk === "medium") && p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL
   );
-  const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool].sort((a, b) => b.evEdge - a.evEdge);
+  // One prop per player: 10/31's NHL high-odds parlay had Roman Josi's
+  // assists, points and shots as three separate legs, so one quiet night from
+  // him sank the parlay three ways. Highest-edge prop per player wins.
+  const seenPlayers = new Set<string>();
+  const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool]
+    .sort((a, b) => b.evEdge - a.evEdge)
+    .filter(item => {
+      if (!isPropPick(item)) return true;
+      const key = `${item.gameId}-${item.playerName}`;
+      if (seenPlayers.has(key)) return false;
+      seenPlayers.add(key);
+      return true;
+    });
   if (combined.length === 0) return [];
 
   const targetLegs = combined.length >= 5 ? 5 : Math.min(4, combined.length);
@@ -1551,7 +1563,11 @@ const DOUBLE_UP_MIN_PAYOUT = 70;
 const DOUBLE_UP_MAX_PAYOUT = 150;
 const DOUBLE_UP_TARGET_PAYOUT = 100;
 
-function selectDoubleUpParlayLegs(picks: BetPick[], propPicks: PropPick[], bestBets: ParlayItem[]): ParlayItem[] {
+function selectDoubleUpParlayLegs(
+  picks: BetPick[], propPicks: PropPick[], bestBets: ParlayItem[],
+  /** The safe parlay's legs — the double-up must not be the same bet (10/31 NHL: both were Cowan + Josi). */
+  safeLegs: ParlayItem[] = []
+): ParlayItem[] {
   const heavy = (odds: number) => odds <= -110 && odds >= -450;
   const eligible: ParlayItem[] = [
     ...picks.filter(p => heavy(p.odds) && p.sportsbook !== ESTIMATED_SOURCE_LABEL),
@@ -1570,6 +1586,12 @@ function selectDoubleUpParlayLegs(picks: BetPick[], propPicks: PropPick[], bestB
       for (let k = j + 1; k < pool.length; k++) combos.push([pool[i], pool[j], pool[k]]);
     }
   }
+
+  const safeKey = safeLegs.map(l => l.id).sort().join("|");
+  const allowed = combos.filter(c => c.map(l => l.id).sort().join("|") !== safeKey);
+  if (allowed.length === 0) return [];
+  combos.length = 0;
+  combos.push(...allowed);
 
   const avgScore = (legs: ParlayItem[]) => legs.reduce((a, l) => a + l.scores.composite, 0) / legs.length;
   const inBand = combos.filter(c => {
@@ -1724,7 +1746,7 @@ function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll
 
   const safeLegs = selectSafeParlayLegs(allPicks, allPropPicks, bestBets);
   const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks);
-  const doubleLegs = selectDoubleUpParlayLegs(allPicks, allPropPicks, bestBets);
+  const doubleLegs = selectDoubleUpParlayLegs(allPicks, allPropPicks, bestBets, safeLegs);
 
   const safeParlay = safeLegs.length >= 2
     ? buildCommittedParlay(safeLegs, computeParlayStake(safeLegs, bankroll, 1), { id: "safe", label: "💚 Safe Parlay", emoji: "💚" })
