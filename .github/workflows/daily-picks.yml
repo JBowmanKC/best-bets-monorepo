@@ -62,7 +62,14 @@ jobs:
           # 10/5 got nothing). So: (1) a scheduled run before 16:00 UTC is
           # always a spillover from the previous night's slots and does
           # nothing, and (2) "already generated" only counts a run that
-          # actually happened in the daytime window.
+          # actually happened during the day (10:00 UTC on — 5-6 AM ET).
+          # Rule (1) means no scheduled run ever generates before 16:00 UTC,
+          # so anything stamped 10:00-16:00 UTC is a deliberate early manual
+          # run (e.g. picks before a 1 PM kickoff) and counts as the day's
+          # picks — the cutoff used to be 16:00, which let a delayed afternoon
+          # slot regenerate over a morning manual run (and add bets) every
+          # time. A late-evening manual run that crosses UTC midnight
+          # (00:00-10:00 UTC) still doesn't count.
           # A manual dispatch always runs fresh; the Vercel cron trigger passes
           # respect_guard so it gets the scheduled-run dedupe instead.
           TREAT_AS_SCHEDULED=false
@@ -72,7 +79,7 @@ jobs:
           if [ "$TREAT_AS_SCHEDULED" = "true" ] && [ $((10#$HOUR)) -lt 16 ]; then
             echo "Scheduled run at ${HOUR}:xx UTC is a delayed spillover from last night's slots — skipping."
             echo "skip=true" >> "$GITHUB_OUTPUT"
-          elif [ "$TREAT_AS_SCHEDULED" = "true" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ] && [ $((10#$GENERATED_HOUR)) -ge 16 ]; then
+          elif [ "$TREAT_AS_SCHEDULED" = "true" ] && [ -f apps/web/public/picks.json ] && [ "$(jq -r '.date' apps/web/public/picks.json)" = "$DATE" ] && [ $((10#$GENERATED_HOUR)) -ge 10 ]; then
             echo "picks.json already reflects $DATE from a daytime run — skipping this scheduled run (an earlier slot today already succeeded)."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
