@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1478.44,
+  "currentBankroll": 1445.63,
   "totalBets": 76,
-  "wins": 35,
-  "losses": 35,
+  "wins": 37,
+  "losses": 39,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 3585,
-  "totalProfit": 978.44,
-  "roi": 0.2974,
-  "peakBankroll": 1597.44,
+  "totalProfit": 945.63,
+  "roi": 0.2638,
+  "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6667,
-    "strongWinRate": 0.65,
+    "eliteWinRate": 0.6897,
+    "strongWinRate": 0.619,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2543,
+    "nflRoi": 0.2617,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-01T18:59:52.407Z",
-    "totalResultsTracked": 70
+    "lastCalibrated": "2026-11-02T22:49:41.142Z",
+    "totalResultsTracked": 76
   },
   "bets": [
     {
@@ -2712,10 +2712,10 @@
         "composite": 87
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 62.95,
+      "bankrollAfter": 1541.39,
+      "resolvedAt": "2026-11-02T22:49:40.756Z",
       "propType": "player_rush_yards",
       "playerName": "Joe Burrow",
       "line": 5.5,
@@ -2738,10 +2738,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 62.74,
+      "bankrollAfter": 1604.13,
+      "resolvedAt": "2026-11-02T22:49:40.796Z",
       "propType": "player_rush_yards",
       "playerName": "Tyler Allgeier",
       "line": 13.5,
@@ -2764,10 +2764,10 @@
         "composite": 77
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -54.5,
+      "bankrollAfter": 1549.63,
+      "resolvedAt": "2026-11-02T22:49:40.840Z",
       "propType": "player_rush_yards",
       "playerName": "Ray Davis",
       "line": 5.5,
@@ -2788,7 +2788,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Saquon Barkley",
           "line": 12.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Elijah Higgins Over 16.5 Receiving Yards",
@@ -2800,17 +2801,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Elijah Higgins",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 259,
       "stakeAmount": 62,
       "potentialPayout": 222.58,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -62,
+      "bankrollAfter": 1487.63,
+      "resolvedAt": "2026-11-02T22:49:40.938Z"
     },
     {
       "betId": "parlay-high-2026-11-01",
@@ -2827,7 +2829,8 @@
           "propType": "player_rush_yards",
           "playerName": "Joe Burrow",
           "line": 5.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Minnesota Vikings ML",
@@ -2835,7 +2838,8 @@
           "sport": "nfl",
           "matchup": "Minnesota Vikings @ Detroit Lions",
           "date": "2026-11-01",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Tyler Allgeier Over 13.5 Rushing Yards",
@@ -2847,7 +2851,8 @@
           "propType": "player_rush_yards",
           "playerName": "Tyler Allgeier",
           "line": 13.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Ray Davis Under 5.5 Rushing Yards",
@@ -2859,7 +2864,8 @@
           "propType": "player_rush_yards",
           "playerName": "Ray Davis",
           "line": 5.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Elijah Higgins Over 16.5 Receiving Yards",
@@ -2871,17 +2877,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Elijah Higgins",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2939,
       "stakeAmount": 10.5,
       "potentialPayout": 319.1,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -10.5,
+      "bankrollAfter": 1477.13,
+      "resolvedAt": "2026-11-02T22:49:41.076Z"
     },
     {
       "betId": "parlay-double-2026-11-01",
@@ -2898,7 +2905,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Elijah Higgins",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Lamar Jackson Under 238.5 Passing Yards",
@@ -2910,17 +2918,18 @@
           "propType": "player_pass_yards",
           "playerName": "Lamar Jackson",
           "line": 238.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 253,
       "stakeAmount": 31.5,
       "potentialPayout": 111.2,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -31.5,
+      "bankrollAfter": 1445.63,
+      "resolvedAt": "2026-11-02T22:49:41.141Z"
     }
   ]
 }
