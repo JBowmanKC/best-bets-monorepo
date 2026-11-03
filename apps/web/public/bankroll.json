@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1445.63,
+  "currentBankroll": 1328.54,
   "totalBets": 80,
-  "wins": 37,
-  "losses": 39,
+  "wins": 38,
+  "losses": 42,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 3851,
-  "totalProfit": 945.63,
-  "roi": 0.2638,
+  "totalProfit": 828.54,
+  "roi": 0.2151,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.6897,
-    "strongWinRate": 0.619,
+    "strongWinRate": 0.5833,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2617,
+    "nflRoi": 0.2092,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-02T22:49:41.142Z",
-    "totalResultsTracked": 76
+    "lastCalibrated": "2026-11-03T11:48:32.975Z",
+    "totalResultsTracked": 80
   },
   "bets": [
     {
@@ -2948,10 +2948,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -95.5,
+      "bankrollAfter": 1350.13,
+      "resolvedAt": "2026-11-03T11:48:32.718Z",
       "propType": "player_rush_yards",
       "playerName": "Zach Charbonnet",
       "line": 27.5,
@@ -2974,10 +2974,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -80,
+      "bankrollAfter": 1270.13,
+      "resolvedAt": "2026-11-03T11:48:32.749Z",
       "propType": "player_receiving_yards",
       "playerName": "Zach Charbonnet",
       "line": 7.5,
@@ -3000,10 +3000,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 69.91,
+      "bankrollAfter": 1340.04,
+      "resolvedAt": "2026-11-03T11:48:32.796Z",
       "propType": "player_receiving_yards",
       "playerName": "Jaxon Smith-Njigba",
       "line": 98.5,
@@ -3024,7 +3024,8 @@
           "propType": "player_rush_yards",
           "playerName": "Zach Charbonnet",
           "line": 27.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaxon Smith-Njigba Over 98.5 Receiving Yards",
@@ -3036,7 +3037,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaxon Smith-Njigba",
           "line": 98.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Chicago Bears ML",
@@ -3044,7 +3046,8 @@
           "sport": "nfl",
           "matchup": "Chicago Bears @ Seattle Seahawks",
           "date": "2026-11-03",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Sam Darnold Over 4.5 Rushing Yards",
@@ -3056,7 +3059,8 @@
           "propType": "player_rush_yards",
           "playerName": "Sam Darnold",
           "line": 4.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Sam Roush Under 9.5 Receiving Yards",
@@ -3068,17 +3072,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Sam Roush",
           "line": 9.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "void"
         }
       ],
       "combinedOdds": 2870,
       "stakeAmount": 11.5,
       "potentialPayout": 341.55,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11.5,
+      "bankrollAfter": 1328.54,
+      "resolvedAt": "2026-11-03T11:48:32.974Z"
     }
   ]
 }
