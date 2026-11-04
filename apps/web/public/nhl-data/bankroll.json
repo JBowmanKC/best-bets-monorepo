@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 317.72,
+  "currentBankroll": 324.95,
   "totalBets": 74,
-  "wins": 22,
-  "losses": 41,
+  "wins": 25,
+  "losses": 43,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1025.5,
-  "totalProfit": -182.28,
-  "roi": -0.2028,
+  "totalProfit": -175.05,
+  "roi": -0.1819,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.5455,
+    "eliteWinRate": 0.5714,
     "strongWinRate": 0.48,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1496,
+    "nhlRoi": -0.1384,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-03T20:36:27.266Z",
-    "totalResultsTracked": 63
+    "lastCalibrated": "2026-11-04T20:54:38.088Z",
+    "totalResultsTracked": 68
   },
   "bets": [
     {
@@ -2428,10 +2428,10 @@
         "composite": 86
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -18.5,
+      "bankrollAfter": 299.22,
+      "resolvedAt": "2026-11-04T20:54:37.661Z",
       "propType": "player_assists",
       "playerName": "Leo Carlsson",
       "line": 0.5,
@@ -2454,10 +2454,10 @@
         "composite": 82
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10.71,
+      "bankrollAfter": 309.93,
+      "resolvedAt": "2026-11-04T20:54:37.685Z",
       "propType": "player_assists",
       "playerName": "Jackson LaCombe",
       "line": 0.5,
@@ -2480,10 +2480,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 7.71,
+      "bankrollAfter": 317.64,
+      "resolvedAt": "2026-11-04T20:54:37.728Z",
       "propType": "player_points",
       "playerName": "Leo Carlsson",
       "line": 0.5,
@@ -2504,7 +2504,8 @@
           "propType": "player_assists",
           "playerName": "Leo Carlsson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Tristan Luneau Over 0.5 Points",
@@ -2516,7 +2517,8 @@
           "propType": "player_points",
           "playerName": "Tristan Luneau",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jackson LaCombe Over 0.5 Assists",
@@ -2528,7 +2530,8 @@
           "propType": "player_assists",
           "playerName": "Jackson LaCombe",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Cutter Gauthier Over 0.5 Points",
@@ -2540,7 +2543,8 @@
           "propType": "player_points",
           "playerName": "Cutter Gauthier",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Marco Rossi Under 0.5 Points",
@@ -2552,17 +2556,18 @@
           "propType": "player_points",
           "playerName": "Marco Rossi",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 1686,
       "stakeAmount": 2.5,
       "potentialPayout": 44.65,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 315.14,
+      "resolvedAt": "2026-11-04T20:54:37.903Z"
     },
     {
       "betId": "parlay-double-2026-11-03",
@@ -2579,7 +2584,8 @@
           "propType": "player_points",
           "playerName": "Jackson LaCombe",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Tampa Bay Lightning ML",
@@ -2587,17 +2593,18 @@
           "sport": "nhl",
           "matchup": "Detroit Red Wings @ Tampa Bay Lightning",
           "date": "2026-11-04",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 109,
       "stakeAmount": 9,
       "potentialPayout": 18.81,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 9.81,
+      "bankrollAfter": 324.95,
+      "resolvedAt": "2026-11-04T20:54:37.947Z"
     },
     {
       "betId": "nhl-401892645-prop-sethjones-player_assists-2026-11-04",
