@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 324.95,
+  "currentBankroll": 312.6,
   "totalBets": 74,
-  "wins": 25,
-  "losses": 43,
+  "wins": 27,
+  "losses": 47,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1025.5,
-  "totalProfit": -175.05,
-  "roi": -0.1819,
+  "totalProfit": -187.4,
+  "roi": -0.1827,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.5714,
-    "strongWinRate": 0.48,
+    "eliteWinRate": 0.5625,
+    "strongWinRate": 0.4615,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1384,
+    "nhlRoi": -0.1524,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-04T20:54:38.088Z",
-    "totalResultsTracked": 68
+    "lastCalibrated": "2026-11-05T14:12:28.739Z",
+    "totalResultsTracked": 74
   },
   "bets": [
     {
@@ -2623,10 +2623,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -14,
+      "bankrollAfter": 310.95,
+      "resolvedAt": "2026-11-05T14:12:28.322Z",
       "propType": "player_assists",
       "playerName": "Seth Jones",
       "line": 0.5,
@@ -2649,10 +2649,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 9.35,
+      "bankrollAfter": 320.3,
+      "resolvedAt": "2026-11-05T14:12:28.350Z",
       "propType": "player_points",
       "playerName": "Seth Jones",
       "line": 0.5,
@@ -2675,10 +2675,10 @@
         "composite": 73
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 309.3,
+      "resolvedAt": "2026-11-05T14:12:28.383Z",
       "propType": "player_assists",
       "playerName": "Jake Sanderson",
       "line": 0.5,
@@ -2699,7 +2699,8 @@
           "propType": "player_assists",
           "playerName": "Matthew Tkachuk",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Matthew Wood Under 0.5 Points",
@@ -2711,7 +2712,8 @@
           "propType": "player_points",
           "playerName": "Matthew Wood",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Jake Sanderson Over 0.5 Points",
@@ -2723,17 +2725,18 @@
           "propType": "player_points",
           "playerName": "Jake Sanderson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 352,
       "stakeAmount": 11,
       "potentialPayout": 49.72,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11,
+      "bankrollAfter": 298.3,
+      "resolvedAt": "2026-11-05T14:12:28.528Z"
     },
     {
       "betId": "parlay-high-2026-11-04",
@@ -2750,7 +2753,8 @@
           "propType": "player_assists",
           "playerName": "Seth Jones",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jake Sanderson Over 0.5 Assists",
@@ -2762,7 +2766,8 @@
           "propType": "player_assists",
           "playerName": "Jake Sanderson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Tkachuk Over 0.5 Assists",
@@ -2774,7 +2779,8 @@
           "propType": "player_assists",
           "playerName": "Matthew Tkachuk",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Sam Bennett Under 0.5 Assists",
@@ -2786,7 +2792,8 @@
           "propType": "player_assists",
           "playerName": "Sam Bennett",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Matthew Wood Under 0.5 Points",
@@ -2798,17 +2805,18 @@
           "propType": "player_points",
           "playerName": "Matthew Wood",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 1519,
       "stakeAmount": 2.5,
       "potentialPayout": 40.48,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 295.8,
+      "resolvedAt": "2026-11-05T14:12:28.673Z"
     },
     {
       "betId": "parlay-double-2026-11-04",
@@ -2825,7 +2833,8 @@
           "propType": "player_assists",
           "playerName": "Matthew Tkachuk",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Matthew Wood Under 0.5 Points",
@@ -2837,17 +2846,18 @@
           "propType": "player_points",
           "playerName": "Matthew Wood",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 168,
       "stakeAmount": 10,
       "potentialPayout": 26.8,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 16.8,
+      "bankrollAfter": 312.6,
+      "resolvedAt": "2026-11-05T14:12:28.738Z"
     }
   ]
 }
