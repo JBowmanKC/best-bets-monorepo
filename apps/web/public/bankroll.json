@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1328.54,
+  "currentBankroll": 1132.04,
   "totalBets": 84,
   "wins": 38,
-  "losses": 42,
+  "losses": 45,
   "pushes": 0,
-  "voids": 0,
+  "voids": 1,
   "totalStaked": 4117,
-  "totalProfit": 828.54,
-  "roi": 0.2151,
+  "totalProfit": 632.04,
+  "roi": 0.1562,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6897,
+    "eliteWinRate": 0.6452,
     "strongWinRate": 0.5833,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.2092,
+    "nflRoi": 0.1451,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 1,
+    "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-05T21:07:43.051Z",
-    "totalResultsTracked": 80
+    "lastCalibrated": "2026-11-06T20:11:10.066Z",
+    "totalResultsTracked": 84
   },
   "bets": [
     {
@@ -3102,10 +3102,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -99,
+      "bankrollAfter": 1229.54,
+      "resolvedAt": "2026-11-06T20:11:09.713Z",
       "propType": "player_receiving_yards",
       "playerName": "Brenton Strange",
       "line": 31.5,
@@ -3128,10 +3128,10 @@
         "composite": 80
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -84.5,
+      "bankrollAfter": 1145.04,
+      "resolvedAt": "2026-11-06T20:11:09.747Z",
       "propType": "player_receiving_yards",
       "playerName": "Zay Flowers",
       "line": 49.5,
@@ -3154,10 +3154,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "void",
+      "profitLoss": 0,
+      "bankrollAfter": 1145.04,
+      "resolvedAt": "2026-11-06T20:11:09.807Z",
       "propType": "player_receiving_yards",
       "playerName": "Josh Cuevas",
       "line": 8.5,
@@ -3178,7 +3178,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Brenton Strange",
           "line": 31.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Zay Flowers Over 49.5 Receiving Yards",
@@ -3190,7 +3191,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Zay Flowers",
           "line": 49.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Josh Cuevas Over 8.5 Receiving Yards",
@@ -3202,7 +3204,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Josh Cuevas",
           "line": 8.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "void"
         },
         {
           "pickLabel": "Parker Washington Over 63.5 Receiving Yards",
@@ -3214,7 +3217,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Parker Washington",
           "line": 63.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Rashod Bateman Over 13.5 Receiving Yards",
@@ -3226,17 +3230,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Rashod Bateman",
           "line": 13.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2282,
       "stakeAmount": 13,
       "potentialPayout": 309.66,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -13,
+      "bankrollAfter": 1132.04,
+      "resolvedAt": "2026-11-06T20:11:10.065Z"
     }
   ]
 }
