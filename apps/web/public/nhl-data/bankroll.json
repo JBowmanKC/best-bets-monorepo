@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 312.6,
-  "totalBets": 74,
+  "totalBets": 80,
   "wins": 27,
   "losses": 47,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1025.5,
+  "totalStaked": 1088,
   "totalProfit": -187.4,
   "roi": -0.1827,
   "peakBankroll": 500,
@@ -2858,6 +2858,233 @@
       "profitLoss": 16.8,
       "bankrollAfter": 312.6,
       "resolvedAt": "2026-11-05T14:12:28.738Z"
+    },
+    {
+      "betId": "nhl-401892661-prop-leocarlsson-player_assists-2026-11-06",
+      "date": "2026-11-06",
+      "sport": "nhl",
+      "matchup": "Anaheim Ducks @ Calgary Flames",
+      "pickLabel": "Leo Carlsson Over 0.5",
+      "odds": 105,
+      "stakeAmount": 12.5,
+      "potentialPayout": 25.63,
+      "estimatedWinPct": 0.584,
+      "impliedWinPct": 0.488,
+      "evEdge": 0.096,
+      "tier": "strong",
+      "scores": {
+        "composite": 76
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Leo Carlsson",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892661-prop-jacksonlacombe-player_assists-2026-11-06",
+      "date": "2026-11-06",
+      "sport": "nhl",
+      "matchup": "Anaheim Ducks @ Calgary Flames",
+      "pickLabel": "Jackson LaCombe Over 0.5",
+      "odds": -110,
+      "stakeAmount": 10.5,
+      "potentialPayout": 20.05,
+      "estimatedWinPct": 0.597,
+      "impliedWinPct": 0.524,
+      "evEdge": 0.073,
+      "tier": "strong",
+      "scores": {
+        "composite": 71
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Jackson LaCombe",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892661-prop-beckettsennecke-player_points-2026-11-06",
+      "date": "2026-11-06",
+      "sport": "nhl",
+      "matchup": "Anaheim Ducks @ Calgary Flames",
+      "pickLabel": "Beckett Sennecke Over 0.5",
+      "odds": -155,
+      "stakeAmount": 12.5,
+      "potentialPayout": 20.56,
+      "estimatedWinPct": 0.68,
+      "impliedWinPct": 0.608,
+      "evEdge": 0.072,
+      "tier": "strong",
+      "scores": {
+        "composite": 75
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Beckett Sennecke",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-11-06",
+      "date": "2026-11-06",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Cutter Gauthier Over 0.5 Points",
+          "odds": -175,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Cutter Gauthier",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Adam Fantilli Under 0.5 Assists",
+          "odds": -215,
+          "sport": "nhl",
+          "matchup": "Columbus Blue Jackets @ Buffalo Sabres",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Adam Fantilli",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 130,
+      "stakeAmount": 15.5,
+      "potentialPayout": 35.65,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-11-06",
+      "date": "2026-11-06",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Leo Carlsson Over 0.5 Assists",
+          "odds": 105,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Leo Carlsson",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Jackson LaCombe Over 0.5 Assists",
+          "odds": -110,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Jackson LaCombe",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Beckett Sennecke Over 0.5 Points",
+          "odds": -155,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Beckett Sennecke",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Cutter Gauthier Over 0.5 Points",
+          "odds": -175,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Cutter Gauthier",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Adam Fantilli Under 0.5 Assists",
+          "odds": -215,
+          "sport": "nhl",
+          "matchup": "Columbus Blue Jackets @ Buffalo Sabres",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Adam Fantilli",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 1382,
+      "stakeAmount": 2.5,
+      "potentialPayout": 37.05,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-11-06",
+      "date": "2026-11-06",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Cutter Gauthier Over 0.5 Points",
+          "odds": -175,
+          "sport": "nhl",
+          "matchup": "Anaheim Ducks @ Calgary Flames",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Cutter Gauthier",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Minnesota Wild ML",
+          "odds": -270,
+          "sport": "nhl",
+          "matchup": "San Jose Sharks @ Minnesota Wild",
+          "date": "2026-11-07",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 115,
+      "stakeAmount": 9,
+      "potentialPayout": 19.35,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
