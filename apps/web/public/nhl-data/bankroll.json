@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 312.6,
+  "currentBankroll": 408.39,
   "totalBets": 86,
-  "wins": 27,
+  "wins": 33,
   "losses": 47,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1150.5,
-  "totalProfit": -187.4,
-  "roi": -0.1827,
+  "totalProfit": -91.61,
+  "roi": -0.0842,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.4615,
+    "strongWinRate": 0.5172,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1524,
+    "nhlRoi": -0.105,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-06T20:32:16.189Z",
-    "totalResultsTracked": 74
+    "lastCalibrated": "2026-11-07T19:01:16.638Z",
+    "totalResultsTracked": 80
   },
   "bets": [
     {
@@ -2876,10 +2876,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.13,
+      "bankrollAfter": 325.73,
+      "resolvedAt": "2026-11-07T19:01:16.063Z",
       "propType": "player_assists",
       "playerName": "Leo Carlsson",
       "line": 0.5,
@@ -2902,10 +2902,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 9.55,
+      "bankrollAfter": 335.28,
+      "resolvedAt": "2026-11-07T19:01:16.093Z",
       "propType": "player_assists",
       "playerName": "Jackson LaCombe",
       "line": 0.5,
@@ -2928,10 +2928,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 8.06,
+      "bankrollAfter": 343.34,
+      "resolvedAt": "2026-11-07T19:01:16.122Z",
       "propType": "player_points",
       "playerName": "Beckett Sennecke",
       "line": 0.5,
@@ -2952,7 +2952,8 @@
           "propType": "player_points",
           "playerName": "Cutter Gauthier",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Adam Fantilli Under 0.5 Assists",
@@ -2964,17 +2965,18 @@
           "propType": "player_assists",
           "playerName": "Adam Fantilli",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 130,
       "stakeAmount": 15.5,
       "potentialPayout": 35.65,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 20.15,
+      "bankrollAfter": 363.49,
+      "resolvedAt": "2026-11-07T19:01:16.316Z"
     },
     {
       "betId": "parlay-high-2026-11-06",
@@ -2991,7 +2993,8 @@
           "propType": "player_assists",
           "playerName": "Leo Carlsson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jackson LaCombe Over 0.5 Assists",
@@ -3003,7 +3006,8 @@
           "propType": "player_assists",
           "playerName": "Jackson LaCombe",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Beckett Sennecke Over 0.5 Points",
@@ -3015,7 +3019,8 @@
           "propType": "player_points",
           "playerName": "Beckett Sennecke",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Cutter Gauthier Over 0.5 Points",
@@ -3027,7 +3032,8 @@
           "propType": "player_points",
           "playerName": "Cutter Gauthier",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Adam Fantilli Under 0.5 Assists",
@@ -3039,17 +3045,18 @@
           "propType": "player_assists",
           "playerName": "Adam Fantilli",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 1382,
       "stakeAmount": 2.5,
       "potentialPayout": 37.05,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 34.55,
+      "bankrollAfter": 398.04,
+      "resolvedAt": "2026-11-07T19:01:16.481Z"
     },
     {
       "betId": "parlay-double-2026-11-06",
@@ -3066,7 +3073,8 @@
           "propType": "player_points",
           "playerName": "Cutter Gauthier",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Minnesota Wild ML",
@@ -3074,17 +3082,18 @@
           "sport": "nhl",
           "matchup": "San Jose Sharks @ Minnesota Wild",
           "date": "2026-11-07",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 115,
       "stakeAmount": 9,
       "potentialPayout": 19.35,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 10.35,
+      "bankrollAfter": 408.39,
+      "resolvedAt": "2026-11-07T19:01:16.512Z"
     },
     {
       "betId": "nhl-401892668-prop-loganstankoven-player_points-2026-11-07",
