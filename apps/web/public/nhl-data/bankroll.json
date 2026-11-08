@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 408.39,
+  "currentBankroll": 389.4,
   "totalBets": 86,
-  "wins": 33,
-  "losses": 47,
+  "wins": 35,
+  "losses": 51,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1150.5,
-  "totalProfit": -91.61,
-  "roi": -0.0842,
+  "totalProfit": -110.6,
+  "roi": -0.0961,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5172,
+    "strongWinRate": 0.5,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.105,
+    "nhlRoi": -0.1165,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-07T19:01:16.638Z",
-    "totalResultsTracked": 80
+    "lastCalibrated": "2026-11-08T19:05:24.087Z",
+    "totalResultsTracked": 86
   },
   "bets": [
     {
@@ -3112,10 +3112,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 12.69,
+      "bankrollAfter": 421.08,
+      "resolvedAt": "2026-11-08T19:05:23.678Z",
       "propType": "player_points",
       "playerName": "Logan Stankoven",
       "line": 0.5,
@@ -3138,10 +3138,10 @@
         "composite": 73
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -14.5,
+      "bankrollAfter": 406.58,
+      "resolvedAt": "2026-11-08T19:05:23.701Z",
       "propType": "player_shots_on_goal",
       "playerName": "Sean Walker",
       "line": 1.5,
@@ -3164,10 +3164,10 @@
         "composite": 72
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -12,
+      "bankrollAfter": 394.58,
+      "resolvedAt": "2026-11-08T19:05:23.788Z",
       "propType": "player_points",
       "playerName": "Mavrik Bourque",
       "line": 0.5,
@@ -3188,7 +3188,8 @@
           "propType": "player_assists",
           "playerName": "Gabe Perreault",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Taylor Hall Under 0.5 Assists",
@@ -3200,7 +3201,8 @@
           "propType": "player_assists",
           "playerName": "Taylor Hall",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Shane Wright Under 0.5 Points",
@@ -3212,17 +3214,18 @@
           "propType": "player_points",
           "playerName": "Shane Wright",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 181,
       "stakeAmount": 9,
       "potentialPayout": 25.29,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9,
+      "bankrollAfter": 385.58,
+      "resolvedAt": "2026-11-08T19:05:23.914Z"
     },
     {
       "betId": "parlay-high-2026-11-07",
@@ -3239,7 +3242,8 @@
           "propType": "player_points",
           "playerName": "Logan Stankoven",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Sean Walker Over 1.5 Shots on Goal",
@@ -3251,7 +3255,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Sean Walker",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Mavrik Bourque Under 0.5 Points",
@@ -3263,7 +3268,8 @@
           "propType": "player_points",
           "playerName": "Mavrik Bourque",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Matty Beniers Under 1.5 Shots on Goal",
@@ -3275,7 +3281,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Matty Beniers",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Matthew Wood Under 0.5 Points",
@@ -3287,17 +3294,18 @@
           "propType": "player_points",
           "playerName": "Matthew Wood",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 1385,
       "stakeAmount": 2.5,
       "potentialPayout": 37.13,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 383.08,
+      "resolvedAt": "2026-11-08T19:05:24.062Z"
     },
     {
       "betId": "parlay-double-2026-11-07",
@@ -3310,7 +3318,8 @@
           "sport": "nhl",
           "matchup": "Chicago Blackhawks @ Carolina Hurricanes",
           "date": "2026-11-08",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Shane Wright Under 0.5 Points",
@@ -3322,17 +3331,18 @@
           "propType": "player_points",
           "playerName": "Shane Wright",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 79,
       "stakeAmount": 8,
       "potentialPayout": 14.32,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 6.32,
+      "bankrollAfter": 389.4,
+      "resolvedAt": "2026-11-08T19:05:24.086Z"
     }
   ]
 }
