@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1132.04,
+  "currentBankroll": 1086.1,
   "totalBets": 90,
-  "wins": 38,
-  "losses": 45,
+  "wins": 40,
+  "losses": 49,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 4343,
-  "totalProfit": 632.04,
-  "roi": 0.1562,
+  "totalProfit": 586.1,
+  "roi": 0.1371,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6452,
-    "strongWinRate": 0.5833,
+    "eliteWinRate": 0.6364,
+    "strongWinRate": 0.6,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.1451,
+    "nflRoi": 0.1509,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-08T18:54:15.669Z",
-    "totalResultsTracked": 84
+    "lastCalibrated": "2026-11-09T14:58:51.016Z",
+    "totalResultsTracked": 90
   },
   "bets": [
     {
@@ -3260,10 +3260,10 @@
         "composite": 84
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 45.09,
+      "bankrollAfter": 1177.13,
+      "resolvedAt": "2026-11-09T14:58:50.404Z",
       "propType": "player_receiving_yards",
       "playerName": "Kayshon Boutte",
       "line": 13.5,
@@ -3286,10 +3286,10 @@
         "composite": 81
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -43.5,
+      "bankrollAfter": 1133.63,
+      "resolvedAt": "2026-11-09T14:58:50.539Z",
       "propType": "player_receiving_yards",
       "playerName": "Jaxon Smith-Njigba",
       "line": 95.5,
@@ -3312,10 +3312,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 39.47,
+      "bankrollAfter": 1173.1,
+      "resolvedAt": "2026-11-09T14:58:50.593Z",
       "propType": "player_receiving_yards",
       "playerName": "Michael Mayer",
       "line": 30.5,
@@ -3336,7 +3336,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Bucky Irving",
           "line": 14.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Brandin Cooks Under 14.5 Receiving Yards",
@@ -3348,17 +3349,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Brandin Cooks",
           "line": 14.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 259,
       "stakeAmount": 47,
       "potentialPayout": 168.73,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -47,
+      "bankrollAfter": 1126.1,
+      "resolvedAt": "2026-11-09T14:58:50.763Z"
     },
     {
       "betId": "parlay-high-2026-11-08",
@@ -3375,7 +3377,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Kayshon Boutte",
           "line": 13.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Michael Mayer Over 30.5 Receiving Yards",
@@ -3387,7 +3390,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Michael Mayer",
           "line": 30.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jaxon Smith-Njigba Over 95.5 Receiving Yards",
@@ -3399,7 +3403,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaxon Smith-Njigba",
           "line": 95.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Bucky Irving Under 14.5 Receiving Yards",
@@ -3411,7 +3416,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Bucky Irving",
           "line": 14.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Charlie Kolar Over 15.5 Receiving Yards",
@@ -3423,17 +3429,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Charlie Kolar",
           "line": 15.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2373,
       "stakeAmount": 9,
       "potentialPayout": 222.57,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -9,
+      "bankrollAfter": 1117.1,
+      "resolvedAt": "2026-11-09T14:58:50.954Z"
     },
     {
       "betId": "parlay-double-2026-11-08",
@@ -3450,7 +3457,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Brandin Cooks",
           "line": 14.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Quentin Johnston Over 28.5 Receiving Yards",
@@ -3462,17 +3470,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Quentin Johnston",
           "line": 28.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 248,
       "stakeAmount": 31,
       "potentialPayout": 107.88,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -31,
+      "bankrollAfter": 1086.1,
+      "resolvedAt": "2026-11-09T14:58:51.015Z"
     }
   ]
 }
