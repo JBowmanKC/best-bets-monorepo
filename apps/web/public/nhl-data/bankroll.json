@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 389.4,
-  "totalBets": 86,
+  "totalBets": 92,
   "wins": 35,
   "losses": 51,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1150.5,
+  "totalStaked": 1229,
   "totalProfit": -110.6,
   "roi": -0.0961,
   "peakBankroll": 500,
@@ -3343,6 +3343,241 @@
       "profitLoss": 6.32,
       "bankrollAfter": 389.4,
       "resolvedAt": "2026-11-08T19:05:24.086Z"
+    },
+    {
+      "betId": "nhl-401892686-prop-matthewtkachuk-player_assists-2026-11-10",
+      "date": "2026-11-10",
+      "sport": "nhl",
+      "matchup": "Florida Panthers @ Columbus Blue Jackets",
+      "pickLabel": "Matthew Tkachuk Over 0.5",
+      "odds": -125,
+      "stakeAmount": 19,
+      "potentialPayout": 34.2,
+      "estimatedWinPct": 0.627,
+      "impliedWinPct": 0.556,
+      "evEdge": 0.072,
+      "tier": "strong",
+      "scores": {
+        "composite": 71
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Matthew Tkachuk",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892683-prop-devontoews-player_shots_on_goal-2026-11-10",
+      "date": "2026-11-10",
+      "sport": "nhl",
+      "matchup": "Colorado Avalanche @ Toronto Maple Leafs",
+      "pickLabel": "Devon Toews Over 1.5",
+      "odds": -150,
+      "stakeAmount": 15,
+      "potentialPayout": 25,
+      "estimatedWinPct": 0.651,
+      "impliedWinPct": 0.6,
+      "evEdge": 0.051,
+      "tier": "strong",
+      "scores": {
+        "composite": 68
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_shots_on_goal",
+      "playerName": "Devon Toews",
+      "line": 1.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892687-prop-camfowler-player_points-2026-11-10",
+      "date": "2026-11-10",
+      "sport": "nhl",
+      "matchup": "Detroit Red Wings @ St. Louis Blues",
+      "pickLabel": "Cam Fowler Under 0.5",
+      "odds": -220,
+      "stakeAmount": 16,
+      "potentialPayout": 23.27,
+      "estimatedWinPct": 0.73,
+      "impliedWinPct": 0.688,
+      "evEdge": 0.043,
+      "tier": "strong",
+      "scores": {
+        "composite": 71
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Cam Fowler",
+      "line": 0.5,
+      "recommendedSide": "under"
+    },
+    {
+      "betId": "parlay-safe-2026-11-10",
+      "date": "2026-11-10",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Oliver Ekman-Larsson Under 0.5 Points",
+          "odds": -280,
+          "sport": "nhl",
+          "matchup": "Colorado Avalanche @ Toronto Maple Leafs",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Oliver Ekman-Larsson",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Adam Fantilli Under 0.5 Assists",
+          "odds": -260,
+          "sport": "nhl",
+          "matchup": "Florida Panthers @ Columbus Blue Jackets",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Adam Fantilli",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Pavel Buchnevich Under 0.5 Points",
+          "odds": -170,
+          "sport": "nhl",
+          "matchup": "Detroit Red Wings @ St. Louis Blues",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Pavel Buchnevich",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 198,
+      "stakeAmount": 12,
+      "potentialPayout": 35.76,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-11-10",
+      "date": "2026-11-10",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Matthew Tkachuk Over 0.5 Assists",
+          "odds": -125,
+          "sport": "nhl",
+          "matchup": "Florida Panthers @ Columbus Blue Jackets",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Matthew Tkachuk",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "St. Louis Blues ML",
+          "odds": -142,
+          "sport": "nhl",
+          "matchup": "Detroit Red Wings @ St. Louis Blues",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Columbus Blue Jackets ML",
+          "odds": 100,
+          "sport": "nhl",
+          "matchup": "Florida Panthers @ Columbus Blue Jackets",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Devon Toews Over 1.5 Shots on Goal",
+          "odds": -150,
+          "sport": "nhl",
+          "matchup": "Colorado Avalanche @ Toronto Maple Leafs",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Devon Toews",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Cam Fowler Under 0.5 Points",
+          "odds": -220,
+          "sport": "nhl",
+          "matchup": "Detroit Red Wings @ St. Louis Blues",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Cam Fowler",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 1387,
+      "stakeAmount": 3,
+      "potentialPayout": 44.61,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-11-10",
+      "date": "2026-11-10",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Oliver Ekman-Larsson Under 0.5 Points",
+          "odds": -280,
+          "sport": "nhl",
+          "matchup": "Colorado Avalanche @ Toronto Maple Leafs",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Oliver Ekman-Larsson",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Adam Fantilli Under 0.5 Assists",
+          "odds": -260,
+          "sport": "nhl",
+          "matchup": "Florida Panthers @ Columbus Blue Jackets",
+          "date": "2026-11-11",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Adam Fantilli",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 88,
+      "stakeAmount": 13.5,
+      "potentialPayout": 25.38,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
