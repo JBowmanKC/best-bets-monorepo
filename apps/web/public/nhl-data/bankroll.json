@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 389.4,
+  "currentBankroll": 454.51,
   "totalBets": 98,
-  "wins": 35,
-  "losses": 51,
+  "wins": 40,
+  "losses": 52,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1295,
-  "totalProfit": -110.6,
-  "roi": -0.0961,
+  "totalProfit": -45.49,
+  "roi": -0.037,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5,
+    "strongWinRate": 0.5429,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.1165,
+    "nhlRoi": -0.0717,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-10T20:59:10.145Z",
-    "totalResultsTracked": 86
+    "lastCalibrated": "2026-11-11T21:31:19.512Z",
+    "totalResultsTracked": 92
   },
   "bets": [
     {
@@ -3361,10 +3361,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 15.2,
+      "bankrollAfter": 404.6,
+      "resolvedAt": "2026-11-11T21:31:18.580Z",
       "propType": "player_assists",
       "playerName": "Matthew Tkachuk",
       "line": 0.5,
@@ -3387,10 +3387,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 10,
+      "bankrollAfter": 414.6,
+      "resolvedAt": "2026-11-11T21:31:18.752Z",
       "propType": "player_shots_on_goal",
       "playerName": "Devon Toews",
       "line": 1.5,
@@ -3413,10 +3413,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 7.27,
+      "bankrollAfter": 421.87,
+      "resolvedAt": "2026-11-11T21:31:18.894Z",
       "propType": "player_points",
       "playerName": "Cam Fowler",
       "line": 0.5,
@@ -3437,7 +3437,8 @@
           "propType": "player_points",
           "playerName": "Oliver Ekman-Larsson",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Adam Fantilli Under 0.5 Assists",
@@ -3449,7 +3450,8 @@
           "propType": "player_assists",
           "playerName": "Adam Fantilli",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Pavel Buchnevich Under 0.5 Points",
@@ -3461,17 +3463,18 @@
           "propType": "player_points",
           "playerName": "Pavel Buchnevich",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 198,
       "stakeAmount": 12,
       "potentialPayout": 35.76,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 23.76,
+      "bankrollAfter": 445.63,
+      "resolvedAt": "2026-11-11T21:31:19.131Z"
     },
     {
       "betId": "parlay-high-2026-11-10",
@@ -3488,7 +3491,8 @@
           "propType": "player_assists",
           "playerName": "Matthew Tkachuk",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "St. Louis Blues ML",
@@ -3496,7 +3500,8 @@
           "sport": "nhl",
           "matchup": "Detroit Red Wings @ St. Louis Blues",
           "date": "2026-11-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Columbus Blue Jackets ML",
@@ -3504,7 +3509,8 @@
           "sport": "nhl",
           "matchup": "Florida Panthers @ Columbus Blue Jackets",
           "date": "2026-11-11",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Devon Toews Over 1.5 Shots on Goal",
@@ -3516,7 +3522,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Devon Toews",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Cam Fowler Under 0.5 Points",
@@ -3528,17 +3535,18 @@
           "propType": "player_points",
           "playerName": "Cam Fowler",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 1387,
       "stakeAmount": 3,
       "potentialPayout": 44.61,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3,
+      "bankrollAfter": 442.63,
+      "resolvedAt": "2026-11-11T21:31:19.321Z"
     },
     {
       "betId": "parlay-double-2026-11-10",
@@ -3555,7 +3563,8 @@
           "propType": "player_points",
           "playerName": "Oliver Ekman-Larsson",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Adam Fantilli Under 0.5 Assists",
@@ -3567,17 +3576,18 @@
           "propType": "player_assists",
           "playerName": "Adam Fantilli",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 88,
       "stakeAmount": 13.5,
       "potentialPayout": 25.38,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 11.88,
+      "bankrollAfter": 454.51,
+      "resolvedAt": "2026-11-11T21:31:19.401Z"
     },
     {
       "betId": "nhl-401892692-prop-leondraisaitl-player_shots_on_goal-2026-11-11",
