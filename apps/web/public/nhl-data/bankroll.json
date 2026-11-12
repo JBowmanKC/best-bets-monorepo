@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 454.51,
+  "currentBankroll": 474.47,
   "totalBets": 98,
-  "wins": 40,
-  "losses": 52,
+  "wins": 43,
+  "losses": 55,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1295,
-  "totalProfit": -45.49,
-  "roi": -0.037,
+  "totalProfit": -25.53,
+  "roi": -0.0197,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5429,
+    "strongWinRate": 0.5789,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.0717,
+    "nhlRoi": -0.0215,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-11T21:31:19.512Z",
-    "totalResultsTracked": 92
+    "lastCalibrated": "2026-11-12T21:34:23.730Z",
+    "totalResultsTracked": 98
   },
   "bets": [
     {
@@ -3606,10 +3606,10 @@
         "composite": 69
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 21,
+      "bankrollAfter": 475.51,
+      "resolvedAt": "2026-11-12T21:34:23.131Z",
       "propType": "player_shots_on_goal",
       "playerName": "Leon Draisaitl",
       "line": 3.5,
@@ -3632,10 +3632,10 @@
         "composite": 72
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 13.46,
+      "bankrollAfter": 488.97,
+      "resolvedAt": "2026-11-12T21:34:23.219Z",
       "propType": "player_shots_on_goal",
       "playerName": "Tye Kartye",
       "line": 1.5,
@@ -3658,10 +3658,10 @@
         "composite": 69
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 7.5,
+      "bankrollAfter": 496.47,
+      "resolvedAt": "2026-11-12T21:34:23.255Z",
       "propType": "player_shots_on_goal",
       "playerName": "Yegor Sharangovich",
       "line": 1.5,
@@ -3682,7 +3682,8 @@
           "propType": "player_assists",
           "playerName": "Gabe Perreault",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "William Karlsson Under 0.5 Points",
@@ -3694,7 +3695,8 @@
           "propType": "player_points",
           "playerName": "William Karlsson",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Connor McDavid Over 1.5 Points",
@@ -3706,17 +3708,18 @@
           "propType": "player_points",
           "playerName": "Connor McDavid",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 251,
       "stakeAmount": 11.5,
       "potentialPayout": 40.36,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -11.5,
+      "bankrollAfter": 484.97,
+      "resolvedAt": "2026-11-12T21:34:23.477Z"
     },
     {
       "betId": "parlay-high-2026-11-11",
@@ -3733,7 +3736,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Leon Draisaitl",
           "line": 3.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Tye Kartye Over 1.5 Shots on Goal",
@@ -3745,7 +3749,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Tye Kartye",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Connor McDavid Over 1.5 Points",
@@ -3757,7 +3762,8 @@
           "propType": "player_points",
           "playerName": "Connor McDavid",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Pavel Dorofeyev Over 2.5 Shots on Goal",
@@ -3769,7 +3775,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Pavel Dorofeyev",
           "line": 2.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Yegor Sharangovich Under 1.5 Shots on Goal",
@@ -3781,17 +3788,18 @@
           "propType": "player_shots_on_goal",
           "playerName": "Yegor Sharangovich",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2062,
       "stakeAmount": 2.5,
       "potentialPayout": 54.05,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -2.5,
+      "bankrollAfter": 482.47,
+      "resolvedAt": "2026-11-12T21:34:23.665Z"
     },
     {
       "betId": "parlay-double-2026-11-11",
@@ -3808,7 +3816,8 @@
           "propType": "player_assists",
           "playerName": "Gabe Perreault",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "William Karlsson Under 0.5 Points",
@@ -3820,17 +3829,18 @@
           "propType": "player_points",
           "playerName": "William Karlsson",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 102,
       "stakeAmount": 8,
       "potentialPayout": 16.16,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -8,
+      "bankrollAfter": 474.47,
+      "resolvedAt": "2026-11-12T21:34:23.730Z"
     }
   ]
 }
