@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 1086.1,
-  "totalBets": 90,
+  "totalBets": 91,
   "wins": 40,
   "losses": 49,
   "pushes": 0,
   "voids": 1,
-  "totalStaked": 4343,
+  "totalStaked": 4347.5,
   "totalProfit": 586.1,
   "roi": 0.1371,
   "peakBankroll": 1604.13,
@@ -3482,6 +3482,77 @@
       "profitLoss": -31,
       "bankrollAfter": 1086.1,
       "resolvedAt": "2026-11-09T14:58:51.015Z"
+    },
+    {
+      "betId": "parlay-high-2026-11-12",
+      "date": "2026-11-12",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "New York Giants ML",
+          "odds": -125,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ New York Giants",
+          "date": "2026-11-13",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Theo Johnson Over 4.5 Receiving Yards",
+          "odds": -113,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ New York Giants",
+          "date": "2026-11-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Theo Johnson",
+          "line": 4.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Stefon Diggs Over 38.5 Receiving Yards",
+          "odds": -110,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ New York Giants",
+          "date": "2026-11-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Stefon Diggs",
+          "line": 38.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Darnell Mooney Over 13.5 Receiving Yards",
+          "odds": -115,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ New York Giants",
+          "date": "2026-11-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_receiving_yards",
+          "playerName": "Darnell Mooney",
+          "line": 13.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Devin Singletary Over 23.5 Rushing Yards",
+          "odds": -108,
+          "sport": "nfl",
+          "matchup": "Washington Commanders @ New York Giants",
+          "date": "2026-11-13",
+          "sportsbook": "DraftKings",
+          "propType": "player_rush_yards",
+          "playerName": "Devin Singletary",
+          "line": 23.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 2232,
+      "stakeAmount": 4.5,
+      "potentialPayout": 104.94,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
