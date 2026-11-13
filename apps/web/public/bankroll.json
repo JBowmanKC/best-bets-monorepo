@@ -1,14 +1,14 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1086.1,
+  "currentBankroll": 1081.6,
   "totalBets": 91,
   "wins": 40,
-  "losses": 49,
+  "losses": 50,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 4347.5,
-  "totalProfit": 586.1,
-  "roi": 0.1371,
+  "totalProfit": 581.6,
+  "roi": 0.136,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
@@ -21,8 +21,8 @@
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-12T21:30:08.748Z",
-    "totalResultsTracked": 90
+    "lastCalibrated": "2026-11-13T20:55:39.478Z",
+    "totalResultsTracked": 91
   },
   "bets": [
     {
@@ -3494,7 +3494,8 @@
           "sport": "nfl",
           "matchup": "Washington Commanders @ New York Giants",
           "date": "2026-11-13",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "loss"
         },
         {
           "pickLabel": "Theo Johnson Over 4.5 Receiving Yards",
@@ -3506,7 +3507,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Theo Johnson",
           "line": 4.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Stefon Diggs Over 38.5 Receiving Yards",
@@ -3518,7 +3520,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Stefon Diggs",
           "line": 38.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Darnell Mooney Over 13.5 Receiving Yards",
@@ -3530,7 +3533,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Darnell Mooney",
           "line": 13.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Devin Singletary Over 23.5 Rushing Yards",
@@ -3542,17 +3546,18 @@
           "propType": "player_rush_yards",
           "playerName": "Devin Singletary",
           "line": 23.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2232,
       "stakeAmount": 4.5,
       "potentialPayout": 104.94,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -4.5,
+      "bankrollAfter": 1081.6,
+      "resolvedAt": "2026-11-13T20:55:39.477Z"
     }
   ]
 }
