@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 474.47,
+  "currentBankroll": 458.55,
   "totalBets": 109,
-  "wins": 43,
-  "losses": 55,
+  "wins": 45,
+  "losses": 58,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1453,
-  "totalProfit": -25.53,
-  "roi": -0.0197,
+  "totalProfit": -41.45,
+  "roi": -0.0305,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5789,
+    "strongWinRate": 0.5854,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.0215,
+    "nhlRoi": -0.0172,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-13T20:58:07.196Z",
-    "totalResultsTracked": 98
+    "lastCalibrated": "2026-11-14T19:27:14.693Z",
+    "totalResultsTracked": 103
   },
   "bets": [
     {
@@ -3859,10 +3859,10 @@
         "composite": 70
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 9.63,
+      "bankrollAfter": 484.1,
+      "resolvedAt": "2026-11-14T19:27:14.253Z",
       "propType": "player_shots_on_goal",
       "playerName": "Elias Pettersson",
       "line": 1.5,
@@ -3885,10 +3885,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 7.95,
+      "bankrollAfter": 492.05,
+      "resolvedAt": "2026-11-14T19:27:14.281Z",
       "propType": "player_points",
       "playerName": "Mika Zibanejad",
       "line": 0.5,
@@ -3911,10 +3911,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -14.5,
+      "bankrollAfter": 477.55,
+      "resolvedAt": "2026-11-14T19:27:14.315Z",
       "propType": "player_shots_on_goal",
       "playerName": "Tye Kartye",
       "line": 1.5,
@@ -3935,7 +3935,8 @@
           "propType": "player_assists",
           "playerName": "Mitch Marner",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Mika Zibanejad Over 0.5 Assists",
@@ -3947,7 +3948,8 @@
           "propType": "player_assists",
           "playerName": "Mika Zibanejad",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Elias Pettersson Under 1.5 Shots on Goal",
@@ -3959,7 +3961,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Elias Pettersson",
           "line": 1.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Tye Kartye Over 1.5 Shots on Goal",
@@ -3971,7 +3974,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Tye Kartye",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Filip Chytil Under 0.5 Points",
@@ -3983,17 +3987,18 @@
           "propType": "player_points",
           "playerName": "Filip Chytil",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 1300,
       "stakeAmount": 3,
       "potentialPayout": 42,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3,
+      "bankrollAfter": 474.55,
+      "resolvedAt": "2026-11-14T19:27:14.544Z"
     },
     {
       "betId": "parlay-double-2026-11-13",
@@ -4010,7 +4015,8 @@
           "propType": "player_assists",
           "playerName": "Gabe Perreault",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Mitch Marner Over 0.5 Assists",
@@ -4022,17 +4028,18 @@
           "propType": "player_assists",
           "playerName": "Mitch Marner",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 148,
       "stakeAmount": 16,
       "potentialPayout": 39.68,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -16,
+      "bankrollAfter": 458.55,
+      "resolvedAt": "2026-11-14T19:27:14.621Z"
     },
     {
       "betId": "nhl-401892708-prop-nealpionk-player_shots_on_goal-2026-11-14",
