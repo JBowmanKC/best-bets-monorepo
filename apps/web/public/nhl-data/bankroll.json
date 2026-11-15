@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 458.55,
+  "currentBankroll": 426.25,
   "totalBets": 109,
-  "wins": 45,
-  "losses": 58,
+  "wins": 47,
+  "losses": 62,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1453,
-  "totalProfit": -41.45,
-  "roi": -0.0305,
+  "totalProfit": -73.75,
+  "roi": -0.0508,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5854,
+    "strongWinRate": 0.5682,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.0172,
+    "nhlRoi": -0.0398,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-14T19:27:14.693Z",
-    "totalResultsTracked": 103
+    "lastCalibrated": "2026-11-15T19:55:58.893Z",
+    "totalResultsTracked": 109
   },
   "bets": [
     {
@@ -4058,10 +4058,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -18,
+      "bankrollAfter": 440.55,
+      "resolvedAt": "2026-11-15T19:55:58.332Z",
       "propType": "player_shots_on_goal",
       "playerName": "Neal Pionk",
       "line": 1.5,
@@ -4084,10 +4084,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -17.5,
+      "bankrollAfter": 423.05,
+      "resolvedAt": "2026-11-15T19:55:58.367Z",
       "propType": "player_points",
       "playerName": "Tyler Bertuzzi",
       "line": 0.5,
@@ -4110,10 +4110,10 @@
         "composite": 71
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 12.17,
+      "bankrollAfter": 435.22,
+      "resolvedAt": "2026-11-15T19:55:58.456Z",
       "propType": "player_assists",
       "playerName": "William Nylander",
       "line": 0.5,
@@ -4134,7 +4134,8 @@
           "propType": "player_points",
           "playerName": "Brandon Hagel",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Connor Murphy Under 0.5 Points",
@@ -4146,7 +4147,8 @@
           "propType": "player_points",
           "playerName": "Connor Murphy",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Artyom Levshunov Under 0.5 Points",
@@ -4158,17 +4160,18 @@
           "propType": "player_points",
           "playerName": "Artyom Levshunov",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 176,
       "stakeAmount": 22,
       "potentialPayout": 60.72,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -22,
+      "bankrollAfter": 413.22,
+      "resolvedAt": "2026-11-15T19:55:58.634Z"
     },
     {
       "betId": "parlay-high-2026-11-14",
@@ -4185,7 +4188,8 @@
           "propType": "player_assists",
           "playerName": "Cole Perfetti",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "John Carlson Over 0.5 Points",
@@ -4197,7 +4201,8 @@
           "propType": "player_points",
           "playerName": "John Carlson",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Neal Pionk Over 1.5 Shots on Goal",
@@ -4209,7 +4214,8 @@
           "propType": "player_shots_on_goal",
           "playerName": "Neal Pionk",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Tyler Bertuzzi Under 0.5 Points",
@@ -4221,7 +4227,8 @@
           "propType": "player_points",
           "playerName": "Tyler Bertuzzi",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "William Nylander Under 0.5 Assists",
@@ -4233,17 +4240,18 @@
           "propType": "player_assists",
           "playerName": "William Nylander",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2448,
       "stakeAmount": 3.5,
       "potentialPayout": 89.18,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3.5,
+      "bankrollAfter": 409.72,
+      "resolvedAt": "2026-11-15T19:55:58.825Z"
     },
     {
       "betId": "parlay-double-2026-11-14",
@@ -4260,7 +4268,8 @@
           "propType": "player_points",
           "playerName": "Connor Murphy",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Artyom Levshunov Under 0.5 Points",
@@ -4272,17 +4281,18 @@
           "propType": "player_points",
           "playerName": "Artyom Levshunov",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 87,
       "stakeAmount": 19,
       "potentialPayout": 35.53,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 16.53,
+      "bankrollAfter": 426.25,
+      "resolvedAt": "2026-11-15T19:55:58.892Z"
     }
   ]
 }
