@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 1081.6,
+  "currentBankroll": 956.27,
   "totalBets": 97,
-  "wins": 40,
-  "losses": 50,
+  "wins": 41,
+  "losses": 55,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 4563.5,
-  "totalProfit": 581.6,
-  "roi": 0.136,
+  "totalProfit": 456.27,
+  "roi": 0.1015,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6364,
-    "strongWinRate": 0.6,
+    "eliteWinRate": 0.6471,
+    "strongWinRate": 0.5556,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.1509,
+    "nflRoi": 0.133,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 0.9,
+    "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-15T19:51:22.931Z",
-    "totalResultsTracked": 91
+    "lastCalibrated": "2026-11-16T18:51:02.474Z",
+    "totalResultsTracked": 97
   },
   "bets": [
     {
@@ -3576,10 +3576,10 @@
         "composite": 86
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 42.17,
+      "bankrollAfter": 1123.77,
+      "resolvedAt": "2026-11-16T18:51:01.913Z",
       "propType": "player_receiving_yards",
       "playerName": "Keenan Allen",
       "line": 22.5,
@@ -3602,10 +3602,10 @@
         "composite": 78
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -48.5,
+      "bankrollAfter": 1075.27,
+      "resolvedAt": "2026-11-16T18:51:01.955Z",
       "propType": "player_rush_yards",
       "playerName": "Brock Purdy",
       "line": 21.5,
@@ -3628,10 +3628,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -40,
+      "bankrollAfter": 1035.27,
+      "resolvedAt": "2026-11-16T18:51:02.039Z",
       "propType": "player_receiving_yards",
       "playerName": "Konata Mumpfield",
       "line": 27.5,
@@ -3652,7 +3652,8 @@
           "propType": "player_pass_yards",
           "playerName": "Drew Lock",
           "line": 200.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaylen Warren Over 23.5 Receiving Yards",
@@ -3664,17 +3665,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaylen Warren",
           "line": 23.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 260,
       "stakeAmount": 43,
       "potentialPayout": 154.8,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -43,
+      "bankrollAfter": 992.27,
+      "resolvedAt": "2026-11-16T18:51:02.235Z"
     },
     {
       "betId": "parlay-high-2026-11-15",
@@ -3691,7 +3693,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Keenan Allen",
           "line": 22.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Brock Purdy Over 21.5 Rushing Yards",
@@ -3703,7 +3706,8 @@
           "propType": "player_rush_yards",
           "playerName": "Brock Purdy",
           "line": 21.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Konata Mumpfield Under 27.5 Receiving Yards",
@@ -3715,7 +3719,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Konata Mumpfield",
           "line": 27.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Rico Dowdle Over 30.5 Rushing Yards",
@@ -3727,7 +3732,8 @@
           "propType": "player_rush_yards",
           "playerName": "Rico Dowdle",
           "line": 30.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Jaylen Warren Over 23.5 Receiving Yards",
@@ -3739,17 +3745,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Jaylen Warren",
           "line": 23.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 2354,
       "stakeAmount": 8,
       "potentialPayout": 196.32,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -8,
+      "bankrollAfter": 984.27,
+      "resolvedAt": "2026-11-16T18:51:02.392Z"
     },
     {
       "betId": "parlay-double-2026-11-15",
@@ -3766,7 +3773,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Ryan Flournoy",
           "line": 36.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Simi Fehoko Under 10.5 Receiving Yards",
@@ -3778,17 +3786,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Simi Fehoko",
           "line": 10.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 251,
       "stakeAmount": 28,
       "potentialPayout": 98.28,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -28,
+      "bankrollAfter": 956.27,
+      "resolvedAt": "2026-11-16T18:51:02.473Z"
     }
   ]
 }
