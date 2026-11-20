@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 956.27,
+  "currentBankroll": 982.94,
   "totalBets": 101,
-  "wins": 41,
-  "losses": 55,
+  "wins": 43,
+  "losses": 57,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 4719,
-  "totalProfit": 456.27,
-  "roi": 0.1015,
+  "totalProfit": 482.94,
+  "roi": 0.1039,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.6471,
-    "strongWinRate": 0.5556,
+    "strongWinRate": 0.5667,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.133,
+    "nflRoi": 0.1366,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-19T22:18:38.084Z",
-    "totalResultsTracked": 97
+    "lastCalibrated": "2026-11-20T21:52:56.760Z",
+    "totalResultsTracked": 101
   },
   "bets": [
     {
@@ -3816,10 +3816,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -54.5,
+      "bankrollAfter": 901.77,
+      "resolvedAt": "2026-11-20T21:52:56.423Z",
       "propType": "player_receiving_yards",
       "playerName": "Dalton Schultz",
       "line": 29.5,
@@ -3842,10 +3842,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 47.69,
+      "bankrollAfter": 949.46,
+      "resolvedAt": "2026-11-20T21:52:56.456Z",
       "propType": "player_receiving_yards",
       "playerName": "Deion Burks",
       "line": 16.5,
@@ -3868,10 +3868,10 @@
         "composite": 69
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 40.48,
+      "bankrollAfter": 989.94,
+      "resolvedAt": "2026-11-20T21:52:56.487Z",
       "propType": "player_receiving_yards",
       "playerName": "David Montgomery",
       "line": 9.5,
@@ -3892,7 +3892,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Dalton Schultz",
           "line": 29.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Deion Burks Under 16.5 Receiving Yards",
@@ -3904,7 +3905,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Deion Burks",
           "line": 16.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "David Montgomery Over 9.5 Receiving Yards",
@@ -3916,7 +3918,8 @@
           "propType": "player_receiving_yards",
           "playerName": "David Montgomery",
           "line": 9.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Seth McGowan Over 26.5 Rushing Yards",
@@ -3928,7 +3931,8 @@
           "propType": "player_rush_yards",
           "playerName": "Seth McGowan",
           "line": 26.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Anthony Gould Under 20.5 Receiving Yards",
@@ -3940,17 +3944,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Anthony Gould",
           "line": 20.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2389,
       "stakeAmount": 7,
       "potentialPayout": 174.23,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7,
+      "bankrollAfter": 982.94,
+      "resolvedAt": "2026-11-20T21:52:56.760Z"
     }
   ]
 }
