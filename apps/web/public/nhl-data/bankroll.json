@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 445.19,
-  "totalBets": 117,
+  "totalBets": 123,
   "wins": 50,
   "losses": 67,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1548,
+  "totalStaked": 1636.5,
   "totalProfit": -54.81,
   "roi": -0.0354,
   "peakBankroll": 500,
@@ -4667,6 +4667,241 @@
       "profitLoss": -2,
       "bankrollAfter": 445.19,
       "resolvedAt": "2026-11-19T22:24:54.543Z"
+    },
+    {
+      "betId": "nhl-401892766-prop-kirillkaprizov-player_assists-2026-11-21",
+      "date": "2026-11-21",
+      "sport": "nhl",
+      "matchup": "Minnesota Wild @ Vancouver Canucks",
+      "pickLabel": "Kirill Kaprizov Over 0.5",
+      "odds": -170,
+      "stakeAmount": 25.5,
+      "potentialPayout": 40.5,
+      "estimatedWinPct": 0.724,
+      "impliedWinPct": 0.63,
+      "evEdge": 0.094,
+      "tier": "elite",
+      "scores": {
+        "composite": 83
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_assists",
+      "playerName": "Kirill Kaprizov",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892766-prop-blakecoleman-player_points-2026-11-21",
+      "date": "2026-11-21",
+      "sport": "nhl",
+      "matchup": "Minnesota Wild @ Vancouver Canucks",
+      "pickLabel": "Blake Coleman Over 0.5",
+      "odds": 110,
+      "stakeAmount": 14.5,
+      "potentialPayout": 30.45,
+      "estimatedWinPct": 0.553,
+      "impliedWinPct": 0.476,
+      "evEdge": 0.077,
+      "tier": "strong",
+      "scores": {
+        "composite": 74
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Blake Coleman",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892766-prop-joelerikssonek-player_points-2026-11-21",
+      "date": "2026-11-21",
+      "sport": "nhl",
+      "matchup": "Minnesota Wild @ Vancouver Canucks",
+      "pickLabel": "Joel Eriksson Ek Over 0.5",
+      "odds": -205,
+      "stakeAmount": 18.5,
+      "potentialPayout": 27.52,
+      "estimatedWinPct": 0.734,
+      "impliedWinPct": 0.672,
+      "evEdge": 0.062,
+      "tier": "strong",
+      "scores": {
+        "composite": 79
+      },
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Joel Eriksson Ek",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-11-21",
+      "date": "2026-11-21",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Maxim Shabanov Under 0.5 Assists",
+          "odds": -240,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Maxim Shabanov",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Gustav Forsling Under 0.5 Points",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "Buffalo Sabres @ Florida Panthers",
+          "date": "2026-11-21",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Gustav Forsling",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Nashville Predators ML",
+          "odds": -135,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Nashville Predators",
+          "date": "2026-11-21",
+          "sportsbook": "DraftKings"
+        }
+      ],
+      "combinedOdds": 236,
+      "stakeAmount": 14.5,
+      "potentialPayout": 48.72,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-11-21",
+      "date": "2026-11-21",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Kirill Kaprizov Over 1.5 Points",
+          "odds": -105,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Kirill Kaprizov",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Blake Coleman Over 0.5 Points",
+          "odds": 110,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Blake Coleman",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Joel Eriksson Ek Over 0.5 Assists",
+          "odds": -105,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Joel Eriksson Ek",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Nashville Predators ML",
+          "odds": -135,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Nashville Predators",
+          "date": "2026-11-21",
+          "sportsbook": "DraftKings"
+        },
+        {
+          "pickLabel": "Maxim Shabanov Under 0.5 Assists",
+          "odds": -240,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Maxim Shabanov",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 1874,
+      "stakeAmount": 3,
+      "potentialPayout": 59.22,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-11-21",
+      "date": "2026-11-21",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Maxim Shabanov Under 0.5 Assists",
+          "odds": -240,
+          "sport": "nhl",
+          "matchup": "Minnesota Wild @ Vancouver Canucks",
+          "date": "2026-11-22",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Maxim Shabanov",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Gustav Forsling Under 0.5 Assists",
+          "odds": -370,
+          "sport": "nhl",
+          "matchup": "Buffalo Sabres @ Florida Panthers",
+          "date": "2026-11-21",
+          "sportsbook": "DraftKings",
+          "propType": "player_assists",
+          "playerName": "Gustav Forsling",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 80,
+      "stakeAmount": 12.5,
+      "potentialPayout": 22.5,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
