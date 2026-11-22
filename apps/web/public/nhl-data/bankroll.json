@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 445.19,
+  "currentBankroll": 468.41,
   "totalBets": 123,
-  "wins": 50,
-  "losses": 67,
+  "wins": 53,
+  "losses": 70,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1636.5,
-  "totalProfit": -54.81,
-  "roi": -0.0354,
+  "totalProfit": -31.59,
+  "roi": -0.0193,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
-    "eliteWinRate": 0.5625,
-    "strongWinRate": 0.5532,
+    "eliteWinRate": 0.5882,
+    "strongWinRate": 0.5306,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.0514,
+    "nhlRoi": -0.0649,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-21T20:39:29.500Z",
-    "totalResultsTracked": 117
+    "lastCalibrated": "2026-11-22T20:49:01.523Z",
+    "totalResultsTracked": 123
   },
   "bets": [
     {
@@ -4685,10 +4685,10 @@
         "composite": 83
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 15,
+      "bankrollAfter": 460.19,
+      "resolvedAt": "2026-11-22T20:49:01.171Z",
       "propType": "player_assists",
       "playerName": "Kirill Kaprizov",
       "line": 0.5,
@@ -4711,10 +4711,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -14.5,
+      "bankrollAfter": 445.69,
+      "resolvedAt": "2026-11-22T20:49:01.204Z",
       "propType": "player_points",
       "playerName": "Blake Coleman",
       "line": 0.5,
@@ -4737,10 +4737,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -18.5,
+      "bankrollAfter": 427.19,
+      "resolvedAt": "2026-11-22T20:49:01.237Z",
       "propType": "player_points",
       "playerName": "Joel Eriksson Ek",
       "line": 0.5,
@@ -4761,7 +4761,8 @@
           "propType": "player_assists",
           "playerName": "Maxim Shabanov",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Gustav Forsling Under 0.5 Points",
@@ -4773,7 +4774,8 @@
           "propType": "player_points",
           "playerName": "Gustav Forsling",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Nashville Predators ML",
@@ -4781,17 +4783,18 @@
           "sport": "nhl",
           "matchup": "Pittsburgh Penguins @ Nashville Predators",
           "date": "2026-11-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         }
       ],
       "combinedOdds": 236,
       "stakeAmount": 14.5,
       "potentialPayout": 48.72,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 34.22,
+      "bankrollAfter": 461.41,
+      "resolvedAt": "2026-11-22T20:49:01.351Z"
     },
     {
       "betId": "parlay-high-2026-11-21",
@@ -4808,7 +4811,8 @@
           "propType": "player_points",
           "playerName": "Kirill Kaprizov",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Blake Coleman Over 0.5 Points",
@@ -4820,7 +4824,8 @@
           "propType": "player_points",
           "playerName": "Blake Coleman",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Joel Eriksson Ek Over 0.5 Assists",
@@ -4832,7 +4837,8 @@
           "propType": "player_assists",
           "playerName": "Joel Eriksson Ek",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Nashville Predators ML",
@@ -4840,7 +4846,8 @@
           "sport": "nhl",
           "matchup": "Pittsburgh Penguins @ Nashville Predators",
           "date": "2026-11-21",
-          "sportsbook": "DraftKings"
+          "sportsbook": "DraftKings",
+          "result": "win"
         },
         {
           "pickLabel": "Maxim Shabanov Under 0.5 Assists",
@@ -4852,17 +4859,18 @@
           "propType": "player_assists",
           "playerName": "Maxim Shabanov",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 1874,
       "stakeAmount": 3,
       "potentialPayout": 59.22,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3,
+      "bankrollAfter": 458.41,
+      "resolvedAt": "2026-11-22T20:49:01.465Z"
     },
     {
       "betId": "parlay-double-2026-11-21",
@@ -4879,7 +4887,8 @@
           "propType": "player_assists",
           "playerName": "Maxim Shabanov",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Gustav Forsling Under 0.5 Assists",
@@ -4891,17 +4900,18 @@
           "propType": "player_assists",
           "playerName": "Gustav Forsling",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 80,
       "stakeAmount": 12.5,
       "potentialPayout": 22.5,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 10,
+      "bankrollAfter": 468.41,
+      "resolvedAt": "2026-11-22T20:49:01.522Z"
     }
   ]
 }
