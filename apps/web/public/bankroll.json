@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 982.94,
+  "currentBankroll": 896.91,
   "totalBets": 105,
-  "wins": 43,
-  "losses": 57,
+  "wins": 44,
+  "losses": 60,
   "pushes": 0,
   "voids": 1,
   "totalStaked": 4889.5,
-  "totalProfit": 482.94,
-  "roi": 0.1039,
+  "totalProfit": 396.91,
+  "roi": 0.0823,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.6471,
-    "strongWinRate": 0.5667,
+    "strongWinRate": 0.5455,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.1366,
+    "nflRoi": 0.1116,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 1,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-22T20:46:22.000Z",
-    "totalResultsTracked": 101
+    "lastCalibrated": "2026-11-24T01:44:44.100Z",
+    "totalResultsTracked": 105
   },
   "bets": [
     {
@@ -3974,10 +3974,10 @@
         "composite": 74
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -78.5,
+      "bankrollAfter": 904.44,
+      "resolvedAt": "2026-11-24T01:44:43.775Z",
       "propType": "player_rush_yards",
       "playerName": "Brock Purdy",
       "line": 16.5,
@@ -4000,10 +4000,10 @@
         "composite": 75
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 39.47,
+      "bankrollAfter": 943.91,
+      "resolvedAt": "2026-11-24T01:44:43.809Z",
       "propType": "player_receiving_yards",
       "playerName": "Justin Jefferson",
       "line": 88.5,
@@ -4026,10 +4026,10 @@
         "composite": 70
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -40,
+      "bankrollAfter": 903.91,
+      "resolvedAt": "2026-11-24T01:44:43.850Z",
       "propType": "player_receiving_yards",
       "playerName": "George Kittle",
       "line": 48.5,
@@ -4050,7 +4050,8 @@
           "propType": "player_rush_yards",
           "playerName": "Brock Purdy",
           "line": 16.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Justin Jefferson Under 88.5 Receiving Yards",
@@ -4062,7 +4063,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Justin Jefferson",
           "line": 88.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Kaelon Black Over 29.5 Rushing Yards",
@@ -4074,7 +4076,8 @@
           "propType": "player_rush_yards",
           "playerName": "Kaelon Black",
           "line": 29.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "George Kittle Over 48.5 Receiving Yards",
@@ -4086,7 +4089,8 @@
           "propType": "player_receiving_yards",
           "playerName": "George Kittle",
           "line": 48.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Christian McCaffrey Over 51.5 Rushing Yards",
@@ -4098,17 +4102,18 @@
           "propType": "player_rush_yards",
           "playerName": "Christian McCaffrey",
           "line": 51.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         }
       ],
       "combinedOdds": 2300,
       "stakeAmount": 7,
       "potentialPayout": 168,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -7,
+      "bankrollAfter": 896.91,
+      "resolvedAt": "2026-11-24T01:44:44.100Z"
     }
   ]
 }
