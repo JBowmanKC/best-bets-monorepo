@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 468.41,
-  "totalBets": 123,
+  "totalBets": 124,
   "wins": 53,
   "losses": 70,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1636.5,
+  "totalStaked": 1638.5,
   "totalProfit": -31.59,
   "roi": -0.0193,
   "peakBankroll": 500,
@@ -4912,6 +4912,81 @@
       "profitLoss": 10,
       "bankrollAfter": 468.41,
       "resolvedAt": "2026-11-22T20:49:01.522Z"
+    },
+    {
+      "betId": "parlay-high-2026-11-24",
+      "date": "2026-11-24",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Trevor Connelly Over 2.5 Shots on Goal",
+          "odds": 135,
+          "sport": "nhl",
+          "matchup": "Vegas Golden Knights @ Edmonton Oilers",
+          "date": "2026-11-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Trevor Connelly",
+          "line": 2.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Rasmus Andersson Over 1.5 Shots on Goal",
+          "odds": 100,
+          "sport": "nhl",
+          "matchup": "Vegas Golden Knights @ Edmonton Oilers",
+          "date": "2026-11-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Rasmus Andersson",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Mark Stone Under 1.5 Shots on Goal",
+          "odds": 115,
+          "sport": "nhl",
+          "matchup": "Vegas Golden Knights @ Edmonton Oilers",
+          "date": "2026-11-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "Mark Stone",
+          "line": 1.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "William Karlsson Over 1.5 Shots on Goal",
+          "odds": -140,
+          "sport": "nhl",
+          "matchup": "Vegas Golden Knights @ Edmonton Oilers",
+          "date": "2026-11-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_shots_on_goal",
+          "playerName": "William Karlsson",
+          "line": 1.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Shea Theodore Under 0.5 Points",
+          "odds": -210,
+          "sport": "nhl",
+          "matchup": "Vegas Golden Knights @ Edmonton Oilers",
+          "date": "2026-11-25",
+          "sportsbook": "DraftKings",
+          "propType": "player_points",
+          "playerName": "Shea Theodore",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 2457,
+      "stakeAmount": 2,
+      "potentialPayout": 51.14,
+      "sportsbook": "DraftKings",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
