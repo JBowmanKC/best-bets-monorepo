@@ -1392,7 +1392,11 @@ function selectBestBets(picks: BetPick[], propPicks: PropPick[]): (BetPick | Pro
   });
 
   const tierOrder: Record<Tier, number> = { elite: 3, strong: 2, value: 1 };
-  const pool: (BetPick | PropPick)[] = [...pickPool, ...propPool];
+  // One per game: three "best bets" from the same game aren't three
+  // independent edges, they're one game script wearing three hats — a
+  // defense tightening up or garbage time not materializing busts all three
+  // at once. onePerGame keeps each game's highest-composite candidate only.
+  const pool: (BetPick | PropPick)[] = onePerGame([...pickPool, ...propPool]);
 
   pool.sort((a, b) => {
     const tierDiff = tierOrder[b.tier] - tierOrder[a.tier];
@@ -1466,8 +1470,17 @@ function selectSafeParlayLegs(picks: BetPick[], propPicks: PropPick[], bestBets:
   return legs;
 }
 
-/** 4-5 legs (moneylines + up to 2 low-void-risk props), highest EV edge first, with payout adjustment. */
-function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (BetPick | PropPick)[] {
+/**
+ * 4-5 legs (moneylines + up to 2 low-void-risk props), highest EV edge
+ * first, with payout adjustment. Excludes anything already staked as a
+ * best-bet single — a bust there otherwise gets charged against the
+ * bankroll twice (once as the single, again as a parlay leg), and a good
+ * day's best bets have no business concentrating the parlay in the same
+ * games too (found live 2026-11-22: all 3 best bets and 3 of the 5 high-odds
+ * legs were props from one game — Vikings @ 49ers — so one game script
+ * change cost the bankroll on both products at once).
+ */
+function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[], bestBets: ParlayItem[] = []): (BetPick | PropPick)[] {
   const pickPool = picks.filter(p => p.odds >= -300 && p.odds <= 250 && p.sportsbook !== ESTIMATED_SOURCE_LABEL);
   // voidRisk is "low" only for a QB prop (see scoreProp) — a holdover from
   // MLB's pitcher/batter split, where a batter's lineup spot genuinely isn't
@@ -1484,7 +1497,7 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
   // assists, points and shots as three separate legs, so one quiet night from
   // him sank the parlay three ways. Highest-edge prop per player wins.
   const seenPlayers = new Set<string>();
-  const combined: (BetPick | PropPick)[] = [...pickPool, ...propPool]
+  const eligible: (BetPick | PropPick)[] = [...pickPool, ...propPool]
     .sort((a, b) => b.evEdge - a.evEdge)
     .filter(item => {
       if (!isPropPick(item)) return true;
@@ -1493,6 +1506,14 @@ function selectHighOddsParlayLegs(picks: BetPick[], propPicks: PropPick[]): (Bet
       seenPlayers.add(key);
       return true;
     });
+
+  // Prefer legs not already staked as a single (same pattern as the
+  // safe/double-up parlays below) — fall back to the full eligible pool only
+  // when excluding best bets would leave too thin a slate to build a parlay
+  // from at all.
+  const singleKeys = new Set(bestBets.map(betKey));
+  const fresh = eligible.filter(item => !singleKeys.has(betKey(item)));
+  const combined = fresh.length >= 2 ? fresh : eligible;
   if (combined.length === 0) return [];
 
   const targetLegs = combined.length >= 5 ? 5 : Math.min(4, combined.length);
@@ -1745,7 +1766,7 @@ function selectDailyBets(allPicks: BetPick[], allPropPicks: PropPick[], bankroll
   const bestBets = selectBestBets(allPicks, allPropPicks);
 
   const safeLegs = selectSafeParlayLegs(allPicks, allPropPicks, bestBets);
-  const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks);
+  const highLegs = selectHighOddsParlayLegs(allPicks, allPropPicks, bestBets);
   const doubleLegs = selectDoubleUpParlayLegs(allPicks, allPropPicks, bestBets, safeLegs);
 
   const safeParlay = safeLegs.length >= 2
