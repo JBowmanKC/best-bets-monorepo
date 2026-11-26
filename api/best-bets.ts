@@ -2811,26 +2811,50 @@ function scoreProp(
 const PROP_RISK_ODDS_THRESHOLD = -200;
 
 /**
+ * A main NFL yardage line sits close to a coin flip by construction (the
+ * book sets it right where Over/Under odds land near -110 either way), so
+ * it rides game-script variance (garbage time, an early lead changing the
+ * target share) as much as the player's real form. A 3-week review of
+ * Nov 1-24's singles found exactly that: "under" main lines in particular
+ * missing far more than their estimated win% implied. An alternate line set
+ * further from the player's recent average is priced by the book as a clear
+ * favorite instead — worse payout, but a real cushion instead of a coin
+ * flip — and it still has to clear positive EV (see scoreProp) to be a
+ * candidate at all, so this isn't "take worse odds for no reason," it's
+ * trading payout for a line the model is actually comfortable with.
+ */
+const SAFER_ALT_ODDS_MIN = -450;
+const SAFER_ALT_ODDS_MAX = -130;
+
+/**
  * Picks one PropPick to actually bet from every (main line + alternate
- * lines) candidate scored for a player+propType. The main line wins by
- * default; it only gets passed over when its own odds are too risky, in
- * which case the safest positive-EV alternate line takes its place instead
- * of skipping the player entirely. If every alternate is just as risky, the
- * main line is kept rather than betting nothing.
+ * lines) candidate scored for a player+propType. A positive-EV alternate
+ * line in the "clear favorite" band (SAFER_ALT_ODDS_MIN..MAX) wins by
+ * default over the coin-flip main line. Only when no such alternate exists
+ * does the main line get used — and even then, if the main line's own odds
+ * are too risky (worse than PROP_RISK_ODDS_THRESHOLD), the safest
+ * positive-EV alternate at any odds takes its place instead of skipping the
+ * player entirely. If nothing safer exists at all, the main line is kept
+ * rather than betting nothing.
  */
 function pickPropPick(candidates: PropPick[]): PropPick | null {
   if (candidates.length === 0) return null;
+
+  const saferAlts = candidates
+    .filter(c => c.isAlternateLine && c.odds >= SAFER_ALT_ODDS_MIN && c.odds <= SAFER_ALT_ODDS_MAX)
+    .sort((a, b) => b.scores.composite - a.scores.composite);
+  if (saferAlts[0]) return saferAlts[0];
 
   const main = candidates.find(c => !c.isAlternateLine);
   if (!main || main.odds >= PROP_RISK_ODDS_THRESHOLD) {
     return main ?? [...candidates].sort((a, b) => b.scores.composite - a.scores.composite)[0];
   }
 
-  const saferAlts = candidates
+  const anyAlts = candidates
     .filter(c => c.isAlternateLine && c.odds >= PROP_RISK_ODDS_THRESHOLD)
     .sort((a, b) => b.scores.composite - a.scores.composite);
 
-  return saferAlts[0] ?? main;
+  return anyAlts[0] ?? main;
 }
 
 /**
