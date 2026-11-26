@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 896.91,
+  "currentBankroll": 817.11,
   "totalBets": 115,
-  "wins": 44,
-  "losses": 60,
+  "wins": 45,
+  "losses": 63,
   "pushes": 0,
-  "voids": 1,
+  "voids": 2,
   "totalStaked": 5182.5,
-  "totalProfit": 396.91,
-  "roi": 0.0823,
+  "totalProfit": 317.11,
+  "roi": 0.0639,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
-    "eliteWinRate": 0.6471,
-    "strongWinRate": 0.5455,
+    "eliteWinRate": 0.6286,
+    "strongWinRate": 0.5429,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.1116,
+    "nflRoi": 0.0902,
     "nhlRoi": null,
     "ncaafRoi": null,
-    "wpScoreMultiplier": 1,
+    "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-25T23:10:00.065Z",
-    "totalResultsTracked": 105
+    "lastCalibrated": "2026-11-26T23:06:40.982Z",
+    "totalResultsTracked": 110
   },
   "bets": [
     {
@@ -4132,10 +4132,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -62.5,
+      "bankrollAfter": 834.41,
+      "resolvedAt": "2026-11-26T23:06:40.656Z",
       "propType": "player_receiving_yards",
       "playerName": "Chris Brooks",
       "line": 6.5,
@@ -4158,10 +4158,10 @@
         "composite": 73
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 28.7,
+      "bankrollAfter": 863.11,
+      "resolvedAt": "2026-11-26T23:06:40.684Z",
       "propType": "player_receiving_yards",
       "playerName": "Tyler Higbee",
       "line": 29.5,
@@ -4184,10 +4184,10 @@
         "composite": 68
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "void",
+      "profitLoss": 0,
+      "bankrollAfter": 863.11,
+      "resolvedAt": "2026-11-26T23:06:40.715Z",
       "propType": "player_receiving_yards",
       "playerName": "CJ Daniels",
       "line": 26.5,
@@ -4208,7 +4208,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Chris Brooks",
           "line": 6.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Tyler Higbee Under 29.5 Receiving Yards",
@@ -4220,7 +4221,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Tyler Higbee",
           "line": 29.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Jordan Love Under 3.5 Rushing Yards",
@@ -4232,7 +4234,8 @@
           "propType": "player_rush_yards",
           "playerName": "Jordan Love",
           "line": 3.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Konata Mumpfield Under 33.5 Receiving Yards",
@@ -4244,7 +4247,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Konata Mumpfield",
           "line": 33.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Kyren Williams Under 22.5 Receiving Yards",
@@ -4256,17 +4260,18 @@
           "propType": "player_receiving_yards",
           "playerName": "Kyren Williams",
           "line": 22.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2242,
       "stakeAmount": 5.5,
       "potentialPayout": 128.81,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -5.5,
+      "bankrollAfter": 857.61,
+      "resolvedAt": "2026-11-26T23:06:40.895Z"
     },
     {
       "betId": "nfl-401873081-prop-sionevaki-player_receiving_yards-2026-11-26",
@@ -4285,10 +4290,10 @@
         "composite": 85
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -40.5,
+      "bankrollAfter": 817.11,
+      "resolvedAt": "2026-11-26T23:06:40.940Z",
       "propType": "player_receiving_yards",
       "playerName": "Sione Vaki",
       "line": 4.5,
