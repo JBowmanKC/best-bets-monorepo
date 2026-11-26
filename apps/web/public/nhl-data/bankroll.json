@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 466.41,
+  "currentBankroll": 465.41,
   "totalBets": 129,
-  "wins": 53,
-  "losses": 71,
+  "wins": 55,
+  "losses": 74,
   "pushes": 0,
   "voids": 0,
   "totalStaked": 1732.5,
-  "totalProfit": -33.59,
-  "roi": -0.0205,
+  "totalProfit": -34.59,
+  "roi": -0.02,
   "peakBankroll": 500,
   "lowestBankroll": 265.38,
   "calibration": {
     "eliteWinRate": 0.5882,
-    "strongWinRate": 0.5306,
+    "strongWinRate": 0.5294,
     "valueWinRate": null,
     "mlbRoi": null,
     "nflRoi": null,
-    "nhlRoi": -0.0649,
+    "nhlRoi": -0.0676,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 0.92,
-    "lastCalibrated": "2026-11-25T23:16:13.784Z",
-    "totalResultsTracked": 124
+    "lastCalibrated": "2026-11-26T23:16:16.600Z",
+    "totalResultsTracked": 129
   },
   "bets": [
     {
@@ -5010,10 +5010,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -29,
+      "bankrollAfter": 437.41,
+      "resolvedAt": "2026-11-26T23:16:16.272Z",
       "propType": "player_assists",
       "playerName": "Kirill Kaprizov",
       "line": 0.5,
@@ -5036,10 +5036,10 @@
         "composite": 76
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 22.5,
+      "bankrollAfter": 459.91,
+      "resolvedAt": "2026-11-26T23:16:16.312Z",
       "propType": "player_points",
       "playerName": "Sam Rinzel",
       "line": 0.5,
@@ -5060,7 +5060,8 @@
           "propType": "player_points",
           "playerName": "Kirill Kaprizov",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Berkly Catton Over 0.5 Points",
@@ -5072,17 +5073,18 @@
           "propType": "player_points",
           "playerName": "Berkly Catton",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 311,
       "stakeAmount": 24.5,
       "potentialPayout": 100.7,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -24.5,
+      "bankrollAfter": 435.41,
+      "resolvedAt": "2026-11-26T23:16:16.393Z"
     },
     {
       "betId": "parlay-high-2026-11-25",
@@ -5099,7 +5101,8 @@
           "propType": "player_assists",
           "playerName": "Sam Rinzel",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Kirill Kaprizov Over 1.5 Points",
@@ -5111,7 +5114,8 @@
           "propType": "player_points",
           "playerName": "Kirill Kaprizov",
           "line": 1.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Matt Boldy Over 0.5 Assists",
@@ -5123,7 +5127,8 @@
           "propType": "player_assists",
           "playerName": "Matt Boldy",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Berkly Catton Over 0.5 Points",
@@ -5135,7 +5140,8 @@
           "propType": "player_points",
           "playerName": "Berkly Catton",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Brock Faber Under 0.5 Assists",
@@ -5147,17 +5153,18 @@
           "propType": "player_assists",
           "playerName": "Brock Faber",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2938,
       "stakeAmount": 3,
       "potentialPayout": 91.14,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -3,
+      "bankrollAfter": 432.41,
+      "resolvedAt": "2026-11-26T23:16:16.550Z"
     },
     {
       "betId": "parlay-double-2026-11-25",
@@ -5174,7 +5181,8 @@
           "propType": "player_assists",
           "playerName": "Brock Faber",
           "line": 0.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         },
         {
           "pickLabel": "Berkly Catton Over 0.5 Points",
@@ -5186,17 +5194,18 @@
           "propType": "player_points",
           "playerName": "Berkly Catton",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         }
       ],
       "combinedOdds": 220,
       "stakeAmount": 15,
       "potentialPayout": 48,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "win",
+      "profitLoss": 33,
+      "bankrollAfter": 465.41,
+      "resolvedAt": "2026-11-26T23:16:16.599Z"
     }
   ]
 }
