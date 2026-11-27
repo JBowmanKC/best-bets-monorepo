@@ -1,12 +1,12 @@
 {
   "initialBankroll": 500,
   "currentBankroll": 465.41,
-  "totalBets": 129,
+  "totalBets": 134,
   "wins": 55,
   "losses": 74,
   "pushes": 0,
   "voids": 0,
-  "totalStaked": 1732.5,
+  "totalStaked": 1804.5,
   "totalProfit": -34.59,
   "roi": -0.02,
   "peakBankroll": 500,
@@ -5206,6 +5206,223 @@
       "profitLoss": 33,
       "bankrollAfter": 465.41,
       "resolvedAt": "2026-11-26T23:16:16.599Z"
+    },
+    {
+      "betId": "nhl-401892806-prop-romankantserov-player_points-2026-11-27",
+      "date": "2026-11-27",
+      "sport": "nhl",
+      "matchup": "New York Rangers @ Chicago Blackhawks",
+      "pickLabel": "Roman Kantserov Over 0.5",
+      "odds": -115,
+      "stakeAmount": 26,
+      "potentialPayout": 48.61,
+      "estimatedWinPct": 0.621,
+      "impliedWinPct": 0.535,
+      "evEdge": 0.086,
+      "tier": "strong",
+      "scores": {
+        "composite": 74
+      },
+      "sportsbook": "BetMGM",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Roman Kantserov",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "nhl-401892808-prop-tagethompson-player_points-2026-11-27",
+      "date": "2026-11-27",
+      "sport": "nhl",
+      "matchup": "Pittsburgh Penguins @ Buffalo Sabres",
+      "pickLabel": "Tage Thompson Over 0.5",
+      "odds": -225,
+      "stakeAmount": 18.5,
+      "potentialPayout": 26.72,
+      "estimatedWinPct": 0.733,
+      "impliedWinPct": 0.692,
+      "evEdge": 0.041,
+      "tier": "strong",
+      "scores": {
+        "composite": 73
+      },
+      "sportsbook": "BetMGM",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null,
+      "propType": "player_points",
+      "playerName": "Tage Thompson",
+      "line": 0.5,
+      "recommendedSide": "over"
+    },
+    {
+      "betId": "parlay-safe-2026-11-27",
+      "date": "2026-11-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Will Cuylle Under 0.5 Assists",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "New York Rangers @ Chicago Blackhawks",
+          "date": "2026-11-27",
+          "sportsbook": "BetMGM",
+          "propType": "player_assists",
+          "playerName": "Will Cuylle",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Ville Koivunen Under 0.5 Points",
+          "odds": -210,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Buffalo Sabres",
+          "date": "2026-11-28",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Ville Koivunen",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Kyle Connor Over 0.5 Points",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "Winnipeg Jets @ New York Islanders",
+          "date": "2026-11-28",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Kyle Connor",
+          "line": 0.5,
+          "recommendedSide": "over"
+        }
+      ],
+      "combinedOdds": 174,
+      "stakeAmount": 14,
+      "potentialPayout": 38.36,
+      "sportsbook": "BetMGM",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-high-2026-11-27",
+      "date": "2026-11-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Adam Fox Over 0.5 Assists",
+          "odds": -150,
+          "sport": "nhl",
+          "matchup": "New York Rangers @ Chicago Blackhawks",
+          "date": "2026-11-27",
+          "sportsbook": "BetMGM",
+          "propType": "player_assists",
+          "playerName": "Adam Fox",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Anton Frondell Under 0.5 Points",
+          "odds": -140,
+          "sport": "nhl",
+          "matchup": "New York Rangers @ Chicago Blackhawks",
+          "date": "2026-11-27",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Anton Frondell",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Kyle Connor Over 0.5 Points",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "Winnipeg Jets @ New York Islanders",
+          "date": "2026-11-28",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Kyle Connor",
+          "line": 0.5,
+          "recommendedSide": "over"
+        },
+        {
+          "pickLabel": "Ville Koivunen Under 0.5 Points",
+          "odds": -210,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Buffalo Sabres",
+          "date": "2026-11-28",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Ville Koivunen",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Will Cuylle Under 0.5 Assists",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "New York Rangers @ Chicago Blackhawks",
+          "date": "2026-11-27",
+          "sportsbook": "BetMGM",
+          "propType": "player_assists",
+          "playerName": "Will Cuylle",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 684,
+      "stakeAmount": 3.5,
+      "potentialPayout": 27.44,
+      "sportsbook": "BetMGM",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
+    },
+    {
+      "betId": "parlay-double-2026-11-27",
+      "date": "2026-11-27",
+      "betType": "parlay",
+      "parlayLegs": [
+        {
+          "pickLabel": "Will Cuylle Under 0.5 Assists",
+          "odds": -275,
+          "sport": "nhl",
+          "matchup": "New York Rangers @ Chicago Blackhawks",
+          "date": "2026-11-27",
+          "sportsbook": "BetMGM",
+          "propType": "player_assists",
+          "playerName": "Will Cuylle",
+          "line": 0.5,
+          "recommendedSide": "under"
+        },
+        {
+          "pickLabel": "Ville Koivunen Under 0.5 Points",
+          "odds": -210,
+          "sport": "nhl",
+          "matchup": "Pittsburgh Penguins @ Buffalo Sabres",
+          "date": "2026-11-28",
+          "sportsbook": "BetMGM",
+          "propType": "player_points",
+          "playerName": "Ville Koivunen",
+          "line": 0.5,
+          "recommendedSide": "under"
+        }
+      ],
+      "combinedOdds": 101,
+      "stakeAmount": 10,
+      "potentialPayout": 20.1,
+      "sportsbook": "BetMGM",
+      "result": "pending",
+      "profitLoss": null,
+      "bankrollAfter": null,
+      "resolvedAt": null
     }
   ]
 }
