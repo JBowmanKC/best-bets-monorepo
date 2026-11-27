@@ -1,28 +1,28 @@
 {
   "initialBankroll": 500,
-  "currentBankroll": 817.11,
+  "currentBankroll": 756.1,
   "totalBets": 115,
-  "wins": 45,
-  "losses": 63,
+  "wins": 46,
+  "losses": 67,
   "pushes": 0,
   "voids": 2,
   "totalStaked": 5182.5,
-  "totalProfit": 317.11,
-  "roi": 0.0639,
+  "totalProfit": 256.1,
+  "roi": 0.0502,
   "peakBankroll": 1604.13,
   "lowestBankroll": 386.8,
   "calibration": {
     "eliteWinRate": 0.6286,
-    "strongWinRate": 0.5429,
+    "strongWinRate": 0.5405,
     "valueWinRate": null,
     "mlbRoi": null,
-    "nflRoi": 0.0902,
+    "nflRoi": 0.0875,
     "nhlRoi": null,
     "ncaafRoi": null,
     "wpScoreMultiplier": 0.9,
     "evScoreMultiplier": 1,
-    "lastCalibrated": "2026-11-26T23:06:40.982Z",
-    "totalResultsTracked": 110
+    "lastCalibrated": "2026-11-27T22:47:03.583Z",
+    "totalResultsTracked": 115
   },
   "bets": [
     {
@@ -4316,10 +4316,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "win",
+      "profitLoss": 36.49,
+      "bankrollAfter": 853.6,
+      "resolvedAt": "2026-11-27T22:47:02.921Z",
       "propType": "player_pass_yards",
       "playerName": "Dak Prescott",
       "line": 265.5,
@@ -4342,10 +4342,10 @@
         "composite": 79
       },
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null,
+      "result": "loss",
+      "profitLoss": -40.5,
+      "bankrollAfter": 813.1,
+      "resolvedAt": "2026-11-27T22:47:02.960Z",
       "propType": "player_pass_yards",
       "playerName": "Patrick Mahomes",
       "line": 234.5,
@@ -4366,7 +4366,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Rashee Rice",
           "line": 44.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Caleb Williams Under 22.5 Rushing Yards",
@@ -4378,17 +4379,18 @@
           "propType": "player_rush_yards",
           "playerName": "Caleb Williams",
           "line": 22.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 262,
       "stakeAmount": 36,
       "potentialPayout": 130.32,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -36,
+      "bankrollAfter": 777.1,
+      "resolvedAt": "2026-11-27T22:47:03.183Z"
     },
     {
       "betId": "parlay-high-2026-11-26",
@@ -4405,7 +4407,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Rashee Rice",
           "line": 44.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "Josh Allen Under 39.5 Rushing Yards",
@@ -4417,7 +4420,8 @@
           "propType": "player_rush_yards",
           "playerName": "Josh Allen",
           "line": 39.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         },
         {
           "pickLabel": "Travis Kelce Over 43.5 Receiving Yards",
@@ -4429,7 +4433,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Travis Kelce",
           "line": 43.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Jared Goff Over 0.5 Rushing Yards",
@@ -4441,7 +4446,8 @@
           "propType": "player_rush_yards",
           "playerName": "Jared Goff",
           "line": 0.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "win"
         },
         {
           "pickLabel": "Caleb Williams Under 22.5 Rushing Yards",
@@ -4453,17 +4459,18 @@
           "propType": "player_rush_yards",
           "playerName": "Caleb Williams",
           "line": 22.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "win"
         }
       ],
       "combinedOdds": 2428,
       "stakeAmount": 5,
       "potentialPayout": 126.4,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -5,
+      "bankrollAfter": 772.1,
+      "resolvedAt": "2026-11-27T22:47:03.436Z"
     },
     {
       "betId": "parlay-double-2026-11-26",
@@ -4480,7 +4487,8 @@
           "propType": "player_receiving_yards",
           "playerName": "Rashee Rice",
           "line": 44.5,
-          "recommendedSide": "over"
+          "recommendedSide": "over",
+          "result": "loss"
         },
         {
           "pickLabel": "D'Andre Swift Under 16.5 Receiving Yards",
@@ -4492,17 +4500,18 @@
           "propType": "player_receiving_yards",
           "playerName": "D'Andre Swift",
           "line": 16.5,
-          "recommendedSide": "under"
+          "recommendedSide": "under",
+          "result": "loss"
         }
       ],
       "combinedOdds": 248,
       "stakeAmount": 16,
       "potentialPayout": 55.68,
       "sportsbook": "DraftKings",
-      "result": "pending",
-      "profitLoss": null,
-      "bankrollAfter": null,
-      "resolvedAt": null
+      "result": "loss",
+      "profitLoss": -16,
+      "bankrollAfter": 756.1,
+      "resolvedAt": "2026-11-27T22:47:03.582Z"
     }
   ]
 }
